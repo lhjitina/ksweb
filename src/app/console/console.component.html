@@ -1,0 +1,19 @@
+<nz-layout>
+  <nz-sider [nzWidth]="200" style="background:#fff">
+    <ul nz-menu [nzMode]="'inline'" style="height:100%">
+      <li nz-menu-item><a href="/console/regulation"><i nz-icon type="security-scan" theme="twotone"></i>规章制度管理</a></li>
+      <li nz-menu-item><a href="/console/meetingsummary"><i nz-icon type="profile" theme="twotone"></i>会议纪要管理</a></li>
+      <li nz-menu-item><a href="/console/pm"><i nz-icon type="pie-chart" theme="twotone"></i>生产管理</a></li>
+    </ul>
+  </nz-sider>
+  <nz-layout style="padding:0 24px 24px">
+    <nz-breadcrumb style="margin:16px 0;">
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+      <nz-breadcrumb-item>List</nz-breadcrumb-item>
+      <nz-breadcrumb-item>App</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

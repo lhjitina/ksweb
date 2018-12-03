@@ -1,0 +1,67 @@
+<nz-layout style="background:#fff">
+       <form nz-form [nzLayout] ="'inline'">
+            <div nz-row>
+                <div nz-col nzSpan="4">
+                  <nz-form-item>
+                    <nz-form-label><span style="font-size: 1.2em">部门</span> </nz-form-label> 
+                    <span>{{userDepartment}}</span>
+                  </nz-form-item>
+                </div>
+              <div nz-col nzSpan="20">
+                  <nz-form-item> 
+                      <nz-form-label>文件名称</nz-form-label>
+                      <nz-form-control>
+                        <input  nz-input style="width:120px;" placeholder="文件名称">
+                      </nz-form-control>
+                    </nz-form-item>
+                  
+                    <nz-form-item>
+                      <nz-form-label>发文日期</nz-form-label>
+                        <nz-form-control>
+                          <nz-date-picker [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
+                          <span>~</span>
+                          <nz-date-picker [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <button nz-button nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+                        <button nz-button nzType="primary" nzShape="circle" style="margin-left: 5px;"><i nz-icon type="upload"></i></button>
+                    </nz-form-item>
+                </div>
+            </div>
+          </form>
+
+<br>  
+  
+  <nz-table #basicTable [nzData]="Regulations | async" [nzShowSizeChanger]="true">
+      <thead>
+      
+        <tr>
+          <th class="theadbg">序号</th>
+          <th class="theadbg">文件名称</th>
+          <th class="theadbg">发文日期</th>
+          <th class="theadbg">状态</th>
+          <th class="theadbg">操作人</th>
+          <th class="theadbg">操作时间</th>
+          <th class="theadbg">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data index as i">
+          <td>{{i+1}}</td>
+          <td><a [routerLink]="['/home/regulation']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
+          <td>{{data.Department}}</td>
+          <td>{{data.PubDate | slice:0:10}}</td>
+          <td>
+            <a [routerLink]="['/home/regulation']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}"><button nz-button>查看</button></a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a >作废</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a>删除</a>
+         </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  
+  
+  </nz-layout>
