@@ -4,6 +4,7 @@ import { RegulationService } from '../regulation.service';
 import { Observable } from 'rxjs';
 import { BasicdataService } from '../basicdata.service';
 import { Department } from '../basicdata';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-regulation',
@@ -16,15 +17,35 @@ export class RegulationComponent implements OnInit {
   public Departments: Observable<Department[]>;
   public PageSize: number = 2;
   private fileName: string="";
+  private RegSearchFormGroup: FormGroup;
 
   constructor(private regsvc: RegulationService,
               private basicdatasvc: BasicdataService,
-              private cdr: ChangeDetectorRef) { }
+              private cdr: ChangeDetectorRef,
+              private fb: FormBuilder,
+              private http: HttpClient) {
+
+              }
 
   ngOnInit() {
-    this.Regulations = this.regsvc.getRegList();
+    this.RegSearchFormGroup = this.fb.group({
+      fileName: [''],
+      department: [''],
+      startDate: [''],
+      endDate: ['']
+    });
+
+    this.http.get("/api/regulation/list", {
+      params: {
+        name: this.RegSearchFormGroup.get("fileName").value,
+        department: this.RegSearchFormGroup.get("department").value
+    }}).subscribe((res: any)=>{
+      this.Regulations = res;
+    })
+
     this.Departments = this.basicdatasvc.getDepartments();
   }
+
 
   onDownload(name: string): void{
     
@@ -40,7 +61,7 @@ export class RegulationComponent implements OnInit {
   }
 
   onSearch(): void{
-    console.log("........a."+ this.fileName + ".b.......");
+    this.regsvc.getRegList(this.fileName);
   }
 }
 

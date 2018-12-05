@@ -1,18 +1,16 @@
 <nz-layout style="background:#fff">
-  <form nz-form [nzLayout] ="'inline'">
+  <form nz-form [formGroup]="RegSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
     <nz-form-item>
       <nz-form-label>文件名称：</nz-form-label>
       <nz-form-control>
-        <nz-input-group [nzPrefix]="prefixUser">
-          <input  nz-input [(ngModel)]="fileName" name="filename" style="width:120px;" placeholder="文件名称">
-        </nz-input-group>
+          <input  type="text" nz-input formControlName="fileName" style="width:120px;" placeholder="文件名称">
       </nz-form-control>
     </nz-form-item>
   
     <nz-form-item>
       <nz-form-label>发文部门：</nz-form-label>
       <nz-form-control>
-          <nz-select style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
+          <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
            <nz-option *ngFor="let option of Departments | async" [nzValue]= "option" [nzLabel]= "option.Name"></nz-option> 
           </nz-select>
       </nz-form-control>
@@ -21,9 +19,9 @@
     <nz-form-item>
         <nz-form-label>发文日期：</nz-form-label>
         <nz-form-control>
-          <nz-date-picker [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
+          <nz-date-picker formControlName="startDate" [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
           <span>~</span>
-          <nz-date-picker [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
+          <nz-date-picker formControlName="endDate" [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
         </nz-form-control>
     </nz-form-item>
   
@@ -34,7 +32,7 @@
   
   <br>
   
-  <nz-table #basicTable [nzData]="Regulations | async" [nzShowSizeChanger]="true">
+  <nz-table #basicTable [nzData]="Regulations" [nzShowSizeChanger]="true">
       <thead>
       
         <tr>
