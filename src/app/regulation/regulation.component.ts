@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { BasicdataService } from '../basicdata.service';
 import { Department } from '../basicdata';
 import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-regulation',
@@ -13,8 +14,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegulationComponent implements OnInit {
 
-  public Regulations: Observable<Array<Regulation>>;
-  public Departments: Observable<Department[]>;
+  public Regulations: Array<Regulation>;
+  public Departments: string[];
   public PageSize: number = 2;
   private fileName: string="";
   private RegSearchFormGroup: FormGroup;
@@ -35,15 +36,13 @@ export class RegulationComponent implements OnInit {
       endDate: ['']
     });
 
-    this.http.get("/api/regulation/list", {
-      params: {
-        name: this.RegSearchFormGroup.get("fileName").value,
-        department: this.RegSearchFormGroup.get("department").value
-    }}).subscribe((res: any)=>{
+    this.http.get("/api/regulation/list").subscribe((res: any)=>{
       this.Regulations = res;
     })
 
-    this.Departments = this.basicdatasvc.getDepartments();
+    this.http.get("/api/department/list").subscribe((res: any)=>{
+      this.Departments = res;
+    })
   }
 
 
@@ -61,13 +60,21 @@ export class RegulationComponent implements OnInit {
   }
 
   onSearch(): void{
-    this.regsvc.getRegList(this.fileName);
-    //add a new line
-    //add second line
-    //add third line
-    //add fouth line
-    //add fifth line
-    //add sixth line
+    var sd = this.RegSearchFormGroup.get("startDate").value;
+    var ed = this.RegSearchFormGroup.get("endDate").value;
+    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
+    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
+    this.http.get("/api/regulation/list", {
+      params: {
+        name: this.RegSearchFormGroup.get("fileName").value,
+        department: this.RegSearchFormGroup.get("department").value,
+        startDate: sd,
+        endDate: ed
+      }
+    }).subscribe((res: any)=>{
+      this.Regulations = res;
+    })
+  
   }
 }
 

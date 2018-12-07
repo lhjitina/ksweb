@@ -11,7 +11,7 @@
       <nz-form-label>发文部门：</nz-form-label>
       <nz-form-control>
           <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-           <nz-option *ngFor="let option of Departments | async" [nzValue]= "option" [nzLabel]= "option.Name"></nz-option> 
+           <nz-option *ngFor="let option of Departments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
           </nz-select>
       </nz-form-control>
     </nz-form-item>

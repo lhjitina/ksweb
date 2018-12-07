@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "core-js": "^2.5.4",
+    "moment": "^2.22.2",
     "ng-zorro-antd": "^7.0.0-rc.0",
     "ng2-pdf-viewer": "^5.2.3",
     "pdfjs-dist": "^2.0.943",
