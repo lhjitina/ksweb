@@ -63,6 +63,7 @@ export class RegulationComponent implements OnInit {
   onSearch(): void{
     this.regsvc.getRegList(this.fileName);
     //add a new line
+    //add second line
   }
 }
 
