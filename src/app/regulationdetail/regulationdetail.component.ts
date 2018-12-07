@@ -1,10 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Regulation, RegulationDetail } from '../regulation/regulation.component';
+import { Regulation } from '../regulation/regulation.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { RegulationService } from '../regulation.service';
-import { DownregComponent } from '../downreg/downreg.component';
-import { BlockingProxy } from 'blocking-proxy';
 
 
 @Component({
@@ -33,7 +30,6 @@ export class RegulationdetailComponent implements OnInit {
     this.reg.Name = data["name"];
     this.reg.Department = data["department"];
     this.reg.PubDate = data["date"];
-    this.reg.status = data["status"];
 
     this.pdfUrl = "/api/regulation/content/" + this.reg.Name;
   }

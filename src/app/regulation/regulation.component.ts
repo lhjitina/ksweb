@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from '@angular/forms';
-import { RegulationService } from '../regulation.service';
 import { Observable } from 'rxjs';
 import { BasicdataService } from '../basicdata.service';
-import { Department } from '../basicdata';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 
@@ -19,8 +17,7 @@ export class RegulationComponent implements OnInit {
   public pageSize: number = 2;
   private RegSearchFormGroup: FormGroup;
 
-  constructor(private regsvc: RegulationService,
-              private basicdatasvc: BasicdataService,
+  constructor(private basicdatasvc: BasicdataService,
               private cdr: ChangeDetectorRef,
               private fb: FormBuilder,
               private http: HttpClient) {
@@ -83,13 +80,9 @@ export class Regulation {
   public Name: string;
   public Department: string;
   public PubDate: Date;
-  public status: string;
 constructor(
    ){
 
   }
 }
 
-export class RegulationDetail extends Regulation{
-  public content: Blob;
-}

@@ -11,14 +11,17 @@ import { SummarymanagementComponent } from './summarymanagement/summarymanagemen
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "home", component: HomeComponent,
-     children:[
-        {path: "regulations", component:RegulationComponent},
-        {path: "meetingsummary", component: MeetingsummaryComponent},
-        {path: "regulationdetail", component: RegulationdetailComponent}
-     ]},
+    children:[
+      {path: "", component:RegulationComponent},
+      {path: "regulations", component:RegulationComponent},
+      {path: "meetingsummary", component: MeetingsummaryComponent},
+      {path: "regulationdetail", component: RegulationdetailComponent}
+    ]},
   {path: "console", component: ConsoleComponent,
     children:[
+      {path: "", component: RegulationmanagmentComponent},
       {path: "regulation", component: RegulationmanagmentComponent},
+      {path: "regulationdetail", component: RegulationdetailComponent},
       {path: "summary", component: SummarymanagementComponent}
     ]}
 ];

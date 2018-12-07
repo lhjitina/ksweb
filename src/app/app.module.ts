@@ -7,6 +7,7 @@ import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,7 +45,8 @@ import { DownregComponent } from './downreg/downreg.component';
     HttpClientModule,
     NgZorroAntdModule,
     PdfViewerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
   providers: [ { provide: NZ_I18N, useValue: zh_CN }, {provide: DownregComponent}],
   bootstrap: [AppComponent]
