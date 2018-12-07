@@ -16,8 +16,7 @@ export class RegulationComponent implements OnInit {
 
   public Regulations: Array<Regulation>;
   public Departments: string[];
-  public PageSize: number = 2;
-  private fileName: string="";
+  public pageSize: number = 2;
   private RegSearchFormGroup: FormGroup;
 
   constructor(private regsvc: RegulationService,
@@ -47,16 +46,16 @@ export class RegulationComponent implements OnInit {
 
 
   onDownload(name: string): void{
-    
-    this.regsvc.getRegulationContent(name).subscribe((data: Blob)=>{
+    var url = "/api/regulation/content/" + name;
+    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
-      a.href = URL.createObjectURL(data);
+      a.href = URL.createObjectURL(res);
       a.style.display = "false";
       a.download = name + ".pdf";
       a.click();
       URL.revokeObjectURL(a.href);
-      })   
+    });
   }
 
   onSearch(): void{
