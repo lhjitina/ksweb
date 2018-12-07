@@ -67,6 +67,7 @@ export class RegulationComponent implements OnInit {
     //add third line
     //add fouth line
     //add fifth line
+    //add sixth line
   }
 }
 
