@@ -64,6 +64,7 @@ export class RegulationComponent implements OnInit {
     this.regsvc.getRegList(this.fileName);
     //add a new line
     //add second line
+    //add third line
   }
 }
 
