@@ -8,6 +8,7 @@ import { ConsoleComponent } from './console/console.component';
 import { RegulationmanagmentComponent } from './regulationmanagment/regulationmanagment.component';
 import { SummarymanagementComponent } from './summarymanagement/summarymanagement.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { UserAddComponent } from './user-add/user-add.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -24,7 +25,8 @@ const routes: Routes = [
       {path: "regulation", component: RegulationmanagmentComponent},
       {path: "regulationdetail", component: RegulationdetailComponent},
       {path: "summary", component: SummarymanagementComponent},
-      {path: "user", component: UserManagementComponent}
+      {path: "user", component: UserManagementComponent},
+      {path: "useradd", component: UserAddComponent}
     ]}
 ];
 

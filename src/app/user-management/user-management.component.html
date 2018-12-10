@@ -18,7 +18,9 @@
 
   <nz-form-item>
       <button nz-button nzType="primary" nzShape="circle" (click)="onSearch()"><i nz-icon type="search"></i></button>
-      <button nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" (click)="onAdd()"><i nz-icon type="plus-circle"></i></button>
+      <a [routerLink]="['/console/useradd']">
+        <button nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" (click)="onAdd()"><i nz-icon type="plus-circle"></i></button>
+      </a>
   </nz-form-item>
 </form>
 
