@@ -15,11 +15,20 @@
     </nz-form-control>
   </nz-form-item>
 
+  <nz-form-item>
+      <nz-form-label>状态</nz-form-label>
+    <nz-form-control>
+        <nz-select formControlName="state" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
+         <nz-option [nzValue]= "'在职'" [nzLabel]= "'在职'"></nz-option> 
+         <nz-option [nzValue]= "'离职'" [nzLabel]= "'在职'"></nz-option> 
+        </nz-select>
+    </nz-form-control>
+  </nz-form-item>
 
   <nz-form-item>
       <button nz-button nzType="primary" nzShape="circle" (click)="onSearch()"><i nz-icon type="search"></i></button>
       <a [routerLink]="['/console/useradd']">
-        <button nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" (click)="onAdd()"><i nz-icon type="plus-circle"></i></button>
+        <button nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" (click)="onAdd()"><i nz-icon type="plus"></i></button>
       </a>
   </nz-form-item>
 </form>
