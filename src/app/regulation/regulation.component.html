@@ -1,66 +1,62 @@
-<nz-layout style="background:#fff">
-  <form nz-form [formGroup]="RegSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
-    <nz-form-item>
-      <nz-form-label>文件名称：</nz-form-label>
+<form nz-form [formGroup]="RegSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
+  <nz-form-item>
+    <nz-form-label>文件名称：</nz-form-label>
+    <nz-form-control>
+        <input  type="text" nz-input formControlName="fileName" style="width:120px;" placeholder="文件名称">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label>发文部门：</nz-form-label>
+    <nz-form-control>
+        <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
+         <nz-option *ngFor="let option of Departments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+        </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+      <nz-form-label>发文日期：</nz-form-label>
       <nz-form-control>
-          <input  type="text" nz-input formControlName="fileName" style="width:120px;" placeholder="文件名称">
+        <nz-date-picker formControlName="startDate" [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
+        <span>~</span>
+        <nz-date-picker formControlName="endDate" [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
       </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-      <nz-form-label>发文部门：</nz-form-label>
-      <nz-form-control>
-          <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-           <nz-option *ngFor="let option of Departments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
-          </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-        <nz-form-label>发文日期：</nz-form-label>
-        <nz-form-control>
-          <nz-date-picker formControlName="startDate" [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
-          <span>~</span>
-          <nz-date-picker formControlName="endDate" [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
-        </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-        <button nz-button nzType="primary" nzShape="circle" (click)="onSearch()"><i nz-icon type="search"></i></button>
-    </nz-form-item>
-  </form>
-  
-  <br>
-  
-  <nz-table #basicTable [nzData]="Regulations" [nzPageSize]="" [nzShowSizeChanger]="true">
-      <thead>
-      
-        <tr>
-          <th class="theadbg">序号</th>
-          <th class="theadbg">文件名称</th>
-          <th class="theadbg">发文部门</th>
-          <th class="theadbg">发文日期</th>
-          <th class="theadbg">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of basicTable.data index as i">
-          <td>{{i+1}}</td>
-          <td><a [routerLink]="['/home/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
-          <td>{{data.Department}}</td>
-          <td>{{data.PubDate | slice:0:10}}</td>
-          <td>
-            
-            <a [routerLink]="['/home/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">
-              <button nz-button nzType="primary">查看</button>
-            </a>
-           
-            <nz-divider nzType="vertical"></nz-divider>
-            <button nz-button nzType="default" (click)="onDownload(data.Name)">下载</button>
-          </td>
-        </tr>
-      </tbody>
-  </nz-table>
-  
-  
-  </nz-layout>
+  </nz-form-item>
+
+  <nz-form-item>
+      <button nz-button nzType="primary" nzShape="circle" (click)="onSearch()"><i nz-icon type="search"></i></button>
+  </nz-form-item>
+</form>
+
+<br>
+
+<nz-table #basicTable [nzData]="Regulations" [nzPageSize]="" [nzShowSizeChanger]="true">
+    <thead>
+    
+      <tr>
+        <th class="theadbg">序号</th>
+        <th class="theadbg">文件名称</th>
+        <th class="theadbg">发文部门</th>
+        <th class="theadbg">发文日期</th>
+        <th class="theadbg">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data index as i">
+        <td>{{i+1}}</td>
+        <td><a [routerLink]="['/home/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
+        <td>{{data.Department}}</td>
+        <td>{{data.PubDate | slice:0:10}}</td>
+        <td>
+          
+          <a [routerLink]="['/home/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">
+            <button nz-button nzType="primary">查看</button>
+          </a>
+         
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" (click)="onDownload(data.Name)">下载</button>
+        </td>
+      </tr>
+    </tbody>
+</nz-table>

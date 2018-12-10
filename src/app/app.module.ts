@@ -23,6 +23,7 @@ import { RegulationdetailComponent } from './regulationdetail/regulationdetail.c
 import { ConsoleComponent } from './console/console.component';
 import { RegulationmanagmentComponent } from './regulationmanagment/regulationmanagment.component';
 import { SummarymanagementComponent } from './summarymanagement/summarymanagement.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SummarymanagementComponent } from './summarymanagement/summarymanagemen
     ConsoleComponent,
     RegulationmanagmentComponent,
     SummarymanagementComponent,
+    UserManagementComponent,
 
   ],
   imports: [
