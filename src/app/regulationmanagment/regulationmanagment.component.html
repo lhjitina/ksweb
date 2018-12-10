@@ -39,7 +39,12 @@
     </div>
     <div nz-col nzSpan="1">
       <button nz-button nzType="primary" nzShape="circle" style="margin-left: 5px; float: left;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
-      <input type="file" ng2FileSelect [uploader]="uploader" class="reg-upload"/>
+      <input type="file" ng2FileSelect [uploader]="uploader" class="reg-upload" (change)="selectFileChange($event)" />
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="上传文件" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <p>{{fileName}}</p>
+        <nz-progress [nzPercent]="uploadProg" nzStatus="active"></nz-progress> 
+        <p>{{retInfo}}</p>
+       </nz-modal>
     </div>
   </div>
 <br>  

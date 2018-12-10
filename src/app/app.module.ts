@@ -23,7 +23,6 @@ import { RegulationdetailComponent } from './regulationdetail/regulationdetail.c
 import { ConsoleComponent } from './console/console.component';
 import { RegulationmanagmentComponent } from './regulationmanagment/regulationmanagment.component';
 import { SummarymanagementComponent } from './summarymanagement/summarymanagement.component';
-import { DownregComponent } from './downreg/downreg.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +34,7 @@ import { DownregComponent } from './downreg/downreg.component';
     ConsoleComponent,
     RegulationmanagmentComponent,
     SummarymanagementComponent,
-    DownregComponent
+
   ],
   imports: [
     BrowserModule,
@@ -48,7 +47,7 @@ import { DownregComponent } from './downreg/downreg.component';
     ReactiveFormsModule,
     FileUploadModule
   ],
-  providers: [ { provide: NZ_I18N, useValue: zh_CN }, {provide: DownregComponent}],
+  providers: [ { provide: NZ_I18N, useValue: zh_CN } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
