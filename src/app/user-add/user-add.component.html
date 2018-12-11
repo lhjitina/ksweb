@@ -8,13 +8,7 @@
               <input type="text" nz-input  formControlName="userName"  placeholder="用户名" tabindex="1">
             </nz-form-control>
         </nz-form-item>
-            <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="passwd" nzRequired>密&nbsp;&nbsp;&nbsp;码</nz-form-label>
-                <nz-form-control [nzSpan]="18" >
-                  <input nz-input type="password" formControlName="passwd" tabindex="2">
-                </nz-form-control>
-              </nz-form-item>
-               
+              
               <nz-form-item>
                   <nz-form-label [nzSpan]="6" nzFor="tel" nzRequired>手&nbsp;&nbsp;&nbsp;机</nz-form-label>
                   <nz-form-control  [nzSpan]="18" >
@@ -66,3 +60,29 @@
   </nz-form-item>
 
 </form>
+<nz-table #useradd [nzData]="users">
+  <thead >
+    <tr>
+      <th class="consoleTableHead">序号</th>
+      <th class="consoleTableHead">用户名</th>
+      <th class="consoleTableHead">姓名</th>
+      <th class="consoleTableHead">部门</th>
+      <th class="consoleTableHead">手机</th>
+      <th class="consoleTableHead">邮箱</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of useradd.data index as i">
+      <td>{{i+1}}</td>
+      <td>{{user.userName}}</td>
+      <td>{{user.realName}}</td>
+      <td>{{user.department}}</td>
+      <td>{{user.tel}}</td>
+      <td>{{user.email}}</td>
+    </tr>
+  </tbody>
+</nz-table> 
+
+<div class="testcss">
+  <p>test global css</p>
+</div>

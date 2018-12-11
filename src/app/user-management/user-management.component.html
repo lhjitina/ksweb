@@ -7,6 +7,13 @@
   </nz-form-item>
 
   <nz-form-item>
+    <nz-form-label>手机</nz-form-label>
+    <nz-form-control>
+        <input  type="tel" nz-input formControlName="tel" style="width:120px;" placeholder="电话">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
     <nz-form-label>所在部门</nz-form-label>
     <nz-form-control>
         <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
@@ -19,8 +26,8 @@
       <nz-form-label>状态</nz-form-label>
     <nz-form-control>
         <nz-select formControlName="state" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-         <nz-option [nzValue]= "'在职'" [nzLabel]= "'在职'"></nz-option> 
-         <nz-option [nzValue]= "'离职'" [nzLabel]= "'在职'"></nz-option> 
+         <nz-option [nzValue]= "'有效'" [nzLabel]= "'有效'"></nz-option> 
+         <nz-option [nzValue]= "'禁用'" [nzLabel]= "'禁用'"></nz-option> 
         </nz-select>
     </nz-form-control>
   </nz-form-item>
@@ -35,37 +42,43 @@
 
 <br>
 
-<nz-table #userTable [nzData]="Users"  [nzShowSizeChanger]="true">
+<nz-table #userTable [nzData]="users"  [nzShowSizeChanger]="true">
   <thead>
-    
     <tr>
-        <th class="theadbg">序号</th>
-        <th class="theadbg">用户名</th>
-        <th class="theadbg">所在部门</th>
-        <th class="theadbg">手机</th>
-        <th class="theadbg">邮箱</th>
-        <th class="theadbg">状态</th>
-        <th class="theadbg">操作</th>
+        <th class="consoleTableHead">序号</th>
+        <th class="consoleTableHead">用户名</th>
+        <th class="consoleTableHead">所在部门</th>
+        <th class="consoleTableHead">手机</th>
+        <th class="consoleTableHead">邮箱</th>
+        <th class="consoleTableHead">状态</th>
+        <th class="consoleTableHead">操作</th>
     </tr>
   </thead>
     
   <tbody>
       <tr *ngFor="let user of userTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/console/user/edit']" [queryParams]="{id: user.userId}">{{user.userName}}</a></td>
+        <td><a [routerLink]="['/console/useredit']" [queryParams]="{name: user.userName}">{{user.userName}}</a></td>
         <td>{{user.department}}</td>
         <td>{{user.tel}}</td>
         <td>{{user.email}}</td>
         <td>{{user.state}}</td>
-        <td>{{user.state}}</td>
-        <a [routerLink]="['/console/user/edit']" [queryParams]="{id: user.userId}">
-            <button nz-button nzType="primary">维护</button>
-        </a>
-         
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button nzType="default" (click)="onDel(user.userId)">删除</button>
+        <td>
+          <a [routerLink]="['/console/useredit']" [queryParams]="{name: user.userName}">
+            <button nz-button nzType="default">修改</button>
+          </a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" (click)="onDel(user.userId)">删除</button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a [routerLink]="['/console/user/detail']" [queryParams]="{id: user.userId}">
+            <button nz-button nzType="default" (click)="onDetail(user.userId)">详情</button>
+          </a> 
+        </td>       
       </tr>
   </tbody>
 </nz-table>
 
+<div class="testcss">
+  <p>hello world</p>
+</div>
 

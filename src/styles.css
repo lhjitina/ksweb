@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+.consoleTableHead{
+    background-color: lightseagreen;
+    color: #fff;
+}
+
+.testcss{
+    color: #f00;
+}

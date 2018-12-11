@@ -9,6 +9,7 @@ import { RegulationmanagmentComponent } from './regulationmanagment/regulationma
 import { SummarymanagementComponent } from './summarymanagement/summarymanagement.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { UserAddComponent } from './user-add/user-add.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
       {path: "regulationdetail", component: RegulationdetailComponent},
       {path: "summary", component: SummarymanagementComponent},
       {path: "user", component: UserManagementComponent},
+      {path: "useredit", component:UserEditComponent},
       {path: "useradd", component: UserAddComponent}
     ]}
 ];
