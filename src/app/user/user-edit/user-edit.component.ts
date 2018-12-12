@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserEditComponent implements OnInit {
   userEditFormGroup: FormGroup;
+  userId: number = 0;
 
   constructor(private ri: ActivatedRoute,
               private fb: FormBuilder,
@@ -18,7 +19,6 @@ export class UserEditComponent implements OnInit {
       userName: [''],
       tel: [''],
       email: [''],
-      realName: [''],
       department: [''],
       state: ['']
     })
@@ -26,15 +26,15 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit() {
     this.ri.queryParams.subscribe((data: any)=>{
-      this.userEditFormGroup.patchValue({userName: data["name"]});
+      this.userId = data["userId"];
       this.http.get("/api/user/detail", {
         params:{
-          userName: this.userEditFormGroup.get("userName").value
+          userId: this.userId.toString()
         }
       }).subscribe((user: any)=>{
+        this.userEditFormGroup.patchValue({userName: user.userName});
         this.userEditFormGroup.patchValue({tel: user.tel});
         this.userEditFormGroup.patchValue({email: user.email});
-        this.userEditFormGroup.patchValue({realName: user.realName});
         this.userEditFormGroup.patchValue({department: user.department});
         this.userEditFormGroup.patchValue({state: user.state});
       });

@@ -1,0 +1,58 @@
+
+<form nz-form [formGroup]="userEditFormGroup" (ngSubmit)="onSubmit()">
+    <div nz-row>
+      <div nz-col [nzOffset]="2" [nzSpan]="7">
+        <div style="width: 300px;">
+          <img src="./../../../assets/timg.jpg"  width="100%">
+        </div>
+      </div>
+      <div nz-col [nzOffset]="1" [nzSpan]="7">
+          <nz-form-item>
+              <nz-form-label [nzSpan]="6" nzFor="userlName" nzRequired>姓名</nz-form-label>
+              <nz-form-control [nzSpan]="18" >
+                <input type="text" nz-input  formControlName="userName"  placeholder="姓名" tabindex="1">
+              </nz-form-control>
+          </nz-form-item>
+                
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" nzFor="tel" nzRequired>手机</nz-form-label>
+                    <nz-form-control  [nzSpan]="18" >
+                      <input nz-input type="tel" formControlName="tel" tabindex="3">
+                    </nz-form-control>
+                  </nz-form-item>
+                  <nz-form-item>
+                      <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>邮箱</nz-form-label>
+                      <nz-form-control [nzSpan]="18" >
+                        <input nz-input type="email" formControlName="email" tabindex="4">
+                      </nz-form-control>
+              </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="department" nzRequired>部门</nz-form-label>
+          <nz-form-control  [nzSpan]="18" >
+          <nz-select formControlName="department"  nzAllowClear nzPlaceHolder="请选择" tabindex="6">
+            <nz-option *ngFor="let option of departments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+          </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label  [nzSpan]="6">状态</nz-form-label>
+            <nz-form-control>
+             <nz-radio-group formControlName="state" nzName="stateradiogroup" > 
+                <label nz-radio nzValue="有效" tabindex="9">有效</label>
+                <label nz-radio nzValue="禁用" tabindex="10">禁用</label>
+              </nz-radio-group>
+            </nz-form-control>
+            </nz-form-item>
+             <nz-form-item>
+          <nz-form-control [nzOffset]="6" [nzSpan]="6">
+            <button nz-button nzType="default" type="button" (click)="onCancel()" tabindex="12"><i nz-icon type="left"></i>返回</button>
+          </nz-form-control> 
+          <nz-form-control [nzOffset]="2" [nzSpan]="6">
+            <button nz-button nzType="primary" type="submit" tabindex="11"><i nz-icon type="check"></i>确定</button>
+          </nz-form-control>
+      </nz-form-item>
+      </div>
+    </div>
+   <br> 
+  </form>
+  

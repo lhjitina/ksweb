@@ -1,6 +1,6 @@
-<form nz-form [formGroup]="userSearchFormGroup" [nzLayout]="'inline'">
+<form nz-form [formGroup]="userSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()">
   <nz-form-item>
-    <nz-form-label>用户名</nz-form-label>
+    <nz-form-label>姓名</nz-form-label>
     <nz-form-control>
         <input  type="text" nz-input formControlName="userName" style="width:120px;" placeholder="用户名">
     </nz-form-control>
@@ -33,20 +33,21 @@
   </nz-form-item>
 
   <nz-form-item>
-      <button nz-button nzType="primary" nzShape="circle" (click)="onSearch()"><i nz-icon type="search"></i></button>
-      <a [routerLink]="['/console/useradd']">
-        <button nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" (click)="onAdd()"><i nz-icon type="plus"></i></button>
+      <button type="submit" nz-button nzType="primary" nzShape="circle" ><i nz-icon type="search"></i></button>
+      <a [routerLink]="['/console/useradd']"> 
+        <button type="button" nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" ><i nz-icon type="plus"></i></button>
       </a>
   </nz-form-item>
 </form>
 
 <br>
 
-<nz-table #userTable [nzData]="users"  [nzShowSizeChanger]="true">
+<nz-table #userTable [nzData]="users"  [nzShowSizeChanger]="true"
+  [nzWidthConfig]="['60px','120px','120px','120px','220px','80px',null]">
   <thead>
     <tr>
         <th class="consoleTableHead">序号</th>
-        <th class="consoleTableHead">用户名</th>
+        <th class="consoleTableHead">姓名</th>
         <th class="consoleTableHead">所在部门</th>
         <th class="consoleTableHead">手机</th>
         <th class="consoleTableHead">邮箱</th>
@@ -58,21 +59,17 @@
   <tbody>
       <tr *ngFor="let user of userTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/console/useredit']" [queryParams]="{name: user.userName}">{{user.userName}}</a></td>
+        <td><a [routerLink]="['/console/useredit']" [queryParams]="{userId: user.userId}">{{user.userName}}</a></td>
         <td>{{user.department}}</td>
         <td>{{user.tel}}</td>
         <td>{{user.email}}</td>
         <td>{{user.state}}</td>
         <td>
-          <a [routerLink]="['/console/useredit']" [queryParams]="{name: user.userName}">
+          <a [routerLink]="['/console/useredit']" [queryParams]="{userId: user.userId}">
             <button nz-button nzType="default">修改</button>
           </a>
           <nz-divider nzType="vertical"></nz-divider>
-          <button nz-button nzType="default" (click)="onDel(user.userId)">删除</button>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a [routerLink]="['/console/user/detail']" [queryParams]="{id: user.userId}">
-            <button nz-button nzType="default" (click)="onDetail(user.userId)">详情</button>
-          </a> 
+          <button nz-button nzType="default" (click)="onResetPasswd(user.userId)">重置密码</button>
         </td>       
       </tr>
   </tbody>

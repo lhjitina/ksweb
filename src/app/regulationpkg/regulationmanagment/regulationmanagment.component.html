@@ -1,6 +1,4 @@
 
-  <div nz-row>
-    <div nz-col nzSpan="23" >
       <form nz-form [formGroup]="regulationMgtFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
         <nz-form-item>
           <nz-form-label>发文部门</nz-form-label> 
@@ -33,20 +31,18 @@
         </nz-form-item>
 
         <nz-form-item>
-          <button nz-button nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+          <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
         </nz-form-item>
-      </form>
-    </div>
-    <div nz-col nzSpan="1">
-      <button nz-button nzType="primary" nzShape="circle" style="margin-left: 5px; float: left;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
-      <input type="file" ng2FileSelect [uploader]="uploader" class="reg-upload" (change)="selectFileChange($event)" />
+
+
+      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 5px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+      <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
       <nz-modal [(nzVisible)]="isVisible" nzTitle="上传文件" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <p>{{fileName}}</p>
         <nz-progress [nzPercent]="uploadProg" nzStatus="active"></nz-progress> 
         <p>{{retInfo}}</p>
        </nz-modal>
-    </div>
-  </div>
+      </form>
 <br>  
   
   <nz-table #basicTable [nzData]="regMgts" [nzShowSizeChanger]="true">

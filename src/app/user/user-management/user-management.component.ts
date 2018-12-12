@@ -41,15 +41,18 @@ export class UserManagementComponent implements OnInit {
     })
   }
 
-  onAdd(): void {
+  onResetPasswd(id: number){
+    
+  }
 
+  onDel(id: number){
+    
   }
 }
 
 export class User{
   public userId: number;
   public userName: string;
-  public realName: string;
   public department: string;
   public tel: string;
   public email: string;

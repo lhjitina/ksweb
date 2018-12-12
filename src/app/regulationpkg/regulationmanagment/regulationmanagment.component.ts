@@ -69,7 +69,7 @@ export class RegulationmanagmentComponent implements OnInit {
   onUpload(): void{
 //   console.log(".......upload........");
     this.uploader.clearQueue();
-   let e = this.er.nativeElement.querySelector(".reg-upload");
+    let e = this.er.nativeElement.querySelector(".reg-upload");
     e.click();
   }
 

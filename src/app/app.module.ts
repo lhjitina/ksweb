@@ -17,15 +17,15 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 
-import { RegulationComponent } from './regulation/regulation.component';
+import { RegulationComponent } from './regulationpkg/regulation/regulation.component';
 import { MeetingsummaryComponent } from './meetingsummary/meetingsummary.component';
-import { RegulationdetailComponent } from './regulationdetail/regulationdetail.component';
+import { RegulationdetailComponent } from './regulationpkg/regulationdetail/regulationdetail.component';
 import { ConsoleComponent } from './console/console.component';
-import { RegulationmanagmentComponent } from './regulationmanagment/regulationmanagment.component';
+import { RegulationmanagmentComponent } from './regulationpkg/regulationmanagment/regulationmanagment.component';
 import { SummarymanagementComponent } from './summarymanagement/summarymanagement.component';
-import { UserManagementComponent } from './user-management/user-management.component';
-import { UserAddComponent } from './user-add/user-add.component';
-import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserManagementComponent } from './user/user-management/user-management.component';
+import { UserAddComponent } from './user/user-add/user-add.component';
+import { UserEditComponent } from './user/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [

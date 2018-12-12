@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../user-management/user-management.component';
+import * as MyValidator from '../../validators';
 
 @Component({
   selector: 'app-user-add',
@@ -17,19 +18,25 @@ export class UserAddComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private http: HttpClient) {
     this.userAddFormGroup = this.fb.group({
-      userName: [''],
-      tel: [''],
-      email:[''],
-      realName: [''],
-      department: [''],
-      state: ['有效']
+      userName: ['', [Validators.required, Validators.maxLength(16), Validators.minLength(2)]],
+      tel: ['', [Validators.required, MyValidator.mobielValidator]],
+      email:['', [Validators.required, MyValidator.emailValidator] ],
+      department: ['', [Validators.required]],
     });
    }
 
   ngOnInit() {
+    this.http.get("/api/department/list").subscribe((res: any)=>{
+      this.departments = res;
+    });
   }
 
   onSubmit(): void{
+    if (!this.userAddFormGroup.valid){
+      console.log("some value are invalid!!!")
+      return;
+    }
+
     console.log(this.userAddFormGroup.value);
     this.http.post("/api/user/add", this.userAddFormGroup.value).subscribe((res: number)=>{
       if (res == 200){
