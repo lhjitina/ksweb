@@ -26,6 +26,7 @@ import { SummarymanagementComponent } from './summarymanagement/summarymanagemen
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
     UserManagementComponent,
     UserAddComponent,
     UserEditComponent,
+    LoginComponent,
 
   ],
   imports: [

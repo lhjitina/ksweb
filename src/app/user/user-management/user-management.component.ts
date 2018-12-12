@@ -42,7 +42,9 @@ export class UserManagementComponent implements OnInit {
   }
 
   onResetPasswd(id: number){
-    
+    this.http.get("/api/user/test").subscribe((res: any)=>{
+      console.log(res);
+    })
   }
 
   onDel(id: number){

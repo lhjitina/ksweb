@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-meetingsummary',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MeetingsummaryComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+  userName: string;
 
   ngOnInit() {
   }
 
+  sessionTest(): void{
+    this.http.get("/api/session").subscribe((res: any)=>{
+      this.userName = res["username"];
+    });
+  }
 }
