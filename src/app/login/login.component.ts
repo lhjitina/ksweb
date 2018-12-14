@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  private loginFormGroup: FormGroup;
+
+  constructor(private fb: FormBuilder,
+    private router: Router) { 
+    this.loginFormGroup = this.fb.group({
+      userName: [''],
+      passwd: ['']
+    });
+  }
 
   ngOnInit() {
   }
 
+  onSubmit(): void{
+    this.router.navigateByUrl("/portal/home");
+  }
 }

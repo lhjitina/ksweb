@@ -1,3 +1,32 @@
-<p>
-  login works!
-</p>
+<div nz-row class="loginContainer" nzType="flex" nzJustify="center" nzAlign="middle">
+  <div nz-col nzSpan="5" class="loginBox">
+    <div class="loginTitle"></div>
+    <form nz-form class="loginForm" [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="userPrefix">
+            <input nz-input type="text" formControlName="userName" placeholder="用户名">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="passwdPrefix">
+            <input nz-input type="password" formControlName="passwd" placeholder="密码">
+          </nz-input-group>
+        </nz-form-control>
+        <ng-template #userPrefix><i nz-icon type="user"></i></ng-template>
+        <ng-template #passwdPrefix><i nz-icon type="lock"></i></ng-template>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzSpan="12">
+          <label nz-checkbox style="color:white;">记住我</label>
+        </nz-form-control>
+        <nz-form-control nzSpan="12">
+          <button nz-button type="submit" nzType="primary" style="width:100%;">登录</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</div>

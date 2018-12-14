@@ -27,6 +27,8 @@ import { UserManagementComponent } from './user/user-management/user-management.
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
+import { TestComponent } from './test/test.component';
+import { PortalComponent } from './portal/portal.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { LoginComponent } from './login/login.component';
     UserAddComponent,
     UserEditComponent,
     LoginComponent,
+    TestComponent,
+    PortalComponent,
 
   ],
   imports: [

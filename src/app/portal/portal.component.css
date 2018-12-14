@@ -1,0 +1,17 @@
+.logo {
+    width: 120px;
+    height: 30px;
+    margin: 15px 0 0 0;
+    float: left;
+    background-image: url("./../../assets/logo-white.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+
+}
+
+.footer{
+    background-color: #282929;
+    color: white;
+}
+
+

@@ -10,26 +10,34 @@ import { SummarymanagementComponent } from './summarymanagement/summarymanagemen
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { LoginComponent } from './login/login.component';
+import { TestComponent } from './test/test.component';
+import { PortalComponent } from './portal/portal.component';
 
 const routes: Routes = [
-  {path: "", component: HomeComponent},
-  {path: "home", component: HomeComponent,
+  {path: "", component: LoginComponent},
+  {path: "portal", component: PortalComponent,
     children:[
-      {path: "", component:RegulationComponent},
-      {path: "regulations", component:RegulationComponent},
-      {path: "meetingsummary", component: MeetingsummaryComponent},
-      {path: "regulationdetail", component: RegulationdetailComponent}
-    ]},
-  {path: "console", component: ConsoleComponent,
-    children:[
-      {path: "", component: RegulationmanagmentComponent},
-      {path: "regulation", component: RegulationmanagmentComponent},
-      {path: "regulationdetail", component: RegulationdetailComponent},
-      {path: "summary", component: SummarymanagementComponent},
-      {path: "user", component: UserManagementComponent},
-      {path: "useredit", component:UserEditComponent},
-      {path: "useradd", component: UserAddComponent}
-    ]}
+      {path: "home", component: HomeComponent,
+      children:[
+        {path: "", component:RegulationComponent},
+        {path: "regulations", component:RegulationComponent},
+        {path: "meetingsummary", component: MeetingsummaryComponent},
+        {path: "pm", component: LoginComponent},
+        {path: "regulationdetail", component: RegulationdetailComponent}
+      ]},
+
+      {path: "console", component: ConsoleComponent,
+        children:[
+          {path: "", component: RegulationmanagmentComponent},
+          {path: "regulation", component: RegulationmanagmentComponent},
+          {path: "regulationdetail", component: RegulationdetailComponent},
+          {path: "summary", component: SummarymanagementComponent},
+          {path: "user", component: UserManagementComponent},
+          {path: "useredit", component:UserEditComponent},
+          {path: "useradd", component: UserAddComponent}
+        ]},
+  ]}
 ];
 
 @NgModule({
