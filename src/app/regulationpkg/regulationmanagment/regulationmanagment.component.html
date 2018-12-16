@@ -3,7 +3,7 @@
         <nz-form-item>
           <nz-form-label>发文部门</nz-form-label> 
           <nz-select [formControlName]="'department'" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-            <nz-option *ngFor="let option of departments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+            <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
           </nz-select>
         </nz-form-item>
 
@@ -37,12 +37,7 @@
 
       <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 5px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
       <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
-      <nz-modal [(nzVisible)]="isVisible" nzTitle="上传文件" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-        <p>{{fileName}}</p>
-        <nz-progress [nzPercent]="uploadProg" nzStatus="active"></nz-progress> 
-        <p>{{retInfo}}</p>
-       </nz-modal>
-      </form>
+    </form>
 <br>  
   
   <nz-table #basicTable [nzData]="regMgts" [nzShowSizeChanger]="true">
@@ -62,14 +57,14 @@
       <tbody>
         <tr *ngFor="let data of basicTable.data index as i">
           <td>{{i+1}}</td>
-          <td><a [routerLink]="['/console/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
+          <td><a [routerLink]="['/portal/console/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
           <td>{{data.Department}}</td>
           <td>{{data.PubDate | slice: 0: 10 }}</td>
           <td>{{data.state}}</td>
           <td>{{data.operateUser}}</td>
           <td>{{data.operateTime}}</td>
           <td>
-            <a [routerLink]="['/console/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}"><button nz-button>查看</button></a>
+            <a [routerLink]="['/portal/console/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}"><button nz-button>查看</button></a>
             <nz-divider nzType="vertical"></nz-divider>
             <a >作废</a>
             <nz-divider nzType="vertical"></nz-divider>
@@ -78,6 +73,31 @@
         </tr>
       </tbody>
   </nz-table>
+
+  <nz-modal [(nzVisible)]="isUpload" nzTitle="上传规章制度" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+      <ng-template #modalContent>
+        <p>文件名称：{{uploader.queue[0]?.file?.name}}</p>
+
+        <div>
+            <label>发文部门：</label>
+            <nz-select ng-model="fileDepartment" style="width:175px; ">
+                <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+            </nz-select>
+        </div>
+        <br>
+        <div>
+            <label>发文日期：</label>
+            <nz-date-picker ng-model="fileDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
+        </div>  
+        <div>
+            <nz-progress [nzPercent]="uploadProg" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
+        </div>
+      </ng-template>
+      <ng-template #modalFooter>
+         <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+         <button nz-button type="button" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+       </ng-template>
+  
   
 
   

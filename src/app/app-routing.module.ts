@@ -16,19 +16,17 @@ import { PortalComponent } from './portal/portal.component';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
-  {path: "portal", component: PortalComponent,
-    children:[
-      {path: "home", component: HomeComponent,
-      children:[
+  {path: "login", component: LoginComponent},
+  {path: "portal", component: PortalComponent, children:[
+      {path: "home", component: HomeComponent, children:[
         {path: "", component:RegulationComponent},
-        {path: "regulations", component:RegulationComponent},
+        {path: "regulation", component:RegulationComponent},
         {path: "meetingsummary", component: MeetingsummaryComponent},
         {path: "pm", component: LoginComponent},
         {path: "regulationdetail", component: RegulationdetailComponent}
       ]},
 
-      {path: "console", component: ConsoleComponent,
-        children:[
+      {path: "console", component: ConsoleComponent, children:[
           {path: "", component: RegulationmanagmentComponent},
           {path: "regulation", component: RegulationmanagmentComponent},
           {path: "regulationdetail", component: RegulationdetailComponent},
@@ -36,7 +34,7 @@ const routes: Routes = [
           {path: "user", component: UserManagementComponent},
           {path: "useredit", component:UserEditComponent},
           {path: "useradd", component: UserAddComponent}
-        ]},
+      ]},
   ]}
 ];
 

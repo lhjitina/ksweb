@@ -2,12 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
 import { FileUploadModule } from 'ng2-file-upload';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +30,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
 import { TestComponent } from './test/test.component';
 import { PortalComponent } from './portal/portal.component';
+import { KsInterceptor } from './KsInterceptor';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { PortalComponent } from './portal/portal.component';
     ReactiveFormsModule,
     FileUploadModule
   ],
-  providers: [ { provide: NZ_I18N, useValue: zh_CN } ],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN },
+              { provide: HTTP_INTERCEPTORS, useClass: KsInterceptor, multi: true},
+              CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

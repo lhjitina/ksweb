@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-portal',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PortalComponent implements OnInit {
 
-  constructor() { }
+  userName: string = "guest";
+
+  constructor(private cookie: CookieService) { }
 
   ngOnInit() {
+    this.userName = this.cookie.get("userName");
   }
 
 }

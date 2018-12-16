@@ -15,16 +15,14 @@ import { createHostListener } from '@angular/compiler/src/core';
 })
 export class RegulationmanagmentComponent implements OnInit {
 
-  userDepartment: string = "方案策划部";
+  userManageDepartments: string[] = ["方案策划部", "市场营销部"];
   regMgts: RegulationMgt[] = [];
-  departments: string[] = [];
   states: string[] = ["有效","作废"];
   regulationMgtFormGroup: FormGroup;
   uploader:FileUploader;
-  isVisible: boolean = false;
-  retInfo: string = "";
-  uploadProg: number = 0;
-  fileName: string = '';
+  isUpload: boolean = false;
+  fileDepartment: string = "方案策划部";
+  bHasClicked: boolean = false;
 
   constructor(private http: HttpClient,
               private fb: FormBuilder,
@@ -39,56 +37,61 @@ export class RegulationmanagmentComponent implements OnInit {
   }
 
   ngOnInit() {    
-    var upUrl = "/api/regulation/upload?department=方案策划部&operateUser=lhj";
-    this.uploader = new FileUploader({url: upUrl, 
-      removeAfterUpload: true, 
-      maxFileSize: 10240000,
-      method: "POST"});
-
+    this.initUploader();
     this.http.get("/api/department/list").subscribe((res: any)=>{
-      this.departments = res;
+      this.userManageDepartments = res;
     });
 
     this.http.get("/api/regmgt/list").subscribe((res: any)=>{
       this.regMgts = res;
     });
 
-    this.uploader.onCompleteAll=()=>{
-      this.retInfo = "upload ok!";
-      this.http.get("/api/regmgt/list").subscribe((res: any)=>{
-        this.regMgts = res;
-      });     
-    }
-    this.uploader.onProgressAll=(progress:any)=>{this.uploadProg = progress;}
-  }
+
+   }
 
   onSearch(): void{
     console.log("......submit search........");
   }
 
+  initUploader(): void{
+    var upUrl = "/api/regulation/upload?department=方案策划部&operateUser=lhj";
+    this.uploader = new FileUploader({url: upUrl, 
+      removeAfterUpload: true, 
+      maxFileSize: 10240000,
+      method: "POST"});
+
+    this.uploader.onCompleteAll=()=>{
+      this.isUpload = false;
+      this.http.get("/api/regmgt/list").subscribe((res: any)=>{
+          this.regMgts = res;
+      });     
+    }
+  }
+
   onUpload(): void{
-//   console.log(".......upload........");
+    this.initUploader();
     this.uploader.clearQueue();
     let e = this.er.nativeElement.querySelector(".reg-upload");
     e.click();
+    this.bHasClicked = false;
   }
 
   selectFileChange(event: any): void{
     if (this.uploader.queue.length>0){
-      this.fileName = this.uploader.queue[0].file.name;
-      this.isVisible = true;
-            console.log("....up loading..")
-      this.uploader.uploadAll();
-
+      this.isUpload = true;
     }
 
   }
 
-  handleCancel():void{
-    this.isVisible = false;
+  nzOnCancel():void{
+    this.isUpload = false;
+    this.uploader.cancelAll();
+    this.uploader.clearQueue(); 
   }
-  handleOk(): void{
-    this.isVisible = false;
+
+  nzOnOk(): void{
+    this.uploader.uploadAll();
+    this.bHasClicked = true;
   }
 }
 

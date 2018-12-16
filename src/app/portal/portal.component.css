@@ -1,6 +1,6 @@
 .logo {
     width: 120px;
-    height: 30px;
+    height: 100%;
     margin: 15px 0 0 0;
     float: left;
     background-image: url("./../../assets/logo-white.png");
@@ -14,4 +14,14 @@
     color: white;
 }
 
+.user{
+    width: 200px;
+    color: white;
+    float: right;
+    text-align: right;
+}
 
+.menu{
+    margin-top:10px; 
+
+}

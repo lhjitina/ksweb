@@ -1,14 +1,14 @@
 <nz-layout>
   <nz-header>
         <div class="logo"></div>
-        <ul nz-menu  [nzTheme]="'dark'" [nzMode]="'horizontal'" style="margin-top:10px;">
+        <ul nz-menu  [nzTheme]="'dark'" [nzMode]="'horizontal'" class="menu">
           <li nz-menu-item><a href="/portal/home">首页</a></li>
           <li nz-menu-item><a href="/portal/console">控制台</a></li>
-          <li nz-menu-item>nav 3</li>
+          <li nz-menu-item style="float:right"><i nz-icon type="user"></i>{{userName}}</li>
         </ul>
   </nz-header>  
-  
-  <router-outlet></router-outlet>
-
+  <nz-layout style="min-height:700px;">
+    <router-outlet></router-outlet>
+  </nz-layout>  
   <nz-footer class="footer" >Footer</nz-footer>  
 </nz-layout>
