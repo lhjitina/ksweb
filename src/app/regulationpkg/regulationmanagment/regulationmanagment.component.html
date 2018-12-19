@@ -85,7 +85,7 @@
       <ng-template #modalContent>
         <p>文件名称：{{uploader.queue[0]?.file?.name}}</p>
 
-       <form nz-form [formGroup]="uploadFormGroup" (ngSubmit)="nzOnOk()">
+       <form nz-form [formGroup]="uploadFormGroup" >
           <nz-form-item>
             <nz-form-label>发文部门</nz-form-label>
             <nz-form-control>
@@ -110,7 +110,7 @@
       </ng-template>
       <ng-template #modalFooter>
          <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
-         <button nz-button type="button" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+         <button nz-button type="submit" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
        </ng-template>
   
   
