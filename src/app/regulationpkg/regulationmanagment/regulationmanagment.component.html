@@ -1,9 +1,9 @@
 
-      <form nz-form [formGroup]="regulationMgtFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
+      <form nz-form [formGroup]="regulationSearchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
         <nz-form-item>
           <nz-form-label>发文部门</nz-form-label> 
           <nz-select [formControlName]="'department'" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-            <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+            <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
           </nz-select>
         </nz-form-item>
 
@@ -40,7 +40,7 @@
     </form>
 <br>  
   
-  <nz-table #basicTable [nzData]="regMgts" [nzShowSizeChanger]="true">
+  <nz-table #basicTable [nzData]="regulations" [nzShowSizeChanger]="true">
       <thead>
       
         <tr>
@@ -57,14 +57,21 @@
       <tbody>
         <tr *ngFor="let data of basicTable.data index as i">
           <td>{{i+1}}</td>
-          <td><a [routerLink]="['/portal/console/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
-          <td>{{data.Department}}</td>
-          <td>{{data.PubDate | slice: 0: 10 }}</td>
+          <td><a [routerLink]="['/portal/console/regulationdetail']" 
+                 [queryParams]="{name: data.name, department: data.department, date: data.issueDate}">
+               {{data.name}}
+              </a>
+            </td>
+          <td>{{data.department}}</td>
+          <td>{{data.issueDate | slice: 0: 10 }}</td>
           <td>{{data.state}}</td>
-          <td>{{data.operateUser}}</td>
+          <td>{{data.operator}}</td>
           <td>{{data.operateTime}}</td>
           <td>
-            <a [routerLink]="['/portal/console/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}"><button nz-button>查看</button></a>
+            <a [routerLink]="['/portal/console/regulationdetail']" 
+               [queryParams]="{name: data.name, department: data.department, date: data.issueDate}">
+               <button nz-button>查看</button>
+            </a>
             <nz-divider nzType="vertical"></nz-divider>
             <a >作废</a>
             <nz-divider nzType="vertical"></nz-divider>
@@ -74,21 +81,29 @@
       </tbody>
   </nz-table>
 
-  <nz-modal [(nzVisible)]="isUpload" nzTitle="上传规章制度" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传规章制度" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
       <ng-template #modalContent>
         <p>文件名称：{{uploader.queue[0]?.file?.name}}</p>
 
-        <div>
-            <label>发文部门：</label>
-            <nz-select ng-model="fileDepartment" style="width:175px; ">
-                <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
-            </nz-select>
-        </div>
-        <br>
-        <div>
-            <label>发文日期：</label>
-            <nz-date-picker ng-model="fileDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
-        </div>  
+       <form nz-form [formGroup]="uploadFormGroup" (ngSubmit)="nzOnOk()">
+          <nz-form-item>
+            <nz-form-label>发文部门</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="department" style="width:175px; ">
+                    <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          
+          <nz-form-item>
+            <nz-form-label>发文日期</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker formControlName="issueDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+        </form>
+
         <div>
             <nz-progress [nzPercent]="uploadProg" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
         </div>

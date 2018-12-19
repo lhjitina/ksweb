@@ -27,21 +27,21 @@ export class RegulationdetailComponent implements OnInit {
   }
 
   getRouterParam(data: Params) : void{
-    this.reg.Name = data["name"];
-    this.reg.Department = data["department"];
-    this.reg.PubDate = data["date"];
+    this.reg.name = data["name"];
+    this.reg.department = data["department"];
+    this.reg.issueDate = data["date"];
 
-    this.pdfUrl = "/api/regulation/content/" + this.reg.Name;
+    this.pdfUrl = "/api/regulation/content/" + this.reg.name;
   }
 
   onSave(): void{
-    var url = "/api/regulation/content/" + this.reg.Name;
+    var url = "/api/regulation/content/" + this.reg.name;
     this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);
       a.style.display = "false";
-      a.download = this.reg.Name + ".pdf";
+      a.download = this.reg.name + ".pdf";
       a.click();
       URL.revokeObjectURL(a.href);
     })

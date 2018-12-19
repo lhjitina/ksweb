@@ -8,3 +8,9 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'oaweb';
 }
+
+
+export class Department{
+  public id: number;
+  public name: string;
+}

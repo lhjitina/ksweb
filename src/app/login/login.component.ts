@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
               private http: HttpClient,
               private cookie: CookieService) { 
     this.loginFormGroup = this.fb.group({
-      userName: [''],
+      loginName: [''],
       passwd: ['']
     });
   }
@@ -28,9 +28,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void{
+    console.log(this.loginFormGroup.value);
     this.http.post("/api/login", this.loginFormGroup.value).subscribe((res: any)=>{
-      console.log("...loing return:" + res["username"]);
-      this.cookie.set("userName", this.loginFormGroup.get("userName").value);
+      if (res == 200){
+        console.log("login ok");
+      }
+      this.cookie.set("loginName", this.loginFormGroup.get("loginName").value);
       this.router.navigateByUrl("/portal/home");
     })
   }

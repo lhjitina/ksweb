@@ -74,10 +74,13 @@ export class RegulationComponent implements OnInit {
 
 
 export class Regulation {
-  public Id: number;
-  public Name: string;
-  public Department: string;
-  public PubDate: Date;
+  public name: string;
+  public department: string;
+  public issueDate: Date;
+  public state: string;
+  public operator: string;
+  public operateTime: Date;
+  
 constructor(
    ){
 

@@ -45,17 +45,22 @@
     <tbody>
       <tr *ngFor="let data of basicTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/portal/home/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">{{data.Name}}</a></td>
-        <td>{{data.Department}}</td>
-        <td>{{data.PubDate | slice:0:10}}</td>
+        <td><a [routerLink]="['/portal/home/regulationdetail']" 
+               [queryParams]="{name: data.name, department: data.department, date: data.issueDate}">
+              {{data.name}}
+            </a>
+          </td>
+        <td>{{data.department}}</td>
+        <td>{{data.issueDate | slice:0:10}}</td>
         <td>
           
-          <a [routerLink]="['/portal/home/regulationdetail']" [queryParams]="{name: data.Name, department: data.Department, date: data.PubDate}">
+          <a [routerLink]="['/portal/home/regulationdetail']" 
+             [queryParams]="{name: data.name, department: data.department, date: data.issueDate}">
             <button nz-button nzType="primary">查看</button>
           </a>
          
           <nz-divider nzType="vertical"></nz-divider>
-          <button nz-button nzType="default" (click)="onDownload(data.Name)">下载</button>
+          <button nz-button nzType="default" (click)="onDownload(data.name)">下载</button>
         </td>
       </tr>
     </tbody>
