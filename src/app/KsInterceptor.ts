@@ -18,12 +18,11 @@ export class KsInterceptor implements HttpInterceptor {
         }),
 
         catchError((err: any)=>{
-                if (err instanceof HttpErrorResponse && err.status === 0){
-                    this.router.navigateByUrl("/login");                      }
-                else {
-                   this.router.navigateByUrl("/login");
-    
-                };
+  //              if (err instanceof HttpErrorResponse && err.status === 0){
+ //                   this.router.navigateByUrl("/login");                      }
+ //               else {
+  //                 this.router.navigateByUrl("/login");
+  //              };
                 return throwError(err);
             })
         );

@@ -3,6 +3,8 @@ import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
+import { Department } from 'src/app/app.component';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-regulation',
@@ -12,7 +14,7 @@ import * as moment from 'moment';
 export class RegulationComponent implements OnInit {
 
   public Regulations: Array<Regulation>;
-  public Departments: string[];
+  public Departments: Department[];
   public pageSize: number = 2;
   private RegSearchFormGroup: FormGroup;
 
@@ -39,6 +41,31 @@ export class RegulationComponent implements OnInit {
     })
   }
 
+  onSearch(): void{
+    var sd = this.RegSearchFormGroup.get("startDate").value;
+    var ed = this.RegSearchFormGroup.get("endDate").value;
+    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
+    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
+    console.log("search with department:");
+    console.log(this.RegSearchFormGroup.get("department").value);
+    this.http.get("/api/regulation/list", {
+      params: {
+        name: this.RegSearchFormGroup.get("fileName").value,
+        department: this.RegSearchFormGroup.get("department").value,
+        startDate: sd,
+        endDate: ed
+      }
+    }).subscribe((res: any)=>{
+      this.Regulations = res;
+    })
+  
+  }
+
+  onDepartmentSelectChange(): void {
+    if(this.RegSearchFormGroup.get("department").value == null){
+      this.RegSearchFormGroup.patchValue({department: ''});
+    } 
+  }
 
   onDownload(name: string): void{
     var url = "/api/regulation/content/" + name;
@@ -53,23 +80,6 @@ export class RegulationComponent implements OnInit {
     });
   }
 
-  onSearch(): void{
-    var sd = this.RegSearchFormGroup.get("startDate").value;
-    var ed = this.RegSearchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-    this.http.get("/api/regulation/list", {
-      params: {
-        name: this.RegSearchFormGroup.get("fileName").value,
-        department: this.RegSearchFormGroup.get("department").value,
-        startDate: sd,
-        endDate: ed
-      }
-    }).subscribe((res: any)=>{
-      this.Regulations = res;
-    })
-  
-  }
 }
 
 
