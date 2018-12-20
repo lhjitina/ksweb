@@ -3,11 +3,13 @@ import { Regulation } from './../regulation/regulation.component';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { post } from 'selenium-webdriver/http';
 import { createHostListener } from '@angular/compiler/src/core';
 import { Department } from 'src/app/app.component';
 import * as moment from 'moment';
-
+import * as globalvar from './../../globalvar';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { StringMap } from '@angular/core/src/render3/jit/compiler_facade_interface';
+import { URLSearchParams } from '@angular/http';
 
 @Component({
   selector: 'app-regulationmanagment',
@@ -21,14 +23,18 @@ export class RegulationmanagmentComponent implements OnInit {
   states: string[] = ["有效","作废"];
   regulationSearchFormGroup: FormGroup;
   uploadFormGroup: FormGroup;
+  abateFormGroup: FormGroup;
 
   uploader:FileUploader;
   bShowUplodModal: boolean = false;
   bHasClicked: boolean = false;
 
+  confirmModal: NzModalRef; 
+
   constructor(private http: HttpClient,
               private fb: FormBuilder,
-              private er: ElementRef) {
+              private er: ElementRef,
+              private modal: NzModalService) {
     this.regulationSearchFormGroup = this.fb.group({
       department: [''],
       fileName: [''],
@@ -40,6 +46,11 @@ export class RegulationmanagmentComponent implements OnInit {
     this.uploadFormGroup = this.fb.group({
       department: ['', Validators.required],
       issueDate: ['', Validators.required]
+    });
+
+    this.abateFormGroup = this.fb.group({
+      name: ['hello'],
+      state: ['作废']
     });
   }
 
@@ -121,5 +132,23 @@ export class RegulationmanagmentComponent implements OnInit {
       console.log("....upload param error.....")
     }
   }
+
+  onAbate(name: string): void{
+    this.confirmModal = this.modal.confirm({
+      nzTitle: '您确定要作废该文件吗？',
+      nzContent: name,
+      nzOnOk: () =>{
+        console.log("you are abating:"+name);
+       
+        body.append("name", "hello");
+        body.append("state", "作废");
+        this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
+          this.http.get("/api/regulation/list").subscribe((res: any)=>{
+            this.regulations = res;
+          });
+        });
+      }
+   });
+  } 
 }
 
