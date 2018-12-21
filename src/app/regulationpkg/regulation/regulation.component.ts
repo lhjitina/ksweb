@@ -16,7 +16,7 @@ export class RegulationComponent implements OnInit {
   public Regulations: Array<Regulation>;
   public Departments: Department[];
   public pageSize: number = 2;
-  private RegSearchFormGroup: FormGroup;
+  private regSearchFormGroup: FormGroup;
 
   constructor(private cdr: ChangeDetectorRef,
               private fb: FormBuilder,
@@ -25,14 +25,14 @@ export class RegulationComponent implements OnInit {
               }
 
   ngOnInit() {
-    this.RegSearchFormGroup = this.fb.group({
+    this.regSearchFormGroup = this.fb.group({
       fileName: [''],
       department: [''],
       startDate: [''],
       endDate: ['']
     });
 
-    this.http.get("/api/regulation/list").subscribe((res: any)=>{
+    this.http.get("/api/front/regulation/list").subscribe((res: any)=>{
       this.Regulations = res;
     })
 
@@ -42,16 +42,16 @@ export class RegulationComponent implements OnInit {
   }
 
   onSearch(): void{
-    var sd = this.RegSearchFormGroup.get("startDate").value;
-    var ed = this.RegSearchFormGroup.get("endDate").value;
+    var sd = this.regSearchFormGroup.get("startDate").value;
+    var ed = this.regSearchFormGroup.get("endDate").value;
     moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
     moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
     console.log("search with department:");
-    console.log(this.RegSearchFormGroup.get("department").value);
-    this.http.get("/api/regulation/list", {
+    console.log(this.regSearchFormGroup.get("department").value);
+    this.http.get("/api/front/regulation/list", {
       params: {
-        name: this.RegSearchFormGroup.get("fileName").value,
-        department: this.RegSearchFormGroup.get("department").value,
+        name: this.regSearchFormGroup.get("fileName").value,
+        department: this.regSearchFormGroup.get("department").value,
         startDate: sd,
         endDate: ed
       }
@@ -62,8 +62,8 @@ export class RegulationComponent implements OnInit {
   }
 
   onDepartmentSelectChange(): void {
-    if(this.RegSearchFormGroup.get("department").value == null){
-      this.RegSearchFormGroup.patchValue({department: ''});
+    if(this.regSearchFormGroup.get("department").value == null){
+      this.regSearchFormGroup.patchValue({department: ''});
     } 
   }
 
@@ -85,15 +85,29 @@ export class RegulationComponent implements OnInit {
 
 export class Regulation {
   public name: string;
-  public department: string;
+  public departmentName: string;
+  public departmentId: number;
   public issueDate: Date;
   public state: string;
-  public operator: string;
+  public operatorName: string;
+  public operatorId: number;
   public operateTime: Date;
   
-constructor(
-   ){
+  constructor(){
 
+  }
+
+  public static clone(c){
+    var r = new Regulation();
+    r.name = c.name;
+    r.departmentName = c.departmentName;
+    r.departmentId = c.departmentId;
+    r.issueDate = c.issueDate;
+    r.state = c.state;
+    r.operateTime = c.operateTime;
+    r.operatorId = c.operatorId;
+    r.operatorName = c.operatorName;  
+    return r;
   }
 }
 

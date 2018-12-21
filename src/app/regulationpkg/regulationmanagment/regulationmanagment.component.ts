@@ -10,6 +10,7 @@ import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { StringMap } from '@angular/core/src/render3/jit/compiler_facade_interface';
 import { URLSearchParams } from '@angular/http';
+import { copyStyles } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-regulationmanagment',
@@ -20,8 +21,8 @@ export class RegulationmanagmentComponent implements OnInit {
 
   userManageDepartments: Department[] = [];
   regulations: Regulation[] = [];
-  states: string[] = ["有效","作废"];
-  regulationSearchFormGroup: FormGroup;
+  states: string[] = globalvar.REGUSTATS;
+  regSearchFormGroup: FormGroup;
   uploadFormGroup: FormGroup;
   abateFormGroup: FormGroup;
 
@@ -35,12 +36,12 @@ export class RegulationmanagmentComponent implements OnInit {
               private fb: FormBuilder,
               private er: ElementRef,
               private modal: NzModalService) {
-    this.regulationSearchFormGroup = this.fb.group({
+    this.regSearchFormGroup = this.fb.group({
       department: [''],
       fileName: [''],
       startDate: [''],
       endDate: [''],
-      state: ['']
+      state: [globalvar.REGUSTAT_ACTIVE]
     });
 
     this.uploadFormGroup = this.fb.group({
@@ -48,44 +49,55 @@ export class RegulationmanagmentComponent implements OnInit {
       issueDate: ['', Validators.required]
     });
 
-    this.abateFormGroup = this.fb.group({
-      name: ['hello'],
-      state: ['作废']
-    });
   }
 
   ngOnInit() {    
     this.initUploader();
     this.http.get("/api/permission/department").subscribe((res: any)=>{
       this.userManageDepartments = res;
-      console.log("...........")
-      console.log(this.userManageDepartments)
-      console.log("...........")
+      if (this.userManageDepartments.length > 0){
+        this.regSearchFormGroup.patchValue({department: this.userManageDepartments[0].id});
+        this.onSearch();
+      }
     });
-
-    this.http.get("/api/regulation/list").subscribe((res: any)=>{
-      this.regulations = res;
-    });
-
-
    }
 
   onSearch(): void{
-    console.log("......submit search........");
+    var sd = this.regSearchFormGroup.get("startDate").value;
+    var ed = this.regSearchFormGroup.get("endDate").value;
+    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
+    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
+    console.log("search with department:");
+    console.log(this.regSearchFormGroup.get("department").value);
+    this.http.get("/api/console/regulation/list", {
+      params: {
+        name: this.regSearchFormGroup.get("fileName").value,
+        department: this.regSearchFormGroup.get("department").value,
+        startDate: sd,
+        endDate: ed,
+        state: this.regSearchFormGroup.get("state").value
+      }
+    }).subscribe((res: any)=>{
+      console.log("regulation management search return");
+      console.log(res);
+      if(res==null){
+        this.regulations = [];
+      }
+      else{
+        this.regulations = res;
+      }
+    })
   }
 
   initUploader(): void{
-    console.log("....upload department is:" + this.uploadFormGroup.get("department").value);
     this.uploader = new FileUploader({});
     this.uploader.onCompleteAll=()=>{
       this.bShowUplodModal = false;
       this.uploader.clearQueue();
       this.er.nativeElement.querySelector(".reg-upload").value='';
-      this.http.get("/api/regulation/list").subscribe((res: any)=>{
-          this.regulations = res;
-      });     
     }
   }
+
   setUploadParams(): void{
     var upUrl = "/api/regulation/upload?department=" + this.uploadFormGroup.get("department").value;
     var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
@@ -133,22 +145,41 @@ export class RegulationmanagmentComponent implements OnInit {
     }
   }
 
-  onAbate(name: string): void{
+  onAbate(reg: Regulation): void{
     this.confirmModal = this.modal.confirm({
       nzTitle: '您确定要作废该文件吗？',
-      nzContent: name,
+      nzContent: reg.name,
       nzOnOk: () =>{
-        console.log("you are abating:"+name);
-       
-        body.append("name", "hello");
-        body.append("state", "作废");
+        var body = Regulation.clone(reg);
+        body.state = globalvar.REGUSTAT_ABATED;
         this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
-          this.http.get("/api/regulation/list").subscribe((res: any)=>{
-            this.regulations = res;
-          });
+          this.onSearch();
+        });
+      }
+   });
+  }
+
+  onActive(reg: Regulation): void{
+    this.confirmModal = this.modal.confirm({
+      nzTitle: '您确定要生效该文件吗？',
+      nzContent: reg.name,
+      nzOnOk: () =>{
+        var body = Regulation.clone(reg);
+        body.state = globalvar.REGUSTAT_ACTIVE;
+        this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
+          this.onSearch();
         });
       }
    });
   } 
+
+  onStateSelectChange(): void {
+    console.log("state selector change")
+    if(this.regSearchFormGroup.get("state").value == null){
+      console.log("state selector change to null") 
+      this.regSearchFormGroup.patchValue({state: ''});
+    } 
+  }
+
 }
 

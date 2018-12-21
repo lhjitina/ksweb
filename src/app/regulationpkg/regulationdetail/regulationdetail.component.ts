@@ -28,7 +28,7 @@ export class RegulationdetailComponent implements OnInit {
 
   getRouterParam(data: Params) : void{
     this.reg.name = data["name"];
-    this.reg.department = data["department"];
+    this.reg.departmentName = data["department"];
     this.reg.issueDate = data["date"];
 
     this.pdfUrl = "/api/regulation/content/" + this.reg.name;

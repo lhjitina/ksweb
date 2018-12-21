@@ -17,7 +17,7 @@
     <nz-form-label>所在部门</nz-form-label>
     <nz-form-control>
         <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-         <nz-option *ngFor="let option of Departments" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+         <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
         </nz-select>
     </nz-form-control>
   </nz-form-item>
@@ -26,7 +26,7 @@
       <nz-form-label>状态</nz-form-label>
     <nz-form-control>
         <nz-select formControlName="state" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
-         <nz-option [nzValue]= "'有效'" [nzLabel]= "'有效'"></nz-option> 
+         <nz-option [nzValue]= "'启用'" [nzLabel]= "'启用'"></nz-option> 
          <nz-option [nzValue]= "'禁用'" [nzLabel]= "'禁用'"></nz-option> 
         </nz-select>
     </nz-form-control>
@@ -59,8 +59,9 @@
   <tbody>
       <tr *ngFor="let user of userTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/console/useredit']" [queryParams]="{userId: user.userId}">{{user.userName}}</a></td>
-        <td>{{user.department}}</td>
+        <td><a [routerLink]="['/console/useredit']" 
+               [queryParams]="{userId: user.userId}">{{user.name}}</a></td>
+        <td>{{user.departmentName}}</td>
         <td>{{user.tel}}</td>
         <td>{{user.email}}</td>
         <td>{{user.state}}</td>
@@ -74,8 +75,4 @@
       </tr>
   </tbody>
 </nz-table>
-
-<div class="testcss">
-  <p>hello world</p>
-</div>
 

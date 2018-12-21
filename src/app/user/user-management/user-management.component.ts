@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Department } from 'src/app/app.component';
 
 @Component({
   selector: 'app-user-management',
@@ -11,6 +12,7 @@ export class UserManagementComponent implements OnInit {
 
   userSearchFormGroup: FormGroup;
   users: User[] = [];
+  departments: Department[] = [];
 
   constructor(private fb: FormBuilder,
               private http: HttpClient) {
@@ -18,7 +20,7 @@ export class UserManagementComponent implements OnInit {
       userName: [''],
       tel: [''],
       department:[''],
-      state:['有效']
+      state:['启用']
     })
    }
 
@@ -33,7 +35,7 @@ export class UserManagementComponent implements OnInit {
       params:{
         userName: this.userSearchFormGroup.get("userName").value,
         tel: this.userSearchFormGroup.get("tel").value,
-        department: this.userSearchFormGroup.get("department").value,
+        departmentId: this.userSearchFormGroup.get("department").value,
         state: this.userSearchFormGroup.get("state").value
       }
     }).subscribe((res: any)=>{
@@ -53,12 +55,13 @@ export class UserManagementComponent implements OnInit {
 }
 
 export class User{
-  public userId: number;
-  public userName: string;
-  public department: string;
+  public id: number;
+  public name: string;
+  public departmentId: number;
+  public departmentName: string;
   public tel: string;
   public email: string;
-  public role: string;
   public state: string;
-  public priviledge: number[];
+  public registTime: Date;
+  public lastLoginTime: Date;
 }
