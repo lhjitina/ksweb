@@ -2,20 +2,23 @@
 <form nz-form [formGroup]="regSearchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
  
   <nz-form-item> 
+    <nz-form-label>名称</nz-form-label>
     <nz-form-control>
       <input  nz-input formControlName="fileName" style="width:200px;" placeholder="文件名称">
     </nz-form-control>
   </nz-form-item>
  
   <nz-form-item>
+    <nz-form-label>部门</nz-form-label>    
     <nz-form-control>
     <nz-select formControlName="department" style="width: 120px;"  placeholder="发文部门" >
-      <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
+      <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
     </nz-select>
   </nz-form-control>
   </nz-form-item>
                       
   <nz-form-item>
+    <nz-form-label>日期</nz-form-label>
     <nz-form-control>
       <nz-date-picker  nzPlaceHolder="开始日期" formControlName="startDate" [nzFormat]="'yyyy-MM-dd'" style="width:120px;"></nz-date-picker>
       <span>~</span>
@@ -24,6 +27,7 @@
   </nz-form-item>
 
   <nz-form-item>
+    <nz-form-label>状态</nz-form-label>
     <nz-form-control>
     <nz-select formControlName="state" style="width: 80px;"  nzPlaceHolder="状态"
      (ngModelChange)="onStateSelectChange()" nz-popover nzContent="状态">

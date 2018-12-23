@@ -74,7 +74,7 @@ export class RegulationComponent implements OnInit {
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);
       a.style.display = "false";
-      a.download = name + ".pdf";
+      a.download = name;
       a.click();
       URL.revokeObjectURL(a.href);
     });

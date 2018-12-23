@@ -1,0 +1,66 @@
+
+<form nz-form [formGroup]="poliSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
+    <nz-form-item>
+      <nz-form-label>文件名称</nz-form-label>
+      <nz-form-control>
+          <input  type="text" nz-input formControlName="fileName" style="width:120px;" placeholder="文件名称">
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+      <nz-form-label>发文部门</nz-form-label>
+      <nz-form-control>
+          <input nz-input type="text" formControlName="institution" style="width: 120px;" >
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+        <nz-form-label>发文日期</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker formControlName="startDate" [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
+          <span>~</span>
+          <nz-date-picker formControlName="endDate" [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-item>
+  </form>
+  
+  <hr>
+  
+  <nz-table #basicTable [nzData]="policies" [nzPageSize]="" [nzShowSizeChanger]="true"
+      [nzWidthConfig]="['120px','350px','180px','180px',null]">
+      <thead>
+        <tr>
+          <th class="theadbg">序号</th>
+          <th class="theadbg">文件名称</th>
+          <th class="theadbg">发文部门</th>
+          <th class="theadbg">发文日期</th>
+          <th class="theadbg">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data index as i">
+          <td>{{i+1}}</td>
+          <td><a [routerLink]="['/portal/home/policydetail']" 
+                 [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate}">
+                {{data.name}}
+              </a>
+            </td>
+          <td>{{data.institution}}</td>
+          <td>{{data.issueDate | slice:0:10}}</td>
+          <td>           
+            <a [routerLink]="['/portal/home/policydetail']" 
+               [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate}">
+            <button nz-button nzType="primary">查看</button>
+            </a>
+           
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="default" (click)="onDownload(data.name)">下载</button>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+  

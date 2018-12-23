@@ -1,0 +1,56 @@
+
+<form nz-form [formGroup]="sumSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
+    <nz-form-item>
+      <nz-form-label>纪要名称</nz-form-label>
+      <nz-form-control>
+          <input  type="text" nz-input formControlName="name" style="width:120px;" placeholder="文件名称">
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+        <nz-form-label>会议日期</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker formControlName="startDate" [nzSize]="size" nzPlaceHolder="开始日期"></nz-date-picker>
+          <span>~</span>
+          <nz-date-picker formControlName="endDate" [nzSize]="size" nzPlaceHolder="结束日期"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-item>
+  </form>
+  
+  <br>
+  
+  <nz-table #basicTable [nzData]="summaries" [nzPageSize]="" [nzShowSizeChanger]="true">
+      <thead>
+      
+        <tr>
+          <th class="theadbg">序号</th>
+          <th class="theadbg">纪要名称</th>
+          <th class="theadbg">会议日期</th>
+          <th class="theadbg">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data index as i">
+          <td>{{i+1}}</td>
+          <td><a [routerLink]="['/portal/home/summarydetail']" 
+                 [queryParams]="{name: data.name, date: data.meetingDate}">
+                {{data.name}}
+              </a>
+            </td>
+          <td>{{data.meetingDate | slice:0:10}}</td>
+          <td>           
+            <a [routerLink]="['/portal/home/summarydetail']" 
+               [queryParams]="{name: data.name, date: data.meetingDate}">
+              <button nz-button nzType="primary">查看</button>
+            </a>           
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="default" (click)="onDownload(data.name)">下载</button>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+  

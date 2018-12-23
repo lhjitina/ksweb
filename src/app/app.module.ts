@@ -19,11 +19,10 @@ import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 
 import { RegulationComponent } from './regulationpkg/regulation/regulation.component';
-import { MeetingsummaryComponent } from './meetingsummary/meetingsummary.component';
 import { RegulationdetailComponent } from './regulationpkg/regulationdetail/regulationdetail.component';
 import { ConsoleComponent } from './console/console.component';
 import { RegulationmanagmentComponent } from './regulationpkg/regulationmanagment/regulationmanagment.component';
-import { SummarymanagementComponent } from './summarymanagement/summarymanagement.component';
+import { SummarymanagementComponent } from './summary/summarymanagement/summarymanagement.component';
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
@@ -31,13 +30,17 @@ import { LoginComponent } from './login/login.component';
 import { TestComponent } from './test/test.component';
 import { PortalComponent } from './portal/portal.component';
 import { KsInterceptor } from './KsInterceptor';
+import { PolicyComponent } from './policy/policy/policy.component';
+import { PolicydetailComponent } from './policy/policydetail/policydetail.component';
+import { PolicymanagementComponent } from './policy/policymanagement/policymanagement.component';
+import { SummaryComponent } from './summary/summary/summary.component';
+import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     RegulationComponent,
-    MeetingsummaryComponent,
     RegulationdetailComponent,
     ConsoleComponent,
     RegulationmanagmentComponent,
@@ -48,6 +51,11 @@ import { KsInterceptor } from './KsInterceptor';
     LoginComponent,
     TestComponent,
     PortalComponent,
+    PolicyComponent,
+    PolicydetailComponent,
+    PolicymanagementComponent,
+    SummaryComponent,
+    SummarydetailComponent,
 
   ],
   imports: [

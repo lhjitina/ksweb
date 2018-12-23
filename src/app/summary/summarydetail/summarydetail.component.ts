@@ -1,19 +1,17 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Regulation } from '../regulation/regulation.component';
 import { ActivatedRoute, Params } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Summary } from '../summary/summary.component';
 
 
 @Component({
-  selector: 'app-regulationdetail',
-  templateUrl: './regulationdetail.component.html',
-  styleUrls: ['./regulationdetail.component.css']
+  selector: 'app-summarydetail',
+  templateUrl: './summarydetail.component.html',
+  styleUrls: ['./summarydetail.component.css']
 })
+export class SummarydetailComponent implements OnInit {
 
-export class RegulationdetailComponent implements OnInit {
-
-
-  private reg: Regulation = new Regulation();
+  private sum: Summary = new Summary();
   private pdfUrl: string;
 
   constructor(private routerInfo: ActivatedRoute,
@@ -27,21 +25,20 @@ export class RegulationdetailComponent implements OnInit {
   }
 
   getRouterParam(data: Params) : void{
-    this.reg.name = data["name"];
-    this.reg.departmentName = data["department"];
-    this.reg.issueDate = data["date"];
+    this.sum.name = data["name"];
+    this.sum.meetingDate = data["date"];
 
-    this.pdfUrl = "/api/regulation/content/" + this.reg.name;
+    this.pdfUrl = "/api/summary/content/" + this.sum.name;
   }
 
   onSave(): void{
-    var url = "/api/regulation/content/" + this.reg.name;
+    var url = "/api/summary/content/" + this.sum.name;
     this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);
       a.style.display = "false";
-      a.download = this.reg.name;
+      a.download = this.sum.name;
       a.click();
       URL.revokeObjectURL(a.href);
     })
@@ -54,3 +51,4 @@ export class RegulationdetailComponent implements OnInit {
       }, 2000);
   }
 }
+

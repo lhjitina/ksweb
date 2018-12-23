@@ -1,0 +1,24 @@
+<div nz-row>
+    <div nz-col nzSpan="7"><b>文件名称：</b>{{reg.name}}</div>
+    <div nz-col nzSpan="4"><b>发文部门：</b>{{reg.departmentName}}</div>
+    <div nz-col nzSpan="4"><b>发文日期：</b>{{reg.issueDate | slice:0:10}}</div>
+    <div nz-col nzSpan="3"><b>状态：</b>{{reg.state}}</div>
+    <div nz-col nzSpan="2">
+      <button nz-button nzType="default" (click)='onPrint()'>打印</button>
+    </div>
+    <div nz-col nzSpan="2">   
+      <button nz-button nzType="default" (click)="onSave()">保存</button>
+  
+    </div> 
+    <div nz-col nzSpan="2"> 
+      <button nz-button nzType="primary">返回</button>
+    </div>
+  </div>
+  
+  <hr>
+  <div style="margin-bottom: 30px;">
+    <pdf-viewer [src]="pdfUrl"  [render-text]="true"
+    style="display: block;"></pdf-viewer>
+  </div>
+  
+  

@@ -1,28 +1,24 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Regulation } from './../regulation/regulation.component';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FileUploader, FileItem } from 'ng2-file-upload';
-import { Department } from 'src/app/app.component';
+import { FileUploader } from 'ng2-file-upload';
 import * as moment from 'moment';
 import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { Policy } from '../policy/policy.component';
 
 @Component({
-  selector: 'app-regulationmanagment',
-  templateUrl: './regulationmanagment.component.html',
-  styleUrls: ['./regulationmanagment.component.css']
+  selector: 'app-policymanagement',
+  templateUrl: './policymanagement.component.html',
+  styleUrls: ['./policymanagement.component.css']
 })
-export class RegulationmanagmentComponent implements OnInit {
-
-  departments: Department[] = [];
-  regulations: Regulation[] = [];
+export class PolicymanagementComponent implements OnInit {
+  policies: Policy[] = [];
   states: string[] = globalvar.DOCSTATS;
-  regSearchFormGroup: FormGroup;
-  uploadFormGroup: FormGroup;
-  abateFormGroup: FormGroup;
-
-  uploader:FileUploader;
+  poliSearchFormGroup: FormGroup;
+  poliUploadFormGroup: FormGroup;
+  test: string = "test";
+  poliUploader:FileUploader;
   bShowUplodModal: boolean = false;
   bHasClicked: boolean = false;
 
@@ -32,71 +28,67 @@ export class RegulationmanagmentComponent implements OnInit {
               private fb: FormBuilder,
               private er: ElementRef,
               private modal: NzModalService) {
-    this.regSearchFormGroup = this.fb.group({
-      department: [''],
-      fileName: [''],
+    this.poliSearchFormGroup = this.fb.group({
+      name: [''],
+      institution: [''],
       startDate: [''],
       endDate: [''],
       state: [globalvar.DOCSTAT_ACTIVE]
     });
 
-    this.uploadFormGroup = this.fb.group({
-      department: ['', Validators.required],
+    this.poliUploadFormGroup = this.fb.group({
+      institution: ['', Validators.required],
       issueDate: ['', Validators.required]
     });
 
   }
 
   ngOnInit() {    
-    this.initUploader();
     this.onSearch();
+    this.initUploader();
    }
 
   onSearch(): void{
-    var sd = this.regSearchFormGroup.get("startDate").value;
-    var ed = this.regSearchFormGroup.get("endDate").value;
+    var sd = this.poliSearchFormGroup.get("startDate").value;
+    var ed = this.poliSearchFormGroup.get("endDate").value;
     moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
     moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-    console.log("search with department:");
-    console.log(this.regSearchFormGroup.get("department").value);
-    this.http.get("/api/console/regulation/list", {
+    console.log("get policy /api/console/policy/list");
+    this.http.get("/api/console/policy/list", {
       params: {
-        name: this.regSearchFormGroup.get("fileName").value,
-        department: this.regSearchFormGroup.get("department").value,
+        name: this.poliSearchFormGroup.get("name").value,
+        institution: this.poliSearchFormGroup.get("institution").value,
         startDate: sd,
         endDate: ed,
-        state: this.regSearchFormGroup.get("state").value
+        state: this.poliSearchFormGroup.get("state").value
       }
     }).subscribe((res: any)=>{
-      console.log("regulation management search return");
-      console.log(res);
       if(res==null){
-        this.regulations = [];
+        this.policies = [];
       }
       else{
-        this.regulations = res;
+        this.policies = res;
       }
     })
   }
 
   initUploader(): void{
-    this.uploader = new FileUploader({});
-    this.uploader.onCompleteAll=()=>{
+    this.poliUploader = new FileUploader({});
+    this.poliUploader.onCompleteAll=()=>{
       this.bShowUplodModal = false;
-      this.uploader.clearQueue();
+      this.poliUploader.clearQueue();
       this.er.nativeElement.querySelector(".reg-upload").value='';
+      this.getAll();
     }
   }
 
   setUploadParams(): void{
-    var upUrl = "/api/regulation/upload?department=" + this.uploadFormGroup.get("department").value;
-    var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
+    var upUrl = "/api/policy/upload?institution=" + this.poliUploadFormGroup.get("institution").value;
+    var issueDate = moment(this.poliUploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
     upUrl = upUrl + "&issueDate=" + issueDate;
 
-    console.log("upload url:"+upUrl);
-    this.uploader.setOptions({
+    this.poliUploader.setOptions({
       url: upUrl,
-
       removeAfterUpload: true, 
       maxFileSize: 10240000,
       method: "POST"    
@@ -104,30 +96,30 @@ export class RegulationmanagmentComponent implements OnInit {
   }
 
   onUpload(): void{
-    this.uploader.clearQueue();
+    this.poliUploader.clearQueue();
     let e = this.er.nativeElement.querySelector(".reg-upload");
     e.click();
     this.bHasClicked = false;
   }
 
   selectFileChange(event: any): void{
-    if (this.uploader.queue.length>0){
+    console.log("111111")
+    if (this.poliUploader.queue.length>0){
       this.bShowUplodModal = true;
     }
   }
 
   nzOnCancel():void{
     this.bShowUplodModal = false;
-    this.uploader.cancelAll();
-    this.uploader.clearQueue(); 
+    this.poliUploader.cancelAll();
+    this.poliUploader.clearQueue(); 
     this.er.nativeElement.querySelector(".reg-upload").value='';
   }
 
   nzOnOk(): void{
-    console.log("start upload....")
-    if (this.uploadFormGroup.valid){
+    if (this.poliUploadFormGroup.valid){
       this.setUploadParams();
-      this.uploader.uploadAll();
+      this.poliUploader.uploadAll();
       this.bHasClicked = true;
     }
     else{
@@ -135,35 +127,40 @@ export class RegulationmanagmentComponent implements OnInit {
     }
   }
 
-  onAbate(reg: Regulation): void{
+  onAbate(policy: Policy): void{
     this.confirmModal = this.modal.confirm({
       nzTitle: '您确定要作废该文件吗？',
-      nzContent: reg.name,
+      nzContent: policy.name,
       nzOnOk: () =>{
-        var body = Regulation.clone(reg);
+        var body = Policy.clone(policy);
         body.state = globalvar.DOCSTAT_ABATED;
-        this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
+        this.http.post("/api/policy/state", body).subscribe((res: any)=>{
           this.onSearch();
         });
       }
    });
   }
 
-  onActive(reg: Regulation): void{
+  onActive(policy: Policy): void{
     this.confirmModal = this.modal.confirm({
       nzTitle: '您确定要生效该文件吗？',
-      nzContent: reg.name,
+      nzContent: policy.name,
       nzOnOk: () =>{
-        var body = Regulation.clone(reg);
+        var body = Policy.clone(policy);
         body.state = globalvar.DOCSTAT_ACTIVE;
-        this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
+        this.http.post("/api/policy/state", body).subscribe((res: any)=>{
           this.onSearch();
         });
       }
    });
   } 
 
+  getAll(): void{
+    this.http.get("/api/console/policy/list").subscribe((res: any)=>{
+      this.policies = res;
+    });
+  }
 
-
+ 
 }
 
