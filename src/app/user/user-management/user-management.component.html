@@ -1,29 +1,30 @@
+<div class="pageTag">用户管理</div>
 <form nz-form [formGroup]="userSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()">
   <nz-form-item>
     <nz-form-label>姓名</nz-form-label>
     <nz-form-control>
-        <input  type="text" nz-input formControlName="userName" style="width:120px;" placeholder="姓名">
+        <input  type="text" nz-input formControlName="userName" style="width:120px;" placeholder="用户名">
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label>手机</nz-form-label>
     <nz-form-control>
-        <input  type="tel" nz-input formControlName="tel" style="width:160px;" placeholder="电话">
+        <input  type="tel" nz-input formControlName="tel" style="width:120px;" placeholder="电话">
     </nz-form-control>
   </nz-form-item>
-
+ 
   <nz-form-item>
     <nz-form-label>邮箱</nz-form-label>
     <nz-form-control>
-        <input  type="email" nz-input formControlName="email" style="width:220px;" placeholder="邮箱">
+        <input  type="email" nz-input formControlName="email" style="width:150px;" placeholder="邮箱">
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label>部门</nz-form-label>
     <nz-form-control>
-        <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="部门">
+        <nz-select formControlName="departmentId" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
          <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
         </nz-select>
     </nz-form-control>
@@ -32,7 +33,7 @@
   <nz-form-item>
       <nz-form-label>状态</nz-form-label>
     <nz-form-control>
-        <nz-select formControlName="state" style="width: 100px;"  nzAllowClear nzPlaceHolder="状态" >
+        <nz-select formControlName="state" style="width: 100px;"  nzAllowClear nzPlaceHolder="请选择" >
          <nz-option [nzValue]= "'启用'" [nzLabel]= "'启用'"></nz-option> 
          <nz-option [nzValue]= "'禁用'" [nzLabel]= "'禁用'"></nz-option> 
         </nz-select>
@@ -40,24 +41,24 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-control>
-      <button type="submit" nz-button nzType="primary" nzShape="circle" ><i nz-icon type="search"></i></button>
+      <button type="submit" nz-button nzType="primary" nzShape="circle" >
+        <i nz-icon type="search"></i></button>
       <a [routerLink]="['/portal/console/useradd']"> 
-        <button type="button" nz-button nzType="primary" nzShape="circle"  style="margin-left:5px;" ><i nz-icon type="plus"></i></button>
+        <button type="button" nz-button nzType="primary" nzShape="circle"  style="margin-left:10px;">
+          <i nz-icon type="plus"></i></button>
       </a>
-    </nz-form-control>  
   </nz-form-item>
 </form>
 
 <br>
 
 <nz-table #userTable [nzData]="users"  [nzShowSizeChanger]="true"
-  [nzWidthConfig]="['60px','120px','120px','180px','220px','120px',null]">
+  [nzWidthConfig]="['60px','120px','120px','120px','220px','80px',null]">
   <thead>
     <tr>
         <th class="consoleTableHead">序号</th>
         <th class="consoleTableHead">姓名</th>
-        <th class="consoleTableHead">所在部门</th>
+        <th class="consoleTableHead">部门</th>
         <th class="consoleTableHead">手机</th>
         <th class="consoleTableHead">邮箱</th>
         <th class="consoleTableHead">状态</th>
@@ -68,21 +69,18 @@
   <tbody>
       <tr *ngFor="let user of userTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/portal/console/useredit']" 
-               [queryParams]="{id: user.id}">{{user.name}}</a></td>
+        <td><a [routerLink]="['/console/useredit']" 
+               [queryParams]="{userId: user.userId}">{{user.name}}</a></td>
         <td>{{user.departmentName}}</td>
         <td>{{user.tel}}</td>
         <td>{{user.email}}</td>
         <td>{{user.state}}</td>
         <td>
-          <a [routerLink]="['/portal/console/useredit']" 
-             [queryParams]="{id: user.id}">
+          <a [routerLink]="['/portal/console/useredit']" [queryParams]="{id: user.id}">
             <button nz-button nzType="default">修改</button>
           </a>
           <nz-divider nzType="vertical"></nz-divider>
           <button nz-button nzType="default" (click)="onResetPasswd(user)">重置密码</button>
-          <nz-divider nzType="vertical"></nz-divider>
-          <button nz-button nzType="default" (click)="onDelete(user)">删除</button>
         </td>       
       </tr>
   </tbody>

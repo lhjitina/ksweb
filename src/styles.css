@@ -6,3 +6,15 @@
 .testcss{
     color: #f00;
 }
+
+.pageTag{
+    margin: -60px 0 30px 0;
+    background-color:white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 40px;
+    width: 150px;
+    padding-top: 8px;
+    text-align: center;
+    font-size: 1.2em;
+}

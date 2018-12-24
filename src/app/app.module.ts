@@ -35,6 +35,7 @@ import { PolicydetailComponent } from './policy/policydetail/policydetail.compon
 import { PolicymanagementComponent } from './policy/policymanagement/policymanagement.component';
 import { SummaryComponent } from './summary/summary/summary.component';
 import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { SummarydetailComponent } from './summary/summarydetail/summarydetail.co
     PolicymanagementComponent,
     SummaryComponent,
     SummarydetailComponent,
+    BreadcrumbComponent,
 
   ],
   imports: [

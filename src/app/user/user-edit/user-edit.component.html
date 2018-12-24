@@ -1,58 +1,87 @@
-
+<div class="pageTag">用户管理</div>
 <form nz-form [formGroup]="userEditFormGroup" (ngSubmit)="onSubmit()">
     <div nz-row>
-      <div nz-col [nzOffset]="1" [nzSpan]="6">
-        <div style="width: 300px;">
-          <img src="./../../../assets/timg.jpg"  width="100%">
+      <div nz-col [nzOffset]="1" [nzSpan]="5">
+        <div >
+            <img src="./../../../assets/timg.jpg"  width="100%">
         </div>
       </div>
-      <div nz-col [nzOffset]="1" [nzSpan]="6">
-          <nz-form-item>
-              <nz-form-label [nzSpan]="6" nzFor="name" nzRequired>姓名</nz-form-label>
-              <nz-form-control [nzSpan]="18" >
-                <input type="text" nz-input  formControlName="name"  tabindex="1">
-              </nz-form-control>
-          </nz-form-item>
-                
-                <nz-form-item>
-                    <nz-form-label [nzSpan]="6" nzFor="tel" nzRequired>手机</nz-form-label>
-                    <nz-form-control  [nzSpan]="18" >
-                      <input nz-input type="tel" formControlName="tel" tabindex="3">
-                    </nz-form-control>
-                  </nz-form-item>
-                  <nz-form-item>
-                      <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>邮箱</nz-form-label>
-                      <nz-form-control [nzSpan]="18" >
-                        <input nz-input type="email" formControlName="email" tabindex="4">
-                      </nz-form-control>
+      <div nz-col [nzOffset]="2" nzSpan="15">
+        <div nz-row>
+          <div nz-col  [nzSpan]="10">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="userlName" nzRequired>姓名</nz-form-label>
+                <nz-form-control [nzSpan]="18" >
+                  <input type="text" nz-input  formControlName="name"  placeholder="姓名" tabindex="1">
+                </nz-form-control>
               </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSpan]="6" nzFor="departmentId" nzRequired>部门</nz-form-label>
-          <nz-form-control  [nzSpan]="18" >
-          <nz-select formControlName="departmentId"  nzAllowClear nzPlaceHolder="请选择" tabindex="6">
-            <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
-          </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label  [nzSpan]="6">状态</nz-form-label>
-            <nz-form-control>
-             <nz-radio-group formControlName="state" nzName="stateradiogroup" > 
-                <label nz-radio nzValue="启用" tabindex="9">启用</label>
-                <label nz-radio nzValue="禁用" tabindex="10">禁用</label>
-              </nz-radio-group>
-            </nz-form-control>
-            </nz-form-item>
-             <nz-form-item>
-          <nz-form-control [nzOffset]="6" [nzSpan]="6">
-            <button nz-button nzType="default" type="button" (click)="onGoBack()" tabindex="12"><i nz-icon type="left"></i>返回</button>
-          </nz-form-control> 
-          <nz-form-control [nzOffset]="2" [nzSpan]="6">
-            <button nz-button nzType="primary" type="submit" tabindex="11"><i nz-icon type="check"></i>确定</button>
-          </nz-form-control>
-      </nz-form-item>
+                      
+              <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="tel" nzRequired>手机</nz-form-label>
+                <nz-form-control  [nzSpan]="18" >
+                  <input nz-input type="tel" formControlName="tel" tabindex="3">
+                </nz-form-control>
+              </nz-form-item>
+        
+              <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>邮箱</nz-form-label>
+                <nz-form-control [nzSpan]="18" >
+                  <input nz-input type="email" formControlName="email" tabindex="4">
+                </nz-form-control>
+              </nz-form-item>
+        
+              <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="department" nzRequired>部门</nz-form-label>
+                <nz-form-control  [nzSpan]="18" >
+                  <nz-select formControlName="departmentId"  nzAllowClear nzPlaceHolder="请选择" tabindex="6">
+                    <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                  <nz-form-label  [nzSpan]="6">状态</nz-form-label>
+                  <nz-form-control>
+                   <nz-radio-group formControlName="state" nzName="stateradiogroup" > 
+                      <label nz-radio nzValue="启用" tabindex="9">启用</label>
+                      <label nz-radio nzValue="禁用" tabindex="10">禁用</label>
+                    </nz-radio-group>
+                  </nz-form-control>
+                  </nz-form-item>
+          </div>
+        
+          <div nz-col [nzOffset]="2" [nzSpan]="10">
+              <nz-form-item>
+                <nz-form-label>用户权限</nz-form-label>
+                <nz-form-control nzOffset=2>
+                  <label nz-checkbox formControlName="perPol">行业政策管理</label>
+                </nz-form-control>
+                <nz-form-control nzOffset=2>
+                  <label nz-checkbox formControlName="perReg">规章制度管理</label>
+                </nz-form-control>
+                <nz-form-control nzOffset=2>
+                  <label nz-checkbox formControlName="perSum">会议纪要管理</label>          
+                </nz-form-control>
+                <nz-form-control nzOffset=2>
+                   <label nz-checkbox formControlName="perUsr">用户管理</label>         
+                </nz-form-control>
+              </nz-form-item>
+          </div>
+        </div>
+  
+        <div nz-row>
+          <div nz-col nzOffset="12" nzSpan="4">
+              <nz-form-control>
+                <button nz-button type="button" (click)="onGoback()">返回</button>
+              </nz-form-control>
+          </div>
+          <div nz-col nzSpan="4">
+              <nz-form-control>
+                <button nz-button type="submit" nzType="primary">确定</button>
+              </nz-form-control>
+          </div>
+        </div>
       </div>
     </div>
-
   </form>
+  
   

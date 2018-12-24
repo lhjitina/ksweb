@@ -16,17 +16,19 @@ import { PolicydetailComponent } from './policy/policydetail/policydetail.compon
 import { PolicymanagementComponent } from './policy/policymanagement/policymanagement.component';
 import { SummaryComponent } from './summary/summary/summary.component';
 import { SummarymanagementComponent } from './summary/summarymanagement/summarymanagement.component';
+import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
   {path: "login", component: LoginComponent},
-  {path: "portal", component: PortalComponent, children:[
-      {path: "home", component: HomeComponent, children:[
-        {path: "", component:RegulationComponent},
+  {path: "portal", component: PortalComponent, data: { breadcrumb: "portal"}, children:[
+      {path: "home", component: HomeComponent, data: { breadcrumb: "首页"}, children:[
+        {path: "", component:RegulationComponent, data: { breakcrumb: "规章制度"}},
         {path: "policy", component: PolicyComponent},
         {path: "policydetail", component: PolicydetailComponent},
         {path: "regulation", component:RegulationComponent},
         {path: "summary", component: SummaryComponent},
+        {path: "summary-detail", component: SummarydetailComponent},
         {path: "pm", component: LoginComponent},
         {path: "regulationdetail", component: RegulationdetailComponent}
       ]},

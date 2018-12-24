@@ -146,7 +146,7 @@ export class RegulationmanagmentComponent implements OnInit {
           this.onSearch();
         });
       }
-   });
+    });
   }
 
   onActive(reg: Regulation): void{
@@ -163,7 +163,11 @@ export class RegulationmanagmentComponent implements OnInit {
    });
   } 
 
-
+  onDepartmentSelectChange(): void {
+    if(this.regSearchFormGroup.get("department").value == null){
+      this.regSearchFormGroup.patchValue({department: ''});
+    } 
+  }
 
 }
 

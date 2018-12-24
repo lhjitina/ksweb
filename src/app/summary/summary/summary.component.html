@@ -1,9 +1,9 @@
-
+<div class="pageTag">会议纪要</div>
 <form nz-form [formGroup]="sumSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
     <nz-form-item>
       <nz-form-label>纪要名称</nz-form-label>
       <nz-form-control>
-          <input  type="text" nz-input formControlName="name" style="width:120px;" placeholder="文件名称">
+          <input  type="text" nz-input formControlName="name" style="width:200px;" placeholder="纪要名称">
       </nz-form-control>
     </nz-form-item>
   
@@ -36,14 +36,14 @@
       <tbody>
         <tr *ngFor="let data of basicTable.data index as i">
           <td>{{i+1}}</td>
-          <td><a [routerLink]="['/portal/home/summarydetail']" 
+          <td><a [routerLink]="['/portal/home/summary-detail']" 
                  [queryParams]="{name: data.name, date: data.meetingDate}">
                 {{data.name}}
               </a>
             </td>
           <td>{{data.meetingDate | slice:0:10}}</td>
           <td>           
-            <a [routerLink]="['/portal/home/summarydetail']" 
+            <a [routerLink]="['/portal/home/summary-detail']" 
                [queryParams]="{name: data.name, date: data.meetingDate}">
               <button nz-button nzType="primary">查看</button>
             </a>           

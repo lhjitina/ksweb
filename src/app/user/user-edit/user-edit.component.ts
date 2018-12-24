@@ -24,45 +24,55 @@ export class UserEditComponent implements OnInit {
               private message: NzMessageService) {
 
     this.userEditFormGroup = this.fb.group({
-      id: [''],
+      id: ['0'],
       name: [''],
       tel: [''],
       email: [''],
       departmentId: [''],
-      state: ['']
+      state: [''],
+      perPol: ['false'],
+      perReg: ['false'],
+      perSum: ['false'],
+      perUsr: ['false']
     })
   }
 
   ngOnInit() {
+    console.log("user edit")
     this.ps.getDepartmentList().subscribe((res:any)=>{
       this.departments = res;
     });
     this.rt.queryParams.subscribe((data: any)=>{
       this.userEditFormGroup.patchValue({id: data["id"]});
+      console.log("user id=" + this.userEditFormGroup.get("id").value);
       this.http.get("/api/user/detail", {
         params: {
           id: this.userEditFormGroup.get("id").value
         }
       }).subscribe((res: any)=>{
         var user: User= res;
-        console.log(user);
         this.userEditFormGroup.patchValue({id: user.id});
         this.userEditFormGroup.patchValue({name: user.name});
         this.userEditFormGroup.patchValue({tel: user.tel});
         this.userEditFormGroup.patchValue({email: user.email});
         this.userEditFormGroup.patchValue({departmentId: user.departmentId});
         this.userEditFormGroup.patchValue({state: user.state});
-        });
+        this.userEditFormGroup.patchValue({perPol: (user.perPol == 0)? false : true});
+        this.userEditFormGroup.patchValue({perReg: (user.perReg == 0)? false : true});
+        this.userEditFormGroup.patchValue({perSum: (user.perSum == 0)? false : true});
+        this.userEditFormGroup.patchValue({perUsr: (user.perUsr == 0)? false : true});
+      });
     });
   }
 
   onSubmit(): void{
     this.http.post("/api/user/update", this.userEditFormGroup.value).subscribe((res:any)=>{
       this.message.create('success', '用户信息修改成功');
-
     });
   }
-  onGoBack(): void{
+
+  onGoback(): void{
+    console.log("go back")
     this.router.navigateByUrl("/portal/console/user");
   }
 }

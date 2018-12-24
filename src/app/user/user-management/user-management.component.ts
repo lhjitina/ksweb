@@ -27,7 +27,7 @@ export class UserManagementComponent implements OnInit {
       userName: [''],
       tel: [''],
       email: [''],
-      department:[''],
+      departmentId:[''],
       state:['启用']
     })
    }
@@ -46,7 +46,8 @@ export class UserManagementComponent implements OnInit {
       params:{
         userName: this.userSearchFormGroup.get("userName").value,
         tel: this.userSearchFormGroup.get("tel").value,
-        departmentId: this.userSearchFormGroup.get("department").value,
+        departmentId: this.userSearchFormGroup.get("departmentId").value,
+        email: this.userSearchFormGroup.get("email").value,
         state: this.userSearchFormGroup.get("state").value
       }
     }).subscribe((res: any)=>{
@@ -66,6 +67,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   resetPasswd(uid: any){
+    console.log("reset passwd uid="+uid);
     this.http.get("/api/user/passwd/reset", {
       params: {
         id: uid
@@ -110,4 +112,8 @@ export class User{
   public state: string;
   public registTime: Date;
   public lastLoginTime: Date;
+  public perPol: number;
+  public perReg: number;
+  public perSum: number;
+  public perUsr: number;
 }

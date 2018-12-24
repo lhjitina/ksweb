@@ -124,5 +124,21 @@ export class SummarymanagementComponent implements OnInit {
     }
   }
 
+  onDelete(sum: Summary): void{
+    this.confirmModal = this.modal.confirm({
+      nzTitle: '您确定要删除该纪要吗？',
+      nzContent: sum.name,
+      nzOkType : 'danger',
+      nzOnOk: () =>{
+        this.http.get("/api/summary/delete", {
+          params:{
+            name: sum.name
+          }
+        }).subscribe((res: any)=>{
+          this.onSearch();
+        });
+      }
+    });    
+  }
 }
 

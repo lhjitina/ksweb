@@ -1,21 +1,15 @@
   
-<nz-layout style="padding:0 24px 24px 0; height: 100%;">
-    <nz-sider [nzWidth]="200" style="background:#fff">
-      <ul nz-menu [nzMode]="'inline'" style="height:100%">
+<nz-layout>
+    <nz-sider [nzWidth]="200" style="background:#fff; height:600px;">
+      <ul nz-menu [nzMode]="'inline'" >
         <li nz-menu-item><a href="/portal/home/policy"><i nz-icon type="database" theme="twotone"></i>行业政策</a></li>
         <li nz-menu-item><a href="/portal/home/regulation"><i nz-icon type="profile" theme="twotone"></i>规章制度</a></li>
         <li nz-menu-item><a href="/portal/home/summary"><i nz-icon type="file-pdf" theme="twotone"></i>会议纪要</a></li>
       </ul>
     </nz-sider>
 
-    <nz-layout style="margin: 0 30px 0 30px;">
-      <nz-breadcrumb style="margin:16px 0;">
-        <nz-breadcrumb-item>Home</nz-breadcrumb-item>
-        <nz-breadcrumb-item>List</nz-breadcrumb-item>
-        <nz-breadcrumb-item>App</nz-breadcrumb-item>
-      </nz-breadcrumb>
-
-      <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+    <nz-layout style="padding: 50px 30px 30px 30px;">
+      <nz-content style="background:#fff; padding: 24px; min-height: 500px;">
         <router-outlet></router-outlet>
       </nz-content>
     </nz-layout>

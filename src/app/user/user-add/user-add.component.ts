@@ -27,6 +27,10 @@ export class UserAddComponent implements OnInit {
       tel: ['', [Validators.required, MyValidator.mobielValidator]],
       email:['', [Validators.required, MyValidator.emailValidator] ],
       departmentId: ['', [Validators.required]],
+      perPol: ['false'],
+      perReg: ['false'],
+      perSum: ['false'],
+      perUsr: ['false']
     });
    }
 
@@ -48,10 +52,9 @@ export class UserAddComponent implements OnInit {
     this.http.post("/api/user/add", this.userAddFormGroup.value).subscribe((res: any)=>{
       this.rt.navigateByUrl("/portal/console/user");
     });
-
   }
 
-  onCancel(): void{
+  onGoback(): void{
     this.rt.navigateByUrl("/portal/console/user");
   }
 }
