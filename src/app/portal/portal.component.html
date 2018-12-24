@@ -4,12 +4,41 @@
         <ul nz-menu  [nzTheme]="'dark'" [nzMode]="'horizontal'" class="menu">
           <li nz-menu-item><a href="/portal/home">首页</a></li>
           <li nz-menu-item><a href="/portal/console">控制台</a></li>
-          <li nz-menu-item style="float:right"><i nz-icon type="user"></i>{{userName}}</li>
+          <li nz-submenu style="float:right;">
+            <span title><i nz-icon type="user"></i>{{user}}</span>
+            <ul>
+              <li nz-menu-item (click)="onModifyPasswd()">修改密码</li>
+            </ul>
+          </li> 
         </ul>
   </nz-header>  
   <div style="width: 100%; height:100%;">
     <router-outlet></router-outlet>
   </div>  
   <nz-footer class="footer" >Footer</nz-footer>  
-
 </nz-layout>
+
+<nz-modal [nzVisible]="bShowPasswdModal" nzTitle="修改密码" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <ng-template #modalContent>
+    <form nz-form [formGroup]="passwdFormGroup" >
+      <nz-form-item>
+        <nz-form-label nzSpan="8">原密码</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input nz-input type="password" formControlName="old" style="width:175px; ">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+      <nz-form-label nzSpan='8'>新密码</nz-form-label>
+      <nz-form-control nzSpan='16'>
+        <input nz-input type="password" formControlName="new" style="width:175px; ">
+      </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
+  <ng-template #modalFooter>
+     <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+     <button nz-button type="submit" nzType="primary" [disabled]="processing" (click)="onOk()">确定</button>
+  </ng-template>
+</nz-modal>
+
+
