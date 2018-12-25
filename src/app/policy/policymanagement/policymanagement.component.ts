@@ -90,7 +90,7 @@ export class PolicymanagementComponent implements OnInit {
     this.poliUploader.setOptions({
       url: upUrl,
       removeAfterUpload: true, 
-      maxFileSize: 10240000,
+      maxFileSize: 102400000,
       method: "POST"    
     })
   }

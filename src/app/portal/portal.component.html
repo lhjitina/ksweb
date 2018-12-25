@@ -24,14 +24,18 @@
       <nz-form-item>
         <nz-form-label nzSpan="8">原密码</nz-form-label>
         <nz-form-control nzSpan="16">
-          <input nz-input type="password" formControlName="old" style="width:175px; ">
+          <input nz-input type="password" formControlName="oldp" style="width:175px; ">
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-      <nz-form-label nzSpan='8'>新密码</nz-form-label>
-      <nz-form-control nzSpan='16'>
-        <input nz-input type="password" formControlName="new" style="width:175px; ">
-      </nz-form-control>
+      <nz-form-item formGroupName="newPasswd">
+        <nz-form-label nzSpan='8'>新密码</nz-form-label>
+        <nz-form-control nzSpan='16'>
+          <input nz-input type="password" formControlName="newp" style="width:175px; ">
+        </nz-form-control>
+        <nz-form-label nzSpan='8'>确认密码</nz-form-label>
+        <nz-form-control nzSpan='16'>
+          <input nz-input type="password" formControlName="confirm" style="width:175px; ">
+        </nz-form-control>
       </nz-form-item>
     </form>
   </ng-template>

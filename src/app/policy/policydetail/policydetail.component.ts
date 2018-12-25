@@ -11,7 +11,8 @@ import { Policy } from '../policy/policy.component';
 export class PolicydetailComponent implements OnInit {
 
   private policy: Policy = new Policy();
-  private pdfUrl: string;
+  private docUrl: string;
+  private docType: string;
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient) {
@@ -26,7 +27,15 @@ export class PolicydetailComponent implements OnInit {
     this.policy.institution = data["institution"];
     this.policy.issueDate = data["date"];
 
-    this.pdfUrl = "/api/policy/content/" + this.policy.name;
+    this.docUrl = "/api/policy/content/" + this.policy.name;
+    var dot = this.policy.name.lastIndexOf('.');
+    this.docType = this.policy.name.slice(dot+1);
+    console.log(this.docType)
+    if (this.docType === 'jpg' || this.docType === 'gif' ||
+        this.docType === 'png' || this.docType ==='jpeg' ||
+        this.docType === 'bmp'){
+          this.docType = 'img';
+        }
   }
 
   onSave(): void{
@@ -44,7 +53,7 @@ export class PolicydetailComponent implements OnInit {
   }
 
   onPrint(): void{
-    var w = window.open(this.pdfUrl);
+    var w = window.open(this.docUrl);
     setTimeout(()=>{
       w.print();
       }, 2000);

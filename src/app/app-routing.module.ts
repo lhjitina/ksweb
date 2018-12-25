@@ -17,13 +17,15 @@ import { PolicymanagementComponent } from './policy/policymanagement/policymanag
 import { SummaryComponent } from './summary/summary/summary.component';
 import { SummarymanagementComponent } from './summary/summarymanagement/summarymanagement.component';
 import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
+import { LoginGuard } from './guard/login.guard';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
   {path: "login", component: LoginComponent},
-  {path: "portal", component: PortalComponent, data: { breadcrumb: "portal"}, children:[
-      {path: "home", component: HomeComponent, data: { breadcrumb: "首页"}, children:[
-        {path: "", component:RegulationComponent, data: { breakcrumb: "规章制度"}},
+  {path: "portal", component: PortalComponent, children:[
+      {path: "", component: HomeComponent},
+      {path: "home", component: HomeComponent, children:[
+        {path: "", component:PolicyComponent},
         {path: "policy", component: PolicyComponent},
         {path: "policydetail", component: PolicydetailComponent},
         {path: "regulation", component:RegulationComponent},
@@ -44,11 +46,12 @@ const routes: Routes = [
           {path: "useredit", component: UserEditComponent},
           {path: "useradd", component: UserAddComponent}
       ]},
-  ]}
+  ], canActivate:[LoginGuard]}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [LoginGuard]
 })
 export class AppRoutingModule { }

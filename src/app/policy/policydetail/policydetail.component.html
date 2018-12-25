@@ -17,7 +17,12 @@
   </div>
   
   <hr>
-  <div style="margin-bottom: 30px;">
-    <pdf-viewer [src]="pdfUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
+  <div style="margin-bottom: 30px;" *ngIf="docType=='pdf'">
+    <pdf-viewer [src]="docUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
   </div>
+  <div>
+    <img [src]="docUrl" style="width:100%;" *ngIf="docType=='img'">
+  </div>
+
+
   

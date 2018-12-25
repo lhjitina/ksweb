@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient} from '@angular/common/http';
+import * as MyValidator from './../validators';
+
 
 @Component({
   selector: 'app-portal',
@@ -22,8 +24,11 @@ export class PortalComponent implements OnInit {
               private http: HttpClient,
               private message: NzMessageService) { 
     this.passwdFormGroup = this.fb.group({
-      old: [''],
-      new: ['']
+      oldp: [''],
+      newPasswd: this.fb.group({
+        newp: [''],
+        confirm: ['']  
+      }, {validator: MyValidator.passwdValidator})
     });
               }
 
@@ -39,13 +44,24 @@ export class PortalComponent implements OnInit {
 
   nzOnCancel(): void{
     this.bShowPasswdModal = false;
-    this.passwdFormGroup.patchValue({odl: ''});
-    this.passwdFormGroup.patchValue({new: ''});
+    this.passwdFormGroup.patchValue({odlp: ''});
+    this.passwdFormGroup.patchValue({newp: ''});
   }
 
   onOk(): void{
-    this.http.post("/api/passwd/modify", this.passwdFormGroup.value).subscribe((res: any)=>{
-      if (res == "ok"){
+    console.log(this.passwdFormGroup.value);
+    if (!this.passwdFormGroup.valid){
+      console.log("new passwd invalid");
+      return;    
+    }
+    var m = new Map().set("oldp", this.passwdFormGroup.get("oldp").value).set("newp", this.passwdFormGroup.get("newPasswd").get("newp").value);
+    console.log(".......ppp")
+    console.log(m);
+    var bodystr = this.JsonFromMap(m);
+    var body = JSON.parse(bodystr);
+    console.log(body);
+    this.http.post("/api/user/passwd/modify", body).subscribe((res: any)=>{
+      if (res == 200){
         this.message.create('success', '密码修改成功.')
         this.bShowPasswdModal = false;
       }
@@ -53,5 +69,17 @@ export class PortalComponent implements OnInit {
         this.message.create('error', '密码修改失败!');
       }
     })
+  }
+
+  JsonFromMap(m: Map<string, string>): string{
+    var str = '{';
+    m.forEach((v, k, mm)=>{
+      str += '"' + k + '":"' + v + '",'
+    })
+    if (str.length > 1){
+      str = str.slice(0, str.length - 1);
+    }
+    str += "}";
+    return str;
   }
 }
