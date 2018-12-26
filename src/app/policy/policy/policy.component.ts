@@ -11,7 +11,7 @@ import * as moment from 'moment';
 })
 export class PolicyComponent implements OnInit {
   public policies: Array<Policy>;
-  private poliSearchFormGroup: FormGroup;
+  public poliSearchFormGroup: FormGroup;
 
   constructor(private cdr: ChangeDetectorRef,
               private fb: FormBuilder,

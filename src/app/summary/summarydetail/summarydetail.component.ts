@@ -11,8 +11,8 @@ import { Summary } from '../summary/summary.component';
 })
 export class SummarydetailComponent implements OnInit {
 
-  private sum: Summary = new Summary();
-  private pdfUrl: string;
+  public sum: Summary = new Summary();
+  public pdfUrl: string;
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient

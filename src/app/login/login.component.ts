@@ -13,7 +13,7 @@ import { GlobalService } from '../global.service';
 })
 export class LoginComponent implements OnInit {
 
-  private loginFormGroup: FormGroup;
+  public loginFormGroup: FormGroup;
 
   constructor(private fb: FormBuilder,
               private router: Router,

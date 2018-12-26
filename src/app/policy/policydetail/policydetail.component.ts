@@ -10,9 +10,9 @@ import { Policy } from '../policy/policy.component';
 })
 export class PolicydetailComponent implements OnInit {
 
-  private policy: Policy = new Policy();
-  private docUrl: string;
-  private docType: string;
+  public policy: Policy = new Policy();
+  public docUrl: string;
+  public docType: string;
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient) {

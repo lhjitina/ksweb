@@ -13,8 +13,8 @@ import { HttpClient } from '@angular/common/http';
 export class RegulationdetailComponent implements OnInit {
 
 
-  private reg: Regulation = new Regulation();
-  private pdfUrl: string;
+  public reg: Regulation = new Regulation();
+  public pdfUrl: string;
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient

@@ -16,7 +16,7 @@ export class RegulationComponent implements OnInit {
   public Regulations: Array<Regulation>;
   public Departments: Department[];
   public pageSize: number = 2;
-  private regSearchFormGroup: FormGroup;
+  public regSearchFormGroup: FormGroup;
 
   constructor(private cdr: ChangeDetectorRef,
               private fb: FormBuilder,

@@ -11,7 +11,7 @@ import * as moment from 'moment';
 })
 export class SummaryComponent implements OnInit {
   public summaries: Array<Summary>;
-  private sumSearchFormGroup: FormGroup;
+  public sumSearchFormGroup: FormGroup;
 
   constructor(private cdr: ChangeDetectorRef,
               private fb: FormBuilder,
