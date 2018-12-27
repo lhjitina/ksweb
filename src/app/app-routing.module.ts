@@ -9,7 +9,6 @@ import { UserManagementComponent } from './user/user-management/user-management.
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
-import { TestComponent } from './test/test.component';
 import { PortalComponent } from './portal/portal.component';
 import { PolicyComponent } from './policy/policy/policy.component';
 import { PolicydetailComponent } from './policy/policydetail/policydetail.component';
@@ -32,7 +31,7 @@ const routes: Routes = [
         {path: "summary", component: SummaryComponent},
         {path: "summary-detail", component: SummarydetailComponent},
         {path: "pm", component: LoginComponent},
-        {path: "regulationdetail", component: RegulationdetailComponent}
+        {path: "regulationdetail", component: RegulationdetailComponent},
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
@@ -44,7 +43,7 @@ const routes: Routes = [
           {path: "summary", component: SummarymanagementComponent},
           {path: "user", component: UserManagementComponent},
           {path: "useredit", component: UserEditComponent},
-          {path: "useradd", component: UserAddComponent}
+          {path: "useradd", component: UserAddComponent},
       ]},
   ], canActivate:[LoginGuard]}
 ];

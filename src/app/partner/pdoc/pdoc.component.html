@@ -1,0 +1,55 @@
+<div class="pageTag">伙伴资料</div>
+<form nz-form [formGroup]="searchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
+    <nz-form-item>
+      <nz-form-label>文件名称</nz-form-label>
+      <nz-form-control>
+          <input  type="text" nz-input formControlName="fileName" style="width:120px;" placeholder="文件名称">
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+      <nz-form-label>合作伙伴</nz-form-label>
+      <nz-form-control>
+          <input nz-input type="text" formControlName="partner" style="width: 120px;" >
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-item>
+  </form>
+  
+  <hr>
+  
+  <nz-table #basicTable [nzData]="pdocs" [nzPageSize]="" [nzShowSizeChanger]="true"
+      [nzWidthConfig]="['120px','350px','180px', null]">
+      <thead>
+        <tr>
+          <th class="theadbg">序号</th>
+          <th class="theadbg">文件名称</th>
+          <th class="theadbg">合作伙伴</th>
+          <th class="theadbg">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data index as i">
+          <td>{{i+1}}</td>
+          <td><a [routerLink]="['/portal/home/pdocdetail']" 
+                 [queryParams]="{name: data.name, partner: data.partner}">
+                {{data.name}}
+              </a>
+            </td>
+          <td>{{data.partner}}</td>
+          <td>           
+            <a [routerLink]="['/portal/home/pdocdetail']" 
+               [queryParams]="{name: data.name, partner: data.partner}">
+            <button nz-button nzType="primary">查看</button>
+            </a>
+           
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="default" (click)="onDownload(data)">下载</button>
+          </td>
+        </tr>
+      </tbody>
+  </nz-table>
+  

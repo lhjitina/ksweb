@@ -1,0 +1,26 @@
+<div class="pageTag">伙伴资料</div>
+<div nz-row>
+    <div nz-col nzSpan="7"><b>文件名称：</b>{{pdoc.name}}</div>
+    <div nz-col nzSpan="4"><b>合作伙伴：</b>{{pdoc.partner}}</div>
+    <div nz-col nzOffset="7" nzSpan="2">
+      <button nz-button nzType="default" (click)='onPrint()'>打印</button>
+    </div>
+    <div nz-col nzSpan="2">   
+      <button nz-button nzType="default" (click)="onSave()">保存</button>
+  
+    </div> 
+    <div nz-col nzSpan="2"> 
+      <button nz-button nzType="primary">返回</button>
+    </div>
+  </div>
+  
+  <hr>
+  <div style="margin-bottom: 30px;" *ngIf="docType=='pdf'">
+    <pdf-viewer [src]="docUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
+  </div>
+  <div>
+    <img [src]="docUrl" style="width:100%;" *ngIf="docType=='img'">
+  </div>
+
+
+  
