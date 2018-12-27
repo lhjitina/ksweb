@@ -1,36 +1,21 @@
-<div class="pageTag">行业政策</div>
-<form nz-form [formGroup]="poliSearchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
+<div class="pageTag">伙伴资料</div>
+<form nz-form [formGroup]="searchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
  
     <nz-form-item> 
+      <nz-form-label>文件名称</nz-form-label>
       <nz-form-control>
         <input  nz-input formControlName="name" style="width:200px;" placeholder="文件名称">
       </nz-form-control>
     </nz-form-item>
    
     <nz-form-item>
+      <nz-form-label>合作伙伴</nz-form-label>
       <nz-form-control>
-        <input  nz-input formControlName="institution" style="width:200px;" placeholder="发文部门">
+        <input  nz-input formControlName="partner" style="width:200px;" placeholder="合作伙伴">
       </nz-form-control>
     </nz-form-item>
                         
-    <nz-form-item>
-      <nz-form-control>
-        <nz-date-picker  nzPlaceHolder="开始日期" formControlName="startDate" [nzFormat]="'yyyy-MM-dd'" style="width:120px;"></nz-date-picker>
-        <span>~</span>
-        <nz-date-picker nzPlaceHolder="结束日期" formControlName="endDate" [nzFormat]="'yyyy-MM-dd'" style="width:120px;" ></nz-date-picker>
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-      <nz-form-control>
-      <nz-select formControlName="state" style="width: 80px;"  nzPlaceHolder="状态"
-        nz-popover nzContent="状态">
-        <nz-option *ngFor="let option of states" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
-      </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
+     <nz-form-item>
       <nz-form-control>
         <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
       </nz-form-control>
@@ -39,20 +24,18 @@
     <nz-form-item>
       <nz-form-control>
         <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 5px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
-        <input type="file" ng2FileSelect [uploader]="poliUploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+        <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
       </nz-form-control>
     </nz-form-item>
 </form>
   <br>  
     
-<nz-table #basicTable [nzData]="policies" [nzShowSizeChanger]="true">
+<nz-table #basicTable [nzData]="pdocs" [nzShowSizeChanger]="true">
   <thead>
     <tr>
       <th class="theadbg">序号</th>
       <th class="theadbg">文件名称</th>
-      <th class="theadbg">发文部门</th>
-      <th class="theadbg">发文日期</th>
-      <th class="theadbg">状态</th>
+      <th class="theadbg">合作伙伴</th>
       <th class="theadbg">操作人</th>
       <th class="theadbg">操作时间</th>
       <th class="theadbg">操作</th>
@@ -61,33 +44,30 @@
   <tbody>
     <tr *ngFor="let data of basicTable.data index as i">
       <td>{{i+1}}</td>
-      <td><a [routerLink]="['/portal/console/policydetail']" 
-              [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate}">
+      <td><a [routerLink]="['/portal/console/pdocdetail']" 
+              [queryParams]="{name: data.name, partner: data.partner}">
             {{data.name}}
           </a>
         </td>
-      <td>{{data.institution}}</td>
-      <td>{{data.issueDate | slice: 0: 10 }}</td>
-      <td>{{data.state}}</td>
+      <td>{{data.partner}}</td>
       <td>{{data.operatorName}}</td>
       <td>{{data.operateTime}}</td>
       <td>
-        <a [routerLink]="['/portal/console/policydetail']" 
-            [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate}">
-            <button nz-button>查看</button>
+        <a [routerLink]="['/portal/console/pdocdetail']" 
+            [queryParams]="{name: data.name, partner: data.partner}">
+            <button nz-button type="button">查看</button>
         </a>
         <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button *ngIf="data.state == '作废'" (click)="onActive(data)">生效</button>
-        <button nz-button *ngIf="data.state == '有效'" (click)="onAbate(data)">作废</button>
-       </td>
+        <button nz-button  type="button" onDelete(data)>删除</button>
+        </td>
     </tr>
   </tbody>
 </nz-table>
   
-<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传行业政策" 
-      [nzContent]="poliContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
-  <ng-template #poliContent>
-    <form nz-form [formGroup]="poliUploadFormGroup">
+<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传合作伙伴资料" 
+      [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <ng-template #pdocContent>
+    <form nz-form [formGroup]="uploadFormGroup">
       <nz-form-item>
         <nz-form-label [nzSpan]="4">文件名称</nz-form-label>       
         <nz-form-control>
@@ -96,18 +76,12 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="4">发文部门</nz-form-label>
+        <nz-form-label [nzSpan]="4">合作伙伴</nz-form-label>
         <nz-form-control >
-          <input nz-input type="text" formControlName="institution" style="width:175px; ">
+          <input nz-input type="text" formControlName="partner" style="width:175px; ">
         </nz-form-control>
       </nz-form-item>
        
-      <nz-form-item>  
-        <nz-form-label [nzSpan]="4">发文日期</nz-form-label>
-        <nz-form-control>
-            <nz-date-picker formControlName="issueDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
-        </nz-form-control>
-      </nz-form-item>
    </form>
   </ng-template>
 

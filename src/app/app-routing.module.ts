@@ -17,6 +17,9 @@ import { SummaryComponent } from './summary/summary/summary.component';
 import { SummarymanagementComponent } from './summary/summarymanagement/summarymanagement.component';
 import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
 import { LoginGuard } from './guard/login.guard';
+import { PdocComponent } from './partner/pdoc/pdoc.component';
+import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
+import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
@@ -28,10 +31,11 @@ const routes: Routes = [
         {path: "policy", component: PolicyComponent},
         {path: "policydetail", component: PolicydetailComponent},
         {path: "regulation", component:RegulationComponent},
+        {path: "regulationdetail", component: RegulationdetailComponent},
         {path: "summary", component: SummaryComponent},
         {path: "summary-detail", component: SummarydetailComponent},
-        {path: "pm", component: LoginComponent},
-        {path: "regulationdetail", component: RegulationdetailComponent},
+        {path: "partnerdoc", component: PdocComponent},
+        {path: "pdocdetail", component:PdocdetailComponent},
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
@@ -44,6 +48,8 @@ const routes: Routes = [
           {path: "user", component: UserManagementComponent},
           {path: "useredit", component: UserEditComponent},
           {path: "useradd", component: UserAddComponent},
+          {path: "partnerdoc", component: PdocmanagementComponent},
+          {path: "pdocdetail", component: PdocdetailComponent}
       ]},
   ], canActivate:[LoginGuard]}
 ];

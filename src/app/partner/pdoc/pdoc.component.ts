@@ -22,9 +22,7 @@ export class PdocComponent implements OnInit {
   ngOnInit() {
     this.searchFormGroup = this.fb.group({
       fileName: [''],
-      institution: [''],
-      startDate: [''],
-      endDate: ['']
+      partner: [''],
     });
     this.onSearch();
   }

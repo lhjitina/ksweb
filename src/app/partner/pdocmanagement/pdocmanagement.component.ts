@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload';
@@ -26,7 +26,8 @@ export class PdocmanagementComponent implements OnInit {
 
   constructor(private http: HttpClient,
               private fb: FormBuilder,
-              private modal: NzModalService) {
+              private modal: NzModalService,
+              private er: ElementRef) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       partner: ['']
@@ -47,38 +48,32 @@ export class PdocmanagementComponent implements OnInit {
     console.log("get pdoc /api/console/pdoc/list");
     this.http.get("/api/console/pdoc/list", {
       params: {
-        name: this.poliSearchFormGroup.get("name").value,
-        institution: this.poliSearchFormGroup.get("institution").value,
-        startDate: sd,
-        endDate: ed,
-        state: this.poliSearchFormGroup.get("state").value
+        name: this.searchFormGroup.get("name").value,
+        partner: this.searchFormGroup.get("partner").value,
       }
     }).subscribe((res: any)=>{
       if(res==null){
-        this.policies = [];
+        this.pdocs = [];
       }
       else{
-        this.policies = res;
+        this.pdocs = res;
       }
     })
   }
 
   initUploader(): void{
-    this.poliUploader = new FileUploader({});
-    this.poliUploader.onCompleteAll=()=>{
+    this.uploader = new FileUploader({});
+    this.uploader.onCompleteAll=()=>{
       this.bShowUplodModal = false;
-      this.poliUploader.clearQueue();
+      this.uploader.clearQueue();
       this.er.nativeElement.querySelector(".reg-upload").value='';
-      this.getAll();
+      this.onSearch();
     }
   }
 
   setUploadParams(): void{
-    var upUrl = "/api/policy/upload?institution=" + this.poliUploadFormGroup.get("institution").value;
-    var issueDate = moment(this.poliUploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
-    upUrl = upUrl + "&issueDate=" + issueDate;
-
-    this.poliUploader.setOptions({
+    var upUrl = "/api/partner/upload?partner=" + this.uploadFormGroup.get("partner").value;
+    this.uploader.setOptions({
       url: upUrl,
       removeAfterUpload: true, 
       maxFileSize: 102400000,
@@ -87,7 +82,7 @@ export class PdocmanagementComponent implements OnInit {
   }
 
   onUpload(): void{
-    this.poliUploader.clearQueue();
+    this.uploader.clearQueue();
     let e = this.er.nativeElement.querySelector(".reg-upload");
     e.click();
     this.bHasClicked = false;
@@ -95,22 +90,22 @@ export class PdocmanagementComponent implements OnInit {
 
   selectFileChange(event: any): void{
     console.log("111111")
-    if (this.poliUploader.queue.length>0){
+    if (this.uploader.queue.length>0){
       this.bShowUplodModal = true;
     }
   }
 
   nzOnCancel():void{
     this.bShowUplodModal = false;
-    this.poliUploader.cancelAll();
-    this.poliUploader.clearQueue(); 
+    this.uploader.cancelAll();
+    this.uploader.clearQueue(); 
     this.er.nativeElement.querySelector(".reg-upload").value='';
   }
 
   nzOnOk(): void{
-    if (this.poliUploadFormGroup.valid){
+    if (this.uploadFormGroup.valid){
       this.setUploadParams();
-      this.poliUploader.uploadAll();
+      this.uploader.uploadAll();
       this.bHasClicked = true;
     }
     else{
@@ -118,40 +113,26 @@ export class PdocmanagementComponent implements OnInit {
     }
   }
 
-  onAbate(policy: Policy): void{
+  onDelete(pdoc: PartnerDoc){
     this.confirmModal = this.modal.confirm({
-      nzTitle: '您确定要作废该文件吗？',
-      nzContent: policy.name,
-      nzOnOk: () =>{
-        var body = Policy.clone(policy);
-        body.state = globalvar.DOCSTAT_ABATED;
-        this.http.post("/api/policy/state", body).subscribe((res: any)=>{
-          this.onSearch();
-        });
-      }
-   });
-  }
-
-  onActive(policy: Policy): void{
-    this.confirmModal = this.modal.confirm({
-      nzTitle: '您确定要生效该文件吗？',
-      nzContent: policy.name,
-      nzOnOk: () =>{
-        var body = Policy.clone(policy);
-        body.state = globalvar.DOCSTAT_ACTIVE;
-        this.http.post("/api/policy/state", body).subscribe((res: any)=>{
-          this.onSearch();
-        });
-      }
-   });
-  } 
-
-  getAll(): void{
-    this.http.get("/api/console/policy/list").subscribe((res: any)=>{
-      this.policies = res;
+      nzTitle: '您确定要删除该文件吗？',
+      nzContent: pdoc.name,
+      nzOnOk: () => this.deletePdoc(pdoc)
     });
+
   }
 
- 
+  deletePdoc(pdoc: PartnerDoc){
+    this.http.get("/api/console/pdoc/delete", {
+      params:{
+        name: pdoc.name,
+        partner: pdoc.partner
+      }}).subscribe((res: any)=>{
+        this.onSearch();
+      });
+    }
+  
+
 }
+
 
