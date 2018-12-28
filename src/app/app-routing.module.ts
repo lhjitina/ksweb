@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: "portal", component: PortalComponent, children:[
       {path: "", component: HomeComponent},
       {path: "home", component: HomeComponent, children:[
-        {path: "", component:PolicyComponent},
+        {path: "", component:RegulationComponent},
         {path: "policy", component: PolicyComponent},
         {path: "policydetail", component: PolicydetailComponent},
         {path: "regulation", component:RegulationComponent},
@@ -39,7 +39,7 @@ const routes: Routes = [
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
-          {path: "", component: PolicymanagementComponent},
+          {path: "", component: RegulationmanagmentComponent},
           {path: "policy", component: PolicymanagementComponent},
           {path: "policydetail", component: PolicydetailComponent},
           {path: "regulation", component: RegulationmanagmentComponent},
