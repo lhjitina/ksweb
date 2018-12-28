@@ -99,7 +99,7 @@
             <nz-form-label>发文部门</nz-form-label>
             <nz-form-control>
               <nz-select formControlName="department" style="width:175px; ">
-                    <nz-option *ngFor="let option of userManageDepartments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
+                    <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
               </nz-select>
             </nz-form-control>
           </nz-form-item>

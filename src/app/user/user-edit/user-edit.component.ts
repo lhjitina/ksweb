@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PublicService } from 'src/app/service/public.service';
 import { Department } from 'src/app/app.component';
 import { User } from '../user-management/user-management.component';
 import { NzMessageService } from 'ng-zorro-antd';
+import * as MyValidator from '../../validators';
 
 @Component({
   selector: 'app-user-edit',
@@ -25,14 +26,15 @@ export class UserEditComponent implements OnInit {
 
     this.userEditFormGroup = this.fb.group({
       id: ['0'],
-      name: [''],
-      tel: [''],
-      email: [''],
+      name: ['', [Validators.required, Validators.maxLength(16), Validators.minLength(2)]],
+      tel: ['', [Validators.required, MyValidator.mobielValidator]],
+      email:['', [Validators.required, MyValidator.emailValidator] ],      
       departmentId: [''],
       state: [''],
       perPol: ['false'],
       perReg: ['false'],
       perSum: ['false'],
+      perDoc: ['false'],
       perUsr: ['false']
     })
   }
@@ -66,6 +68,10 @@ export class UserEditComponent implements OnInit {
   }
 
   onSubmit(): void{
+    if (!this.userEditFormGroup.valid){
+      return;
+    }
+
     this.http.post("/api/user/update", this.userEditFormGroup.value).subscribe((res:any)=>{
       this.message.create('success', '用户信息修改成功');
     });

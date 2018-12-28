@@ -50,6 +50,9 @@ export class RegulationmanagmentComponent implements OnInit {
   ngOnInit() {    
     this.initUploader();
     this.onSearch();
+    this.http.get("/api/department/list").subscribe((res: any)=>{
+      this.departments = res;
+    });
    }
 
   onSearch(): void{
@@ -85,6 +88,7 @@ export class RegulationmanagmentComponent implements OnInit {
       this.bShowUplodModal = false;
       this.uploader.clearQueue();
       this.er.nativeElement.querySelector(".reg-upload").value='';
+      this.onSearch();
     }
   }
 

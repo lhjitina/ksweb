@@ -26,10 +26,11 @@ export class UserAddComponent implements OnInit {
       name: ['', [Validators.required, Validators.maxLength(16), Validators.minLength(2)]],
       tel: ['', [Validators.required, MyValidator.mobielValidator]],
       email:['', [Validators.required, MyValidator.emailValidator] ],
-      departmentId: ['', [Validators.required]],
+      departmentId: [''],
       perPol: ['false'],
       perReg: ['false'],
       perSum: ['false'],
+      perDoc: ['false'],
       perUsr: ['false']
     });
    }

@@ -1,7 +1,7 @@
 import { FormGroup, FormControl } from '@angular/forms';
 
 export function mobielValidator(control: FormControl): any{
-    var myreg = /^(((13[0~9]{1})|(15[0~9]{1})|(18[0~9]{1})|(17[0~9]{1}))+\d{8})$/;
+    var myreg = /^1[34578]\d{9}$/;
     let valid = myreg.test(control.value);
     return valid ? null : {mobile: true};
 }
