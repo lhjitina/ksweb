@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Summary } from '../summary/summary.component';
 
@@ -13,10 +13,11 @@ export class SummarydetailComponent implements OnInit {
 
   public sum: Summary = new Summary();
   public pdfUrl: string;
+  public fromUrl: string;
 
   constructor(private routerInfo: ActivatedRoute,
-              private http: HttpClient
-              ) {
+              private http: HttpClient,
+              private rt: Router ) {
 
   }
 
@@ -27,7 +28,7 @@ export class SummarydetailComponent implements OnInit {
   getRouterParam(data: Params) : void{
     this.sum.name = data["name"];
     this.sum.meetingDate = data["date"];
-
+    this.fromUrl = data["fromUrl"];
     this.pdfUrl = "/api/summary/content/" + this.sum.name;
   }
 
@@ -49,6 +50,16 @@ export class SummarydetailComponent implements OnInit {
     setTimeout(()=>{
       w.print();
       }, 2000);
+  }
+
+  onGoback(): void{
+    console.log("fromUrl="+this.fromUrl);
+    if (this.fromUrl === 'home'){
+      this.rt.navigateByUrl("/portal/home/summary");
+    } 
+    else if (this.fromUrl === 'console'){
+      this.rt.navigateByUrl("/portal/console/summary");
+    }
   }
 }
 

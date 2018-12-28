@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PartnerDoc } from './../pdoc/pdoc.component';
 
@@ -13,9 +13,11 @@ export class PdocdetailComponent implements OnInit {
   public pdoc: PartnerDoc = new PartnerDoc();
   public docUrl: string;
   public docType: string;
+  public fromUrl: string;
 
   constructor(private routerInfo: ActivatedRoute,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private rt: Router) {
   }
 
   ngOnInit() {
@@ -25,6 +27,7 @@ export class PdocdetailComponent implements OnInit {
   getRouterParam(data: Params) : void{
     this.pdoc.name = data["name"];
     this.pdoc.partner = data["partner"];
+    this.fromUrl = data["fromUrl"];
 
     this.docUrl = "/api/pdoc/content?name=" + this.pdoc.name + "&partner=" + this.pdoc.partner;
     var dot = this.pdoc.name.lastIndexOf('.');
@@ -58,5 +61,15 @@ export class PdocdetailComponent implements OnInit {
     setTimeout(()=>{
       w.print();
       }, 2000);
+  }
+
+  onGoback(): void{
+    console.log("fromUrl="+this.fromUrl);
+    if (this.fromUrl === 'home'){
+      this.rt.navigateByUrl("/portal/home/partnerdoc");
+    } 
+    else if (this.fromUrl === 'console'){
+      this.rt.navigateByUrl("/portal/console/partnerdoc");
+    }
   }
 }
