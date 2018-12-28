@@ -39,7 +39,7 @@ const routes: Routes = [
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
-          {path: "", component: RegulationmanagmentComponent},
+          {path: "", component: PolicymanagementComponent},
           {path: "policy", component: PolicymanagementComponent},
           {path: "policydetail", component: PolicydetailComponent},
           {path: "regulation", component: RegulationmanagmentComponent},

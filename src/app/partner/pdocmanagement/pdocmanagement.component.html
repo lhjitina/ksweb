@@ -58,7 +58,7 @@
             <button nz-button type="button">查看</button>
         </a>
         <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" onDelete(data)>删除</button>
+        <button nz-button  type="button" (click)="onDelete(data)">删除</button>
         </td>
     </tr>
   </tbody>
@@ -71,7 +71,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="4">文件名称</nz-form-label>       
         <nz-form-control>
-          <nz-form-text style="text-align:center;">{{poliUploader?.queue[0]?.file?.name}}</nz-form-text>
+          <nz-form-text style="text-align:center;">{{uploader?.queue[0]?.file?.name}}</nz-form-text>
         </nz-form-control>
       </nz-form-item>
 

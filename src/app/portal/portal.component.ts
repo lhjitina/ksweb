@@ -4,6 +4,7 @@ import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import * as MyValidator from './../validators';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class PortalComponent implements OnInit {
               private modal: NzModalService,
               private fb: FormBuilder,
               private http: HttpClient,
-              private message: NzMessageService) { 
+              private message: NzMessageService,
+              private rt: Router) { 
     this.passwdFormGroup = this.fb.group({
       oldp: [''],
       newPasswd: this.fb.group({
@@ -69,6 +71,15 @@ export class PortalComponent implements OnInit {
         this.message.create('error', '密码修改失败!');
       }
     })
+  }
+
+  onLogout(): void{
+    console.log("user logout");
+    this.http.get("/api/user/logout").subscribe((res: any)=>{
+      console.log("user logout from server");
+    });
+    this.cookie.deleteAll();
+    this.rt.navigateByUrl("login");
   }
 
   JsonFromMap(m: Map<string, string>): string{

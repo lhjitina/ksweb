@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookie.set("isLogin", "false");
+    this.cookie.set("loginName", '');
 
   }
 
@@ -36,6 +38,7 @@ export class LoginComponent implements OnInit {
     this.http.post("/api/login", this.loginFormGroup.value).subscribe((res: any)=>{
       if (res == 200){
         this.cookie.set("isLogin", "true");
+        this.cookie.set("loginName", this.loginFormGroup.get("loginName").value);
         this.router.navigateByUrl("/portal/home");
 
       }

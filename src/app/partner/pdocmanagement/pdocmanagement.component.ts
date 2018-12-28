@@ -56,6 +56,8 @@ export class PdocmanagementComponent implements OnInit {
         this.pdocs = [];
       }
       else{
+        console.log("get pdoc list");
+        console.log(res);
         this.pdocs = res;
       }
     })
@@ -72,7 +74,7 @@ export class PdocmanagementComponent implements OnInit {
   }
 
   setUploadParams(): void{
-    var upUrl = "/api/partner/upload?partner=" + this.uploadFormGroup.get("partner").value;
+    var upUrl = "/api/pdoc/upload?partner=" + this.uploadFormGroup.get("partner").value;
     this.uploader.setOptions({
       url: upUrl,
       removeAfterUpload: true, 

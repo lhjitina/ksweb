@@ -39,15 +39,13 @@ export class PdocComponent implements OnInit {
   }
 
   onDownload(pdoc: PartnerDoc): void{
-    this.http.get("/api/pdoc/content", {params:{
-      name: pdoc.name,
-      partner: pdoc.partner
-    }, observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
+    var url = "/api/pdoc/content?name=" + pdoc.name + "&partner=" + pdoc.partner;
+    this.http.get(url, {observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);
       a.style.display = "false";
-      a.download = name;
+      a.download = pdoc.name;
       a.click();
       URL.revokeObjectURL(a.href);
     });
