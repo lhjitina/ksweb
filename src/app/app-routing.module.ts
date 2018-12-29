@@ -20,6 +20,9 @@ import { LoginGuard } from './guard/login.guard';
 import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
 import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
+import { ContractComponent } from './contract/contract/contract.component';
+import { ContractmanagementComponent } from './contract/contractmanagement/contractmanagement.component';
+import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
@@ -36,6 +39,8 @@ const routes: Routes = [
         {path: "summary-detail", component: SummarydetailComponent},
         {path: "partnerdoc", component: PdocComponent},
         {path: "pdocdetail", component:PdocdetailComponent},
+        {path: "contract", component: ContractComponent},
+        {path: "contractdetail", component: ContractdetailComponent}      
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
@@ -49,7 +54,9 @@ const routes: Routes = [
           {path: "useredit", component: UserEditComponent},
           {path: "useradd", component: UserAddComponent},
           {path: "partnerdoc", component: PdocmanagementComponent},
-          {path: "pdocdetail", component: PdocdetailComponent}
+          {path: "pdocdetail", component: PdocdetailComponent},
+          {path: "contract", component: ContractmanagementComponent},
+          {path: "contractdetail", component: ContractdetailComponent}
       ]},
   ], canActivate:[LoginGuard]}
 ];

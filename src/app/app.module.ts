@@ -40,6 +40,8 @@ import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
 import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
 import { ContractComponent } from './contract/contract/contract.component';
+import { ContractmanagementComponent } from './contract/contractmanagement/contractmanagement.component';
+import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { ContractComponent } from './contract/contract/contract.component';
     PdocdetailComponent,
     PdocmanagementComponent,
     ContractComponent,
+    ContractmanagementComponent,
+    ContractdetailComponent,
 
   ],
   imports: [

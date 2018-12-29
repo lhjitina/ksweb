@@ -13,10 +13,12 @@
           </li> 
         </ul>
   </nz-header>  
-  <div style="width: 100%; height:100%;">
+  <div style="width: 100%;">
     <router-outlet></router-outlet>
   </div>  
-  <nz-footer class="footer" >Copyright © 2019 Kingsun Internet Of Things Technology Co.,Ltd. All Rights Reserved. </nz-footer>  
+  <div style="width: 100%; height:10%;">
+      <nz-footer class="footer" >Copyright © 2019 Kingsun Internet Of Things Technology Co.,Ltd. All Rights Reserved. </nz-footer>  
+  </div>
 </nz-layout>
 
 <nz-modal [nzVisible]="bShowPasswdModal" nzTitle="修改密码" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
