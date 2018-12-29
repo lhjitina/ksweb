@@ -39,6 +39,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
 import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
+import { ContractComponent } from './contract/contract/contract.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement
     PdocComponent,
     PdocdetailComponent,
     PdocmanagementComponent,
+    ContractComponent,
 
   ],
   imports: [
