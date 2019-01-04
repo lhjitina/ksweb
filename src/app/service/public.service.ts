@@ -7,9 +7,19 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PublicService {
 
+  token: string = null;
+
   constructor(private http: HttpClient) { }
 
   getDepartmentList(): Observable<any>{
     return this.http.get("/api/department/list");
+  }
+
+  public getToken(): string{
+    return this.token;
+  }
+
+  public setToken(token: string){
+    this.token = token;
   }
 }

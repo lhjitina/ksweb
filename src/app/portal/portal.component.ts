@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import * as MyValidator from './../validators';
 import { Router } from '@angular/router';
+import { PublicService } from '../service/public.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class PortalComponent implements OnInit {
               private fb: FormBuilder,
               private http: HttpClient,
               private message: NzMessageService,
-              private rt: Router) { 
+              private rt: Router,
+              private pub: PublicService) { 
     this.passwdFormGroup = this.fb.group({
       oldp: [''],
       newPasswd: this.fb.group({
@@ -35,9 +37,9 @@ export class PortalComponent implements OnInit {
               }
 
   ngOnInit() {
-    console.log("portal init")
+    this.pub.setToken(this.cookie.get("token"));
     this.user = this.cookie.get("loginName");
-    console.log("user:"+this.user)
+
   }
   onModifyPasswd(): void{
     console.log("modify passwd")
