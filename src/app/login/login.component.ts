@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { GlobalService } from '../global.service';
+import { RespData } from './../common/dto';
 
 @Component({
   selector: 'app-login',
@@ -35,16 +36,16 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void{
     console.log(this.loginFormGroup.value);
-    this.http.post("/api/login", this.loginFormGroup.value).subscribe((res: any)=>{
-      if (res == 200){
-        this.cookie.set("isLogin", "true");
-        this.cookie.set("loginName", this.loginFormGroup.get("loginName").value);
-        this.router.navigateByUrl("/portal/home");
-
-      }
-      else{
-        this.msg.create('error', '登录失败！用户名或密码错误！');
-      }
-    })
+    this.http.post("/api/login", this.loginFormGroup.value).subscribe(
+      (res: RespData)=>{
+        if (res.code == 0){
+          this.cookie.set("isLogin", "true");
+          this.cookie.set("loginName", this.loginFormGroup.get("loginName").value);
+          this.router.navigateByUrl("/portal/home");
+        }
+        else{
+          this.msg.create('error', res.message);
+        }
+      })
   }
 }

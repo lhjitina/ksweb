@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Department } from 'src/app/app.component';
-import { stringify } from '@angular/compiler/src/util';
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-regulation',
@@ -32,12 +32,14 @@ export class RegulationComponent implements OnInit {
       endDate: ['']
     });
 
+
+
     this.http.get("/api/front/regulation/list").subscribe((res: any)=>{
-      this.Regulations = res;
+      console.log(res);
     })
 
     this.http.get("/api/department/list").subscribe((res: any)=>{
-      this.Departments = res;
+      console.log(res);
     })
   }
 
