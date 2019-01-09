@@ -1,5 +1,3 @@
-import { fillProperties } from "@angular/core/src/util/property";
-import { filter } from "rxjs/operators";
 
 export class RespData{
     code: number;
@@ -16,11 +14,23 @@ export class RespPage extends RespData{
 export class PageRequest{
     num: number;
     size: number;
-    filter: any;
+    param: any;
 
-    PageRequest(){
+    constructor(){
         this.num = 1;
-        this.size = 10;
-        this.filter = null;
+        this.size = 100;
+        this.param = {};
+    }
+
+    append(key: string, value: string){
+        var str = JSON.stringify(this.param);
+        if (str.length > 2){
+            str = str.replace("}", ",");
+        }
+        else{
+            str = "{";
+        }
+        str = str + '"' + key + '":"' + value + '"}';
+        this.param = JSON.parse(str);
     }
 }

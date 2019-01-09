@@ -3,14 +3,14 @@
   <nz-form-item>
     <nz-form-label style="margin-left:1em;">名称</nz-form-label>
     <nz-form-control>
-        <input  type="text" nz-input formControlName="fileName" style="width:200px;" placeholder="文件名称">
+        <input  type="text" nz-input formControlName="name" style="width:200px;" placeholder="文件名称">
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label>部门</nz-form-label>
     <nz-form-control>
-        <nz-select formControlName="department" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" (ngModelChange)="onDepartmentSelectChange()">
+        <nz-select formControlName="departmentId" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" (ngModelChange)="onDepartmentSelectChange()">
          <nz-option *ngFor="let option of Departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
         </nz-select>
     </nz-form-control>

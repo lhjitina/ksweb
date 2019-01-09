@@ -14,7 +14,7 @@ export class RegulationdetailComponent implements OnInit {
 
 
   public reg: Regulation = new Regulation();
-  public pdfUrl: string;
+  public pdfUrl: any;
   public fromUrl: string;
 
   constructor(private routerInfo: ActivatedRoute,
@@ -32,7 +32,11 @@ export class RegulationdetailComponent implements OnInit {
     this.reg.departmentName = data["department"];
     this.reg.issueDate = data["date"];
     this.fromUrl = data["fromUrl"];
-    this.pdfUrl = "/api/regulation/content/" + this.reg.name;
+    this.pdfUrl = {
+      url: "/api/regulation/content/" + this.reg.name,
+      httpHeaders: { Authorization: 'Bearer XYZ' },
+      withCredentials: true
+    }
   }
 
   onSave(): void{
@@ -49,10 +53,18 @@ export class RegulationdetailComponent implements OnInit {
   }
 
   onPrint(): void{
-    var w = window.open(this.pdfUrl);
-    setTimeout(()=>{
-      w.print();
-      }, 2000);
+    var url = "/api/regulation/content/" + this.reg.name;
+    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
+      var a = document.createElement('a');
+      document.body.appendChild(a);
+      a.href = URL.createObjectURL(res);
+      a.style.display = "true";
+      a.download = this.reg.name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      URL.revokeObjectURL(href);
+    })    
+
   }
 
   onGoback(): void{

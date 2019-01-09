@@ -26,46 +26,50 @@ export class RegulationComponent implements OnInit {
 
   ngOnInit() {
     this.regSearchFormGroup = this.fb.group({
-      fileName: [''],
-      department: [''],
+      name: [''],
+      departmentId: [''],
       startDate: [''],
       endDate: ['']
     });
+    this.onSearch();
 
-
-
-    this.http.get("/api/front/regulation/list").subscribe((res: any)=>{
-      console.log(res);
-    })
-
-    this.http.get("/api/department/list").subscribe((res: any)=>{
-      console.log(res);
+    this.http.post("/api/department/list", new PageRequest).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+       this.Departments = res.data;       
+      }
+      else{
+        console.log(res.message);        
+      }
     })
   }
 
   onSearch(): void{
+    var page = new PageRequest();  
     var sd = this.regSearchFormGroup.get("startDate").value;
     var ed = this.regSearchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-    console.log("search with department:");
-    console.log(this.regSearchFormGroup.get("department").value);
-    this.http.get("/api/front/regulation/list", {
-      params: {
-        name: this.regSearchFormGroup.get("fileName").value,
-        department: this.regSearchFormGroup.get("department").value,
-        startDate: sd,
-        endDate: ed
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.regSearchFormGroup.get("name").value);
+    page.append("departmentId", this.regSearchFormGroup.get("departmentId").value);
+    console.log("request with")
+    console.log(page)
+    this.http.post("/api/front/regulation/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.Regulations = res.data;        
       }
-    }).subscribe((res: any)=>{
-      this.Regulations = res;
+      else{
+        console.log(res.message);
+      }
     })
-  
-  }
+   }
 
   onDepartmentSelectChange(): void {
-    if(this.regSearchFormGroup.get("department").value == null){
-      this.regSearchFormGroup.patchValue({department: ''});
+    if(this.regSearchFormGroup.get("departmentId").value == null){
+      this.regSearchFormGroup.patchValue({departmentId: ''});
     } 
   }
 
