@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { PartnerDoc } from './../pdoc/pdoc.component';
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-pdocmanagement',
@@ -45,22 +46,18 @@ export class PdocmanagementComponent implements OnInit {
    }
 
   onSearch(): void{
-    console.log("get pdoc /api/console/pdoc/list");
-    this.http.get("/api/console/pdoc/list", {
-      params: {
-        name: this.searchFormGroup.get("name").value,
-        partner: this.searchFormGroup.get("partner").value,
-      }
-    }).subscribe((res: any)=>{
-      if(res==null){
-        this.pdocs = [];
+    var page = new PageRequest();  
+    page.append("name", this.searchFormGroup.get("fileName").value);
+    page.append("partner", this.searchFormGroup.get("partner").value);
+
+    this.http.post("/api/front/pdoc/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.pdocs = res.data;
       }
       else{
-        console.log("get pdoc list");
-        console.log(res);
-        this.pdocs = res;
+        this.pdocs = [];
       }
-    })
+    }) 
   }
 
   initUploader(): void{
@@ -91,7 +88,6 @@ export class PdocmanagementComponent implements OnInit {
   }
 
   selectFileChange(event: any): void{
-    console.log("111111")
     if (this.uploader.queue.length>0){
       this.bShowUplodModal = true;
     }
@@ -125,11 +121,11 @@ export class PdocmanagementComponent implements OnInit {
   }
 
   deletePdoc(pdoc: PartnerDoc){
-    this.http.get("/api/console/pdoc/delete", {
-      params:{
-        name: pdoc.name,
-        partner: pdoc.partner
-      }}).subscribe((res: any)=>{
+    var body = {
+      name: pdoc.name,
+      partner: pdoc.partner
+    }
+    this.http.post("/api/console/pdoc/delete", body).subscribe((res: any)=>{
         this.onSearch();
       });
     }

@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormBuilder,  FormGroup, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Department } from 'src/app/app.component';
@@ -14,33 +13,36 @@ import { RespData, RespPage, PageRequest } from './../../common/dto';
 export class RegulationComponent implements OnInit {
 
   public Regulations: Array<Regulation>;
-  public Departments: Department[];
+  public departments: Department[];
   public pageSize: number = 2;
   public regSearchFormGroup: FormGroup;
 
   constructor(private cdr: ChangeDetectorRef,
               private fb: FormBuilder,
               private http: HttpClient) {
-
-              }
-
-  ngOnInit() {
     this.regSearchFormGroup = this.fb.group({
       name: [''],
       departmentId: [''],
       startDate: [''],
       endDate: ['']
     });
-    this.onSearch();
+              }
 
+  ngOnInit() {
+
+    this.onSearch();
+    this.getDepartments();
+  }
+
+  getDepartments(): void{
     this.http.post("/api/department/list", new PageRequest).subscribe((res: RespPage)=>{
       if (res.code == 0){
-       this.Departments = res.data;       
+       this.departments = res.data;       
       }
       else{
         console.log(res.message);        
       }
-    })
+    });
   }
 
   onSearch(): void{
@@ -63,6 +65,7 @@ export class RegulationComponent implements OnInit {
       }
       else{
         console.log(res.message);
+        this.Regulations = [];
       }
     })
    }

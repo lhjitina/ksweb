@@ -2,10 +2,11 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload';
-import * as globalvar from './../../globalvar';
+import * as Global from './../../globalvar';
 import * as moment from 'moment';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Contract } from '../contract/contract.component';
+import { RespPage, RespData, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-contractmanagement',
@@ -14,7 +15,7 @@ import { Contract } from '../contract/contract.component';
 })
 export class ContractmanagementComponent implements OnInit {
   contracts: Contract[] = [];
-  states: string[] = globalvar.DOCSTATS;
+  states: string[] = Global.DOCSTATS;
   searchFormGroup: FormGroup;
   uploadFormGroup: FormGroup;
 
@@ -32,7 +33,7 @@ export class ContractmanagementComponent implements OnInit {
       name: [''],
       startDate: [''],
       endDate: [''],
-      state: [globalvar.DOCSTAT_ACTIVE]
+      state: [Global.DOCSTAT_ACTIVE]
     });
 
     this.uploadFormGroup = this.fb.group({
@@ -46,24 +47,25 @@ export class ContractmanagementComponent implements OnInit {
    }
 
   onSearch(): void{
+    var page = new PageRequest();  
     var sd = this.searchFormGroup.get("startDate").value;
     var ed = this.searchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-    console.log("get contract /api/console/contract/list");
-    this.http.get("/api/console/contract/list", {
-      params: {
-        name: this.searchFormGroup.get("name").value,
-        state: this.searchFormGroup.get("state").value,
-        startDate: sd,
-        endDate: ed
-      }
-    }).subscribe((res: any)=>{
-      if(res==null){
-        this.contracts = [];
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.searchFormGroup.get("name").value);
+    page.append("state", this.searchFormGroup.get("state").value);
+
+    this.http.post("/api/console/contract/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.contracts = res.data;        
       }
       else{
-        this.contracts = res;
+        console.log(res.message);
+        this.contracts = [];
       }
     })
   }
@@ -74,7 +76,7 @@ export class ContractmanagementComponent implements OnInit {
       this.bShowUplodModal = false;
       this.uploader.clearQueue();
       this.er.nativeElement.querySelector(".reg-upload").value='';
-      this.getAll();
+      this.onSearch();
     }
   }
 
@@ -82,7 +84,7 @@ export class ContractmanagementComponent implements OnInit {
     var upUrl = "/api/contract/upload?issueDate=";
     var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
     upUrl = upUrl + issueDate;
-   this.uploader.setOptions({
+    this.uploader.setOptions({
       url: upUrl,
       removeAfterUpload: true, 
       maxFileSize: 102400000,
@@ -99,7 +101,6 @@ export class ContractmanagementComponent implements OnInit {
   }
 
   selectFileChange(event: any): void{
-    console.log("111111")
     if (this.uploader.queue.length>0){
       this.bShowUplodModal = true;
     }
@@ -126,7 +127,7 @@ export class ContractmanagementComponent implements OnInit {
       nzContent: contract.name,
       nzOnOk: () =>{
         var body = Contract.clone(contract);
-        body.state = globalvar.DOCSTAT_ABATED;
+        body.state = Global.DOCSTAT_ABATED;
         this.http.post("/api/contract/state", body).subscribe((res: any)=>{
           this.onSearch();
         });
@@ -140,7 +141,7 @@ export class ContractmanagementComponent implements OnInit {
       nzContent: contract.name,
       nzOnOk: () =>{
         var body = Contract.clone(contract);
-        body.state = globalvar.DOCSTAT_ACTIVE;
+        body.state = Global.DOCSTAT_ACTIVE;
         this.http.post("/api/contract/state", body).subscribe((res: any)=>{
           this.onSearch();
         });
@@ -148,12 +149,5 @@ export class ContractmanagementComponent implements OnInit {
    });
   } 
 
-  getAll(): void{
-    this.http.get("/api/console/contract/list").subscribe((res: any)=>{
-      this.contracts = res;
-    });
-  }
-
- 
 }
 

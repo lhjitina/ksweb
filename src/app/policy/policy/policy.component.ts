@@ -1,27 +1,27 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder,  FormGroup,  Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-policy',
   templateUrl: './policy.component.html',
   styleUrls: ['./policy.component.css']
 })
+
 export class PolicyComponent implements OnInit {
   public policies: Array<Policy>;
-  public poliSearchFormGroup: FormGroup;
+  public searchFormGroup: FormGroup;
 
-  constructor(private cdr: ChangeDetectorRef,
-              private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
               private http: HttpClient) {
 
               }
 
   ngOnInit() {
-    this.poliSearchFormGroup = this.fb.group({
-      fileName: [''],
+    this.searchFormGroup = this.fb.group({
+      name: [''],
       institution: [''],
       startDate: [''],
       endDate: ['']
@@ -30,26 +30,31 @@ export class PolicyComponent implements OnInit {
   }
 
   onSearch(): void{
-    var sd = this.poliSearchFormGroup.get("startDate").value;
-    var ed = this.poliSearchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-
-    this.http.get("/api/front/policy/list", {
-      params: {
-        name: this.poliSearchFormGroup.get("fileName").value,
-        institution: this.poliSearchFormGroup.get("institution").value,
-        startDate: sd,
-        endDate: ed
+    var page = new PageRequest();  
+    var sd = this.searchFormGroup.get("startDate").value;
+    var ed = this.searchFormGroup.get("endDate").value;
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.searchFormGroup.get("name").value);
+    page.append("institution", this.searchFormGroup.get("institution").value);
+    this.http.post("/api/front/policy/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.policies = res.data;        
       }
-    }).subscribe((res: any)=>{
-      this.policies = res;
-    }) 
+      else{
+        console.log(res.message);
+        this.policies = [];
+      }
+    })  
   }
 
   onDownload(name: string): void{
     var url = "/api/policy/content/" + name;
-    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
+    this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);

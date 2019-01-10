@@ -3,6 +3,7 @@ import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-summary',
@@ -29,25 +30,31 @@ export class SummaryComponent implements OnInit {
   }
 
   onSearch(): void{
+    var page = new PageRequest();
+
     var sd = this.sumSearchFormGroup.get("startDate").value;
     var ed = this.sumSearchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-
-    this.http.get("/api/front/summary/list", {
-      params: {
-        name: this.sumSearchFormGroup.get("name").value,
-        startDate: sd,
-        endDate: ed
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.sumSearchFormGroup.get("name").value);
+    this.http.post("/api/front/regulation/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.summaries = res.data;        
       }
-    }).subscribe((res: any)=>{
-      this.summaries = res;
-    }) 
+      else{
+        console.log(res.message);
+        this.summaries = [];
+      }
+    })
   }
 
   onDownload(name: string): void{
     var url = "/api/summary/content/" + name;
-    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
+    this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);

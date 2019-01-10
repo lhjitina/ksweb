@@ -4,14 +4,14 @@
   <nz-form-item> 
     <nz-form-label>名称</nz-form-label>
     <nz-form-control>
-      <input  nz-input formControlName="fileName" style="width:200px;" placeholder="文件名称">
+      <input  nz-input formControlName="name" style="width:200px;" placeholder="文件名称">
     </nz-form-control>
   </nz-form-item>
  
   <nz-form-item>
     <nz-form-label>部门</nz-form-label>    
     <nz-form-control>
-    <nz-select formControlName="department" style="width: 120px;"  placeholder="发文部门" >
+    <nz-select formControlName="departmentId" style="width: 120px;"  placeholder="发文部门" >
       <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
     </nz-select>
   </nz-form-control>

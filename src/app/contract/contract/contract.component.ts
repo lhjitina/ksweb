@@ -3,7 +3,7 @@ import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
-
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 @Component({
   selector: 'app-contract',
   templateUrl: './contract.component.html',
@@ -17,31 +17,36 @@ export class ContractComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef,
               private fb: FormBuilder,
               private http: HttpClient) {
-
+      this.searchFormGroup = this.fb.group({
+        name: [''],
+        startDate: [''],
+        endDate: ['']
+      });
               }
 
   ngOnInit() {
-    this.searchFormGroup = this.fb.group({
-      name: [''],
-      startDate: [''],
-      endDate: ['']
-    });
+
     this.onSearch();
   }
 
   onSearch(): void{
-    this.http.get("/api/front/contract/list", {
-      params: {
-        name: this.searchFormGroup.get("name").value,
+    var page = new PageRequest();
+    page.append("name", this.searchFormGroup.get("name").value);
+
+    this.http.post("/api/front/contract/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.contracts = res.data;
       }
-    }).subscribe((res: any)=>{
-      this.contracts = res;
+      else{
+        this.contracts = [];
+        console.log(res.message);
+      }
     }) 
   }
 
   onDownload(name: string): void{
     var url = "/api/contract/content/" + name;
-    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
+    this.http.get(url, {responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);

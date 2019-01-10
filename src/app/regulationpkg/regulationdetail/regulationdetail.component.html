@@ -17,8 +17,11 @@
 </div>
 
 <hr>
-<div style="margin-bottom: 30px;">
-  <pdf-viewer [src]="pdfUrl"  [render-text]="true"
+<div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
+  <pdf-viewer [src]="docUrl"  [render-text]="true"
   style="display: block;"></pdf-viewer>
+</div>
+<div>
+  <img id="image" [src]="docUrl" style="width:100%;" *ngIf="docType=='image/jpeg'">
 </div>
 

@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Policy } from '../policy/policy.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
+import * as Global from './../../globalvar';
 
 @Component({
   selector: 'app-policydetail',
@@ -11,55 +13,47 @@ import { Policy } from '../policy/policy.component';
 export class PolicydetailComponent implements OnInit {
 
   public policy: Policy = new Policy();
-  public docUrl: string;
+  public fromUrl: string;  
+  public docUrl: any;
   public docType: string;
-  public fromUrl: string;
+  public content: Blob;
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient,
-              private rt: Router) {
+              private rt: Router,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     this.routerInfo.queryParams.subscribe((data: Params)=>this.getRouterParam(data));
-  }
+    var url = "/api/regulation/content/" + this.policy.name;
+    this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
+      this.content = res.slice(0, res.size, this.docType);
+      this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+    })}
 
   getRouterParam(data: Params) : void{
     this.policy.name = data["name"];
     this.policy.institution = data["institution"];
     this.policy.issueDate = data["date"];
     this.fromUrl = data["fromUrl"];
-    
-    this.docUrl = "/api/policy/content/" + this.policy.name;
-    var dot = this.policy.name.lastIndexOf('.');
-    this.docType = this.policy.name.slice(dot+1);
-    console.log(this.docType)
-    if (this.docType === 'jpg' || this.docType === 'gif' ||
-        this.docType === 'png' || this.docType ==='jpeg' ||
-        this.docType === 'bmp'){
-          this.docType = 'img';
-        }
+    this.docType = Global.fileType(this.policy.name); 
   }
 
   onSave(): void{
-    var url = "/api/policy/content/" + this.policy.name;
-    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
-      var a = document.createElement('a');
-      document.body.appendChild(a);
-      a.href = URL.createObjectURL(res);
-      a.style.display = "false";
-      a.download = this.policy.name;
-      console.log("download file:" + a.download);
-      a.click();
-      URL.revokeObjectURL(a.href);
-    })
+    var a = document.createElement('a');
+    document.body.appendChild(a);
+    a.href = URL.createObjectURL(this.content);
+    a.style.display = "false";
+    a.download = this.policy.name;
+    a.click();
+    URL.revokeObjectURL(a.href);  
   }
 
   onPrint(): void{
-    var w = window.open(this.docUrl);
-    setTimeout(()=>{
-      w.print();
-      }, 2000);
+    var url = URL.createObjectURL(this.content);
+    window.open(url).print();
+    setTimeout(()=>{URL.revokeObjectURL(url)}, 2000);
   }
 
   onGoback(): void{

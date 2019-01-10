@@ -2,11 +2,11 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileUploader, FileItem } from 'ng2-file-upload';
-import { Department } from 'src/app/app.component';
 import * as moment from 'moment';
 import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Summary } from '../summary/summary.component';
+import { RespPage, RespData, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-summarymanagement',
@@ -48,23 +48,23 @@ export class SummarymanagementComponent implements OnInit {
    }
 
   onSearch(): void{
+    var page = new PageRequest();  
     var sd = this.searchFormGroup.get("startDate").value;
     var ed = this.searchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-
-    this.http.get("/api/console/summary/list", {
-      params: {
-        name: this.searchFormGroup.get("name").value,
-        startDate: sd,
-        endDate: ed,
-      }
-    }).subscribe((res: any)=>{
-      if(res==null){
-        this.summaries = [];
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.searchFormGroup.get("name").value);
+    this.http.post("/api/console/summary/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.summaries = res.data;        
       }
       else{
-        this.summaries = res;
+        console.log(res.message);
+        this.summaries = [];
       }
     })
   }

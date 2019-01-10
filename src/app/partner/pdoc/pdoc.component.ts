@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-pdoc',
@@ -28,19 +29,23 @@ export class PdocComponent implements OnInit {
   }
 
   onSearch(): void{
-    this.http.get("/api/front/pdoc/list", {
-      params: {
-        name: this.searchFormGroup.get("fileName").value,
-        partner: this.searchFormGroup.get("partner").value,
+    var page = new PageRequest();  
+    page.append("name", this.searchFormGroup.get("fileName").value);
+    page.append("partner", this.searchFormGroup.get("partner").value);
+
+    this.http.post("/api/front/pdoc/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.pdocs = res.data;
       }
-    }).subscribe((res: any)=>{
-      this.pdocs = res;
+      else{
+        this.pdocs = [];
+      }
     }) 
   }
 
   onDownload(pdoc: PartnerDoc): void{
     var url = "/api/pdoc/content?name=" + pdoc.name + "&partner=" + pdoc.partner;
-    this.http.get(url, {observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
+    this.http.get(url, {responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);

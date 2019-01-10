@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Policy } from '../policy/policy.component';
+import { RespData, RespPage, PageRequest } from './../../common/dto';
 
 @Component({
   selector: 'app-policymanagement',
@@ -15,7 +16,7 @@ import { Policy } from '../policy/policy.component';
 export class PolicymanagementComponent implements OnInit {
   policies: Policy[] = [];
   states: string[] = globalvar.DOCSTATS;
-  poliSearchFormGroup: FormGroup;
+  searchFormGroup: FormGroup;
   poliUploadFormGroup: FormGroup;
   test: string = "test";
   poliUploader:FileUploader;
@@ -28,7 +29,7 @@ export class PolicymanagementComponent implements OnInit {
               private fb: FormBuilder,
               private er: ElementRef,
               private modal: NzModalService) {
-    this.poliSearchFormGroup = this.fb.group({
+    this.searchFormGroup = this.fb.group({
       name: [''],
       institution: [''],
       startDate: [''],
@@ -49,27 +50,26 @@ export class PolicymanagementComponent implements OnInit {
    }
 
   onSearch(): void{
-    var sd = this.poliSearchFormGroup.get("startDate").value;
-    var ed = this.poliSearchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-    console.log("get policy /api/console/policy/list");
-    this.http.get("/api/console/policy/list", {
-      params: {
-        name: this.poliSearchFormGroup.get("name").value,
-        institution: this.poliSearchFormGroup.get("institution").value,
-        startDate: sd,
-        endDate: ed,
-        state: this.poliSearchFormGroup.get("state").value
-      }
-    }).subscribe((res: any)=>{
-      if(res==null){
-        this.policies = [];
+    var page = new PageRequest();  
+    var sd = this.searchFormGroup.get("startDate").value;
+    var ed = this.searchFormGroup.get("endDate").value;
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.searchFormGroup.get("name").value);
+    page.append("institution", this.searchFormGroup.get("institution").value);
+    this.http.post("/api/front/policy/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.policies = res.data;        
       }
       else{
-        this.policies = res;
+        console.log(res.message);
+        this.policies = [];
       }
-    })
+    })  
   }
 
   initUploader(): void{
@@ -103,7 +103,6 @@ export class PolicymanagementComponent implements OnInit {
   }
 
   selectFileChange(event: any): void{
-    console.log("111111")
     if (this.poliUploader.queue.length>0){
       this.bShowUplodModal = true;
     }

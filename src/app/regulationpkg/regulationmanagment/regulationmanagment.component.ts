@@ -7,7 +7,7 @@ import { Department } from 'src/app/app.component';
 import * as moment from 'moment';
 import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-
+import { RespPage, RespData, PageRequest } from './../../common/dto';
 @Component({
   selector: 'app-regulationmanagment',
   templateUrl: './regulationmanagment.component.html',
@@ -33,8 +33,8 @@ export class RegulationmanagmentComponent implements OnInit {
               private er: ElementRef,
               private modal: NzModalService) {
     this.regSearchFormGroup = this.fb.group({
-      department: [''],
-      fileName: [''],
+      departmentId: [''],
+      name: [''],
       startDate: [''],
       endDate: [''],
       state: [globalvar.DOCSTAT_ACTIVE]
@@ -50,34 +50,41 @@ export class RegulationmanagmentComponent implements OnInit {
   ngOnInit() {    
     this.initUploader();
     this.onSearch();
-    this.http.get("/api/department/list").subscribe((res: any)=>{
-      this.departments = res;
+    this.getDepartments();
+   }
+
+  getDepartments(): void{
+    this.http.post("/api/department/list", new PageRequest).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+       this.departments = res.data;       
+      }
+      else{
+        console.log(res.message);        
+      }
     });
    }
 
   onSearch(): void{
+    var page = new PageRequest();  
     var sd = this.regSearchFormGroup.get("startDate").value;
     var ed = this.regSearchFormGroup.get("endDate").value;
-    moment.isDate(sd) ? sd = moment(sd).format("YYYY-MM-DD") : sd = "";
-    moment.isDate(ed) ? ed = moment(ed).format("YYYY-MM-DD") : ed = "";
-    console.log("search with department:");
-    console.log(this.regSearchFormGroup.get("department").value);
-    this.http.get("/api/console/regulation/list", {
-      params: {
-        name: this.regSearchFormGroup.get("fileName").value,
-        department: this.regSearchFormGroup.get("department").value,
-        startDate: sd,
-        endDate: ed,
-        state: this.regSearchFormGroup.get("state").value
-      }
-    }).subscribe((res: any)=>{
-      console.log("regulation management search return");
-      console.log(res);
-      if(res==null){
-        this.regulations = [];
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
+    page.append("name", this.regSearchFormGroup.get("name").value);
+    page.append("departmentId", this.regSearchFormGroup.get("departmentId").value);
+    page.append("state", this.regSearchFormGroup.get("state").value);
+
+    this.http.post("/api/front/regulation/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.regulations = res.data;        
       }
       else{
-        this.regulations = res;
+        console.log(res.message);
+        this.regulations = [];
       }
     })
   }
@@ -100,7 +107,7 @@ export class RegulationmanagmentComponent implements OnInit {
     console.log("upload url:"+upUrl);
     this.uploader.setOptions({
       url: upUrl,
-
+      authToken: "hello",
       removeAfterUpload: true, 
       maxFileSize: 10240000,
       method: "POST"    
