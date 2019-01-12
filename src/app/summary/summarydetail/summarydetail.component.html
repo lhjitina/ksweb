@@ -15,9 +15,12 @@
   </div>
   
   <hr>
-  <div style="margin-bottom: 30px;">
-    <pdf-viewer [src]="pdfUrl"  [render-text]="true"
+  <div style="margin-bottom: 30px;" *ngIf="docType == 'application/pdf'">
+    <pdf-viewer [src]="docUrl"  [render-text]="true"
     style="display: block;"></pdf-viewer>
+  </div>
+  <div style="margin-bottom: 30px;" *ngIf="docType == 'image/jpeg'">
+    <img [src]="docUrl"   style="width:100%;">
   </div>
   
   

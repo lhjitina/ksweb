@@ -42,6 +42,8 @@ import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement
 import { ContractComponent } from './contract/contract/contract.component';
 import { ContractmanagementComponent } from './contract/contractmanagement/contractmanagement.component';
 import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
+import { InfoportComponent } from './infoport/infoport/infoport.component';
+import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     ContractComponent,
     ContractmanagementComponent,
     ContractdetailComponent,
+    InfoportComponent,
+    InfdetailComponent,
 
   ],
   imports: [

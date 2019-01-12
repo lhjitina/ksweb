@@ -86,6 +86,7 @@ export class ContractmanagementComponent implements OnInit {
     upUrl = upUrl + issueDate;
     this.uploader.setOptions({
       url: upUrl,
+      authToken: "hello",
       removeAfterUpload: true, 
       maxFileSize: 102400000,
       method: "POST"    

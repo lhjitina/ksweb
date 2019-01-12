@@ -86,6 +86,7 @@ export class SummarymanagementComponent implements OnInit {
 
     this.uploader.setOptions({
       url: upUrl,
+      authToken: "hello",
       removeAfterUpload: true, 
       maxFileSize: 10240000,
       method: "POST"    

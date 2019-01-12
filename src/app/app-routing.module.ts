@@ -23,6 +23,8 @@ import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement
 import { ContractComponent } from './contract/contract/contract.component';
 import { ContractmanagementComponent } from './contract/contractmanagement/contractmanagement.component';
 import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
+import { InfoportComponent } from './infoport/infoport/infoport.component';
+import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
@@ -30,7 +32,9 @@ const routes: Routes = [
   {path: "portal", component: PortalComponent, children:[
       {path: "", component: HomeComponent},
       {path: "home", component: HomeComponent, children:[
-        {path: "", component:RegulationComponent},
+        {path: "", component:InfoportComponent},
+        {path: "shareinfo", component: InfoportComponent},
+        {path: "infodetail", component: InfdetailComponent},
         {path: "policy", component: PolicyComponent},
         {path: "policydetail", component: PolicydetailComponent},
         {path: "regulation", component:RegulationComponent},

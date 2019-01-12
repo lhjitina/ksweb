@@ -47,7 +47,7 @@ export class PdocmanagementComponent implements OnInit {
 
   onSearch(): void{
     var page = new PageRequest();  
-    page.append("name", this.searchFormGroup.get("fileName").value);
+    page.append("name", this.searchFormGroup.get("name").value);
     page.append("partner", this.searchFormGroup.get("partner").value);
 
     this.http.post("/api/front/pdoc/list", page).subscribe((res: RespPage)=>{
@@ -74,6 +74,7 @@ export class PdocmanagementComponent implements OnInit {
     var upUrl = "/api/pdoc/upload?partner=" + this.uploadFormGroup.get("partner").value;
     this.uploader.setOptions({
       url: upUrl,
+      authToken: "hello",
       removeAfterUpload: true, 
       maxFileSize: 102400000,
       method: "POST"    

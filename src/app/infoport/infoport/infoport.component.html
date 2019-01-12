@@ -1,0 +1,101 @@
+<div class="pageTag">信息共享</div>
+<form nz-form [formGroup]="searchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
+ 
+    <nz-form-item> 
+      <nz-form-label>文件名称</nz-form-label>
+      <nz-form-control>
+        <input  nz-input formControlName="name" style="width:200px;" placeholder="文件名称">
+      </nz-form-control>
+    </nz-form-item>
+   
+    <nz-form-item>
+      <nz-form-label>标签</nz-form-label>
+      <nz-form-control>
+        <input  nz-input formControlName="tag" style="width:200px;" placeholder="标签名称">
+      </nz-form-control>
+    </nz-form-item>
+                        
+     <nz-form-item>
+      <nz-form-control>
+        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 5px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+        <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+      </nz-form-control>
+    </nz-form-item>
+</form>
+  <br>  
+    
+<nz-table #basicTable [nzData]="infos" [nzShowSizeChanger]="true">
+  <thead>
+    <tr>
+      <th class="theadbg">序号</th>
+      <th class="theadbg">文件名称</th>
+      <th class="theadbg">标签</th>
+      <th class="theadbg">操作人</th>
+      <th class="theadbg">操作时间</th>
+      <th class="theadbg">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data index as i">
+      <td>{{i+1}}</td>
+      <td><a [routerLink]="['/portal/home/infodetail']" 
+              [queryParams]="{name: data.name, tag: data.tag}">
+            {{data.name}}
+          </a>
+        </td>
+      <td>{{data.tag}}</td>
+      <td>{{data.operatorName}}</td>
+      <td>{{data.operateTime}}</td>
+      <td>
+        <a [routerLink]="['/portal/home/infodetail']" 
+            [queryParams]="{name: data.name, tag: data.tag}">
+            <button nz-button type="button">查看</button>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button  type="button" (click)="onDownload(data)">下载</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button  type="button" (click)="onRefresh(data)">更新</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button  type="button" (click)="onDelete(data)">删除</button>
+        </td>
+    </tr>
+  </tbody>
+</nz-table>
+  
+<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传共享信息" 
+      [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <ng-template #pdocContent>
+    <form nz-form [formGroup]="uploadFormGroup">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">名称</nz-form-label>       
+        <nz-form-control>
+          <nz-form-text style="text-align:center;">{{uploader?.queue[0]?.file?.name}}</nz-form-text>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">标签</nz-form-label>
+        <nz-form-control >
+          <input nz-input type="text" formControlName="tag" style="width:175px; ">
+        </nz-form-control>
+      </nz-form-item>
+       
+   </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+      <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+      <button nz-button type="submit" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+  </ng-template>
+</nz-modal>
+    
+    
+  
+    
+  
