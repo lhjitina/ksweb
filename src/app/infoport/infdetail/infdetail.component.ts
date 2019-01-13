@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, UrlSerializer } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ShareInfo } from './../infoport/infoport.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
@@ -12,9 +12,11 @@ import * as Global from './../../globalvar';
 })
 export class InfdetailComponent implements OnInit {
   public info: ShareInfo = new ShareInfo();
-  public docUrl: any;
+  public safeUrl: SafeResourceUrl;
   public docType: string;
   public content: Blob;
+  public pdfUrl: any;
+
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient,
@@ -25,10 +27,11 @@ export class InfdetailComponent implements OnInit {
   ngOnInit() {
     this.routerInfo.queryParams.subscribe((data: Params)=>this.getRouterParam(data));
     var url = "/api/share/content?name=" + this.info.name;
-    this.http.get(url, { responseType: 'blob'}).subscribe((res: any)=>{
-        this.content = res.slice(0, res.size, this.docType);
-        this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
-    })
+     this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: any)=>{
+         this.content = res.slice(0, res.size, this.docType);
+         this.pdfUrl = (URL.createObjectURL(this.content));
+        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+        })
   }
 
   getRouterParam(data: Params) : void{
@@ -45,12 +48,6 @@ export class InfdetailComponent implements OnInit {
     a.download = this.info.name;
     a.click();
     URL.revokeObjectURL(a.href);  
-  }
-
-  onPrint(): void{
-    var url = URL.createObjectURL(this.content);
-    window.open(url).print();
-    setTimeout(()=>{URL.revokeObjectURL(url)}, 2000);
   }
 
   onGoback(): void{

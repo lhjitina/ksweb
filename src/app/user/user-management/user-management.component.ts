@@ -116,4 +116,6 @@ export class User{
   public perReg: number;
   public perSum: number;
   public perUsr: number;
+  public perCon: number;
+  public perDoc: number;
 }

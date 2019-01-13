@@ -14,7 +14,8 @@ export class ContractdetailComponent implements OnInit {
 
   public contract: Contract = new Contract();
   public fromUrl: string;  
-  public docUrl: any;
+  public pdfUrl: any;
+  public safeUrl: any;
   public docType: string;
   public content: Blob;
 
@@ -29,7 +30,8 @@ export class ContractdetailComponent implements OnInit {
     var url = "/api/contract/content/" + this.contract.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       this.content = res.slice(0, res.size, this.docType);
-      this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+      this.pdfUrl = URL.createObjectURL(this.content);
+      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
     })
   }
 
@@ -49,12 +51,6 @@ export class ContractdetailComponent implements OnInit {
       console.log("download file:" + a.download);
       a.click();
       URL.revokeObjectURL(a.href);
-  }
-
-  onPrint(): void{
-    var url = URL.createObjectURL(this.content);
-    window.open(url).print();
-    setTimeout(()=>{URL.revokeObjectURL(url);}, 2000);
   }
 
   onGoback(): void{
