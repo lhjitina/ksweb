@@ -6,6 +6,7 @@ import { HttpClient} from '@angular/common/http';
 import * as MyValidator from './../validators';
 import { Router } from '@angular/router';
 import { PublicService } from '../service/public.service';
+import { GlobalService } from '../global.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class PortalComponent implements OnInit {
   passwdFormGroup: FormGroup;
   processing: boolean = false;
 
-  constructor(private cookie: CookieService,
+  constructor(private gs: GlobalService,
               private modal: NzModalService,
               private fb: FormBuilder,
               private http: HttpClient,
@@ -37,8 +38,7 @@ export class PortalComponent implements OnInit {
               }
 
   ngOnInit() {
-    this.pub.setToken(this.cookie.get("token"));
-    this.user = this.cookie.get("loginName");
+    this.user = this.gs.getUser().name;
 
   }
   onModifyPasswd(): void{
@@ -77,10 +77,7 @@ export class PortalComponent implements OnInit {
 
   onLogout(): void{
     console.log("user logout");
-    this.http.get("/api/user/logout").subscribe((res: any)=>{
-      console.log("user logout from server");
-    });
-    this.cookie.deleteAll();
+    this.gs.logout();
     this.rt.navigateByUrl("login");
   }
 

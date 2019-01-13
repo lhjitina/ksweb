@@ -5,11 +5,10 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class LoginGuard implements CanActivate{
-    constructor(private cookie: CookieService,
+    constructor(private gs: GlobalService,
                 private rt: Router){}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
-        console.log(this.cookie.get("isLogin"));
-        if (this.cookie.get("isLogin") == "true"){
+        if (this.gs.isLogin()){
             return true;
         }
         else{

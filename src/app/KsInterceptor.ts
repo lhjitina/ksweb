@@ -1,10 +1,11 @@
-import {HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpErrorResponse, HttpHeaderResponse, HttpResponse } from '@angular/common/http';
+import {HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { catchError, mergeMap, filter, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GlobalService } from './global.service';
 import { EventHandlerVars } from '@angular/compiler/src/compiler_util/expression_converter';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Injectable()
 export class KsInterceptor implements HttpInterceptor {
@@ -13,22 +14,15 @@ export class KsInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{ 
         const authToken = this.gs.getToken();
+        console.log("authtoken:" + authToken);
         const authReq = req.clone({ setHeaders: { Authorization: authToken } });
         console.log("interceptor....."+req.urlWithParams)
-        return next.handle(authReq);
-
-        // .pipe(
-        //     tap(event=>{
-        //         if (event instanceof HttpResponse && event.status == 200){
-        //             console.log("return status is 200");
-        //         }
-        //         else if (event instanceof HttpResponse && event.status != 200){
-        //             console.log("return status is " + event.status);
-        //         }
-        //     })
-
-        //     )
-        
-
+        return next.handle(authReq).pipe(
+            tap(event=>{
+                if (event instanceof HttpResponse && event.status == 401){
+                    this.router.navigateByUrl("/login");
+                }
+            })
+            )
     }
 }

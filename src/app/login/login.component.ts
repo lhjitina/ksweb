@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
               private http: HttpClient,
               private cookie: CookieService,
               private msg: NzMessageService,
-              private globalvar: GlobalService) { 
+              private gs: GlobalService) { 
     this.loginFormGroup = this.fb.group({
       loginName: [''],
       passwd: ['']
@@ -40,11 +40,14 @@ export class LoginComponent implements OnInit {
       (res: HttpResponse<any>)=>{
         console.log(res);
         if (res.status == 200){
-          this.cookie.set("isLogin", "true");
-          this.cookie.set("loginName", this.loginFormGroup.get("loginName").value);
-          this.cookie.set("token", res.headers.get("authorization"));
-          console.log("token: "+ res.headers.get("authorization"));
-          this.router.navigateByUrl("/portal/home");
+          console.log("login ok")
+          this.gs.setToken(res.headers.get("authorization"));
+          var respData = res.body as RespData;
+          this.gs.setUser(respData.data);
+          console.log(this.gs.getUser());
+          console.log("route to shareinfo")
+          
+          this.router.navigateByUrl("/portal/home/shareinfo");
         }
         else{
           this.msg.create('error', res.statusText);
