@@ -36,15 +36,18 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void{
     console.log(this.loginFormGroup.value);
-    this.http.post("/api/login", this.loginFormGroup.value).subscribe(
-      (res: RespData)=>{
-        if (res.code == 0){
+    this.http.post("/api/user/login", this.loginFormGroup.value, {observe: 'response'}).subscribe(
+      (res: HttpResponse<any>)=>{
+        console.log(res);
+        if (res.status == 200){
           this.cookie.set("isLogin", "true");
           this.cookie.set("loginName", this.loginFormGroup.get("loginName").value);
+          this.cookie.set("token", res.headers.get("authorization"));
+          console.log("token: "+ res.headers.get("authorization"));
           this.router.navigateByUrl("/portal/home");
         }
         else{
-          this.msg.create('error', res.message);
+          this.msg.create('error', res.statusText);
         }
       })
   }
