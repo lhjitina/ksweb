@@ -8,11 +8,13 @@ export class LoginGuard implements CanActivate{
     constructor(private gs: GlobalService,
                 private rt: Router){}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
+        return true;
         if (this.gs.isLogin()){
+
             return true;
         }
         else{
-            this.rt.navigateByUrl("login");
+            console.log("guard find uer not login")
             return false;
         }
     }

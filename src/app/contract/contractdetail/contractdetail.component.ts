@@ -52,15 +52,5 @@ export class ContractdetailComponent implements OnInit {
       a.click();
       URL.revokeObjectURL(a.href);
   }
-
-  onGoback(): void{
-    console.log("fromUrl="+this.fromUrl);
-    if (this.fromUrl === 'home'){
-      this.rt.navigateByUrl("/portal/home/contract");
-    } 
-    else if (this.fromUrl === 'console'){
-      this.rt.navigateByUrl("/portal/console/contract");
-    }
-  }
 }
 

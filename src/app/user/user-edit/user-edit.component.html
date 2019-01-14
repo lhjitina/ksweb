@@ -65,6 +65,9 @@
                   <label nz-checkbox formControlName="perSum">伙伴资料管理</label>          
                 </nz-form-control>                
                 <nz-form-control nzOffset=2>
+                  <label nz-checkbox formControlName="perCon">合同模板管理</label>          
+                </nz-form-control>                 
+                <nz-form-control nzOffset=2>
                    <label nz-checkbox formControlName="perUsr">用户管理</label>         
                 </nz-form-control>
               </nz-form-item>
@@ -74,7 +77,7 @@
         <div nz-row>
           <div nz-col nzOffset="12" nzSpan="4">
               <nz-form-control>
-                <button nz-button type="button" (click)="onGoback()">返回</button>
+                <a routerLink="../user"><button nz-button type="button">返回</button></a>
               </nz-form-control>
           </div>
           <div nz-col nzSpan="4">

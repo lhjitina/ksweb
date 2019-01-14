@@ -35,6 +35,7 @@ export class UserEditComponent implements OnInit {
       perReg: ['false'],
       perSum: ['false'],
       perDoc: ['false'],
+      perCon: ['false'],
       perUsr: ['false']
     })
   }
@@ -62,6 +63,7 @@ export class UserEditComponent implements OnInit {
         this.userEditFormGroup.patchValue({perPol: (user.perPol == 0)? false : true});
         this.userEditFormGroup.patchValue({perReg: (user.perReg == 0)? false : true});
         this.userEditFormGroup.patchValue({perSum: (user.perSum == 0)? false : true});
+        this.userEditFormGroup.patchValue({perCon: (user.perCon == 0)? false : true});
         this.userEditFormGroup.patchValue({perUsr: (user.perUsr == 0)? false : true});
       });
     });
@@ -77,8 +79,4 @@ export class UserEditComponent implements OnInit {
     });
   }
 
-  onGoback(): void{
-    console.log("go back")
-    this.router.navigateByUrl("/portal/console/user");
-  }
 }

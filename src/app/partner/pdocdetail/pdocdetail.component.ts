@@ -14,7 +14,8 @@ export class PdocdetailComponent implements OnInit {
 
   public pdoc: PartnerDoc = new PartnerDoc();
   public fromUrl: string;  
-  public docUrl: any;
+  public safeUrl: any;
+  public pdfUrl: any;
   public docType: string;
   public content: Blob;
 
@@ -29,7 +30,8 @@ export class PdocdetailComponent implements OnInit {
     var url = "/api/pdoc/content?name=" + this.pdoc.name + "&partner=" + this.pdoc.partner;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       this.content = res.slice(0, res.size, this.docType);
-      this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+      (this.docType == "application/pdf")? this.pdfUrl = URL.createObjectURL(this.content) : this.pdfUrl='';
+      (this.docType == "image/jpeg")? this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content)) : this.safeUrl='';
     })
   }
 
@@ -51,19 +53,4 @@ export class PdocdetailComponent implements OnInit {
       URL.revokeObjectURL(a.href);
   }
 
-  onPrint(): void{
-    var url = URL.createObjectURL(this.content);
-    window.open(url).print();
-    setTimeout(()=>{URL.revokeObjectURL(url);}, 2000);
-  }
-
-  onGoback(): void{
-    console.log("fromUrl="+this.fromUrl);
-    if (this.fromUrl === 'home'){
-      this.rt.navigateByUrl("/portal/home/partnerdoc");
-    } 
-    else if (this.fromUrl === 'console'){
-      this.rt.navigateByUrl("/portal/console/partnerdoc");
-    }
-  }
 }

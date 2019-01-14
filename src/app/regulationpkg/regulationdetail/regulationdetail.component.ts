@@ -16,9 +16,12 @@ export class RegulationdetailComponent implements OnInit {
 
   public reg = new Regulation();
   public fromUrl: string;  
-  public docUrl: any;
+  public pdfUrl: any;
+  public safeUrl: any;
   public docType: string;
   public content: Blob;
+  public durl: string;
+  public filename: string;
 
   constructor(private routerInfo: ActivatedRoute,
               private http: HttpClient,
@@ -28,11 +31,12 @@ export class RegulationdetailComponent implements OnInit {
 
   ngOnInit() {
     this.routerInfo.queryParams.subscribe((data: Params)=>this.getRouterParam(data));
-
+    console.log("request reguliation content from server")
     var url = "/api/regulation/content/" + this.reg.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       this.content = res.slice(0, res.size, this.docType);
-      this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+      (this.docType == "application/pdf")? this.pdfUrl = URL.createObjectURL(this.content) : this.pdfUrl='';
+      (this.docType == "image/jpeg")? this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content)) : this.safeUrl='';
     })
   }
 
@@ -60,17 +64,8 @@ export class RegulationdetailComponent implements OnInit {
     setTimeout(()=>{URL.revokeObjectURL(url)}, 2000);
   }
 
-  onGoback(): void{
-    console.log("fromUrl="+this.fromUrl);
-    if (this.fromUrl === 'home'){
-      this.rt.navigateByUrl("/portal/home/regulation");
-    } 
-    else if (this.fromUrl === 'console'){
-      this.rt.navigateByUrl("/portal/console/regulation");
-    }
-  }
-
   ngOnDestroy(){
-    URL.revokeObjectURL(this.docUrl);
+    URL.revokeObjectURL(this.pdfUrl);
+    URL.revokeObjectURL(this.safeUrl);
   }
 }

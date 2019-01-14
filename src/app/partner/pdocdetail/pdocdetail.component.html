@@ -1,25 +1,22 @@
 <div class="pageTag">伙伴资料</div>
 <div nz-row>
-    <div nz-col nzSpan="7"><b>文件名称：</b>{{pdoc.name}}</div>
-    <div nz-col nzSpan="4"><b>合作伙伴：</b>{{pdoc.partner}}</div>
-    <div nz-col nzOffset="7" nzSpan="2">
-      <button nz-button nzType="default" (click)='onPrint()'>打印</button>
-    </div>
-    <div nz-col nzSpan="2">   
+    <div nz-col nzSpan="8"><b>文件名称：</b>{{pdoc.name}}</div>
+    <div nz-col nzSpan="6"><b>合作伙伴：</b>{{pdoc.partner}}</div>
+    <div nz-col nzOffset="6" nzSpan="2">   
       <button nz-button nzType="default" (click)="onSave()">保存</button>
   
     </div> 
     <div nz-col nzSpan="2"> 
-      <button nz-button nzType="primary" (click)="onGoback()">返回</button>
+      <a routerLink="../partnerdoc"><button nz-button nzType="primary">返回</button></a>
     </div>
   </div>
   
   <hr>
-  <div style="margin-bottom: 30px;" *ngIf="docType=='pdf'">
-    <pdf-viewer [src]="docUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
+  <div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
+    <pdf-viewer [src]="pdfUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
   </div>
-  <div>
-    <img [src]="docUrl" style="width:100%;" *ngIf="docType=='img'">
+  <div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">
+    <img [src]="safeUrl" style="width:100%;">
   </div>
 
 

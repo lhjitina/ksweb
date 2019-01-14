@@ -2,8 +2,8 @@
   <nz-header>
         <div class="logo"></div>
         <ul nz-menu  [nzTheme]="'dark'" [nzMode]="'horizontal'" class="menu">
-          <li nz-menu-item><a href="/portal/home">首页</a></li>
-          <li nz-menu-item><a href="/portal/console">控制台</a></li>
+          <li nz-menu-item><a routerLink="./home">首页</a></li>
+          <li nz-menu-item><a routerLink="./console">控制台</a></li>
           <li nz-submenu style="float:right;">
             <span title><i nz-icon type="user"></i>{{user}}</span>
             <ul>

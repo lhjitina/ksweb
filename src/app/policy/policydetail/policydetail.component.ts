@@ -14,7 +14,8 @@ export class PolicydetailComponent implements OnInit {
 
   public policy: Policy = new Policy();
   public fromUrl: string;  
-  public docUrl: any;
+  public pdfUrl: any;
+  public safeUrl: any;
   public docType: string;
   public content: Blob;
 
@@ -29,7 +30,8 @@ export class PolicydetailComponent implements OnInit {
     var url = "/api/regulation/content/" + this.policy.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       this.content = res.slice(0, res.size, this.docType);
-      this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+      (this.docType == "application/pdf")? this.pdfUrl = URL.createObjectURL(this.content) : this.pdfUrl='';
+      (this.docType == "image/jpeg")? this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content)) : this.safeUrl='';
     })}
 
   getRouterParam(data: Params) : void{
@@ -56,13 +58,4 @@ export class PolicydetailComponent implements OnInit {
     setTimeout(()=>{URL.revokeObjectURL(url)}, 2000);
   }
 
-  onGoback(): void{
-    console.log("fromUrl="+this.fromUrl);
-    if (this.fromUrl === 'home'){
-      this.rt.navigateByUrl("/portal/home/policy");
-    } 
-    else if (this.fromUrl === 'console'){
-      this.rt.navigateByUrl("/portal/console/policy");
-    }
-  }
 }

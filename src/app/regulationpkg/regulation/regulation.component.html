@@ -47,8 +47,8 @@
     <tbody>
       <tr *ngFor="let data of basicTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/portal/home/regulationdetail']" 
-               [queryParams]="{name: data.name, department: data.departmentName, date: data.issueDate, fromUrl: 'home'}">
+        <td><a [routerLink]="['../regulationdetail']" 
+               [queryParams]="{name: data.name, department: data.departmentName, date: data.issueDate, fromUrl: 'regulation'}">
               {{data.name}}
             </a>
           </td>
@@ -56,7 +56,7 @@
         <td>{{data.issueDate | slice:0:10}}</td>
         <td>
           
-          <a [routerLink]="['/portal/home/regulationdetail']" 
+          <a [routerLink]="['../regulationdetail']" 
              [queryParams]="{name: data.name, department: data.departmentName, date: data.issueDate, fromUrl: 'home'}">
             <button nz-button nzType="primary">查看</button>
           </a>

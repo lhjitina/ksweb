@@ -20,6 +20,7 @@ export class KsInterceptor implements HttpInterceptor {
         return next.handle(authReq).pipe(
             tap(event=>{
                 if (event instanceof HttpResponse && event.status == 401){
+                    console.log("un authorized");
                     this.router.navigateByUrl("/login");
                 }
             })

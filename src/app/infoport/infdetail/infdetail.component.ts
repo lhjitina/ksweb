@@ -12,10 +12,11 @@ import * as Global from './../../globalvar';
 })
 export class InfdetailComponent implements OnInit {
   public info: ShareInfo = new ShareInfo();
+  public pdfUrl: any;  
   public safeUrl: SafeResourceUrl;
   public docType: string;
   public content: Blob;
-  public pdfUrl: any;
+
 
 
   constructor(private routerInfo: ActivatedRoute,
@@ -27,11 +28,11 @@ export class InfdetailComponent implements OnInit {
   ngOnInit() {
     this.routerInfo.queryParams.subscribe((data: Params)=>this.getRouterParam(data));
     var url = "/api/share/content?name=" + this.info.name;
-     this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: any)=>{
-         this.content = res.slice(0, res.size, this.docType);
-         this.pdfUrl = (URL.createObjectURL(this.content));
+    this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: any)=>{
+        this.content = res.slice(0, res.size, this.docType);
+        this.pdfUrl = (URL.createObjectURL(this.content));
         this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
-        })
+    })
   }
 
   getRouterParam(data: Params) : void{
@@ -48,9 +49,5 @@ export class InfdetailComponent implements OnInit {
     a.download = this.info.name;
     a.click();
     URL.revokeObjectURL(a.href);  
-  }
-
-  onGoback(): void{
-    this.rt.navigateByUrl("/portal/home/shareinfo");
   }
 }

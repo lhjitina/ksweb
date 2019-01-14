@@ -8,7 +8,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
 import { FileUploadModule } from 'ng2-file-upload';
-import { CookieService } from 'ngx-cookie-service';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +27,6 @@ import { UserManagementComponent } from './user/user-management/user-management.
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
-import { TestComponent } from './test/test.component';
 import { PortalComponent } from './portal/portal.component';
 import { KsInterceptor } from './KsInterceptor';
 import { PolicyComponent } from './policy/policy/policy.component';
@@ -44,6 +43,7 @@ import { ContractmanagementComponent } from './contract/contractmanagement/contr
 import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
 import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -58,7 +58,6 @@ import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
     UserAddComponent,
     UserEditComponent,
     LoginComponent,
-    TestComponent,
     PortalComponent,
     PolicyComponent,
     PolicydetailComponent,

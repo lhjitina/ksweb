@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
@@ -38,7 +37,14 @@ export class PortalComponent implements OnInit {
               }
 
   ngOnInit() {
-    this.user = this.gs.getUser().name;
+    this.gs.verifyToken(()=>{
+//      this.rt.navigateByUrl("/portal/home");
+      (this.gs.getUser() == null)? this.user = "user is null" : this.user = this.gs.getUser().name;
+    },
+    ()=>{
+      this.rt.navigateByUrl("/login");
+    });   
+    console.log(".......portal...init..........")
 
   }
   onModifyPasswd(): void{

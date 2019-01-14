@@ -5,23 +5,23 @@
     <div nz-col nzSpan="4"><b>发文日期：</b>{{policy.issueDate | slice:0:10}}</div>
     <div nz-col nzSpan="3"><b>状态：</b>{{policy.state}}</div>
     <div nz-col nzSpan="2">
-      <button nz-button nzType="default" (click)='onPrint()'>打印</button>
+      <button nz-button nzType="default" disabled ='onPrint()'>打印</button>
     </div>
     <div nz-col nzSpan="2">   
       <button nz-button nzType="default" (click)="onSave()">保存</button>
   
     </div> 
     <div nz-col nzSpan="2"> 
-      <button nz-button nzType="primary" (click)="onGoback()">返回</button>
+      <a routerLink="../policy"><button nz-button nzType="primary">返回</button></a>
     </div>
   </div>
   
   <hr>
-  <div style="margin-bottom: 30px;" *ngIf="docType=='pdf'">
-    <pdf-viewer [src]="docUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
+  <div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
+    <pdf-viewer [src]="pdfUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
   </div>
-  <div>
-    <img [src]="docUrl" style="width:100%;" *ngIf="docType=='img'">
+  <div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">
+    <img [src]="safeUrl" style="width:100%;">
   </div>
 
 

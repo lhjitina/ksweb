@@ -31,6 +31,7 @@ export class UserAddComponent implements OnInit {
       perReg: ['false'],
       perSum: ['false'],
       perDoc: ['false'],
+      perCon: ['false'],
       perUsr: ['false']
     });
    }
@@ -55,7 +56,4 @@ export class UserAddComponent implements OnInit {
     });
   }
 
-  onGoback(): void{
-    this.rt.navigateByUrl("/portal/console/user");
-  }
 }

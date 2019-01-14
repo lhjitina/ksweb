@@ -14,7 +14,8 @@ export class SummarydetailComponent implements OnInit {
 
   public sum: Summary = new Summary();
   public fromUrl: string;  
-  public docUrl: any;
+  public pdfUrl: any;
+  public safeUrl: any;
   public docType: string;
   public content: Blob;
 
@@ -30,7 +31,8 @@ export class SummarydetailComponent implements OnInit {
     var url = "/api/summary/content/" + this.sum.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       this.content = res.slice(0, res.size, this.docType);
-      this.docUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content));
+      (this.docType == "application/pdf")? this.pdfUrl = URL.createObjectURL(this.content) : this.pdfUrl='';
+      (this.docType == "image/jpeg")? this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content)) : this.safeUrl='';
     })
   }
 
@@ -57,14 +59,5 @@ export class SummarydetailComponent implements OnInit {
     setTimeout(()=>{URL.revokeObjectURL(url)}, 2000);
   }
 
-  onGoback(): void{
-    console.log("fromUrl="+this.fromUrl);
-    if (this.fromUrl === 'home'){
-      this.rt.navigateByUrl("/portal/home/summary");
-    } 
-    else if (this.fromUrl === 'console'){
-      this.rt.navigateByUrl("/portal/console/summary");
-    }
-  }
 }
 

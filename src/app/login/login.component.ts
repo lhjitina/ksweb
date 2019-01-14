@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { GlobalService } from '../global.service';
 import { RespData } from './../common/dto';
@@ -19,7 +18,6 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               private http: HttpClient,
-              private cookie: CookieService,
               private msg: NzMessageService,
               private gs: GlobalService) { 
     this.loginFormGroup = this.fb.group({
@@ -29,9 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cookie.set("isLogin", "false");
-    this.cookie.set("loginName", '');
-
+    console.log(".......login....init.....")
   }
 
   onSubmit(): void{
@@ -46,7 +42,6 @@ export class LoginComponent implements OnInit {
           this.gs.setUser(respData.data);
           console.log(this.gs.getUser());
           console.log("route to shareinfo")
-          
           this.router.navigateByUrl("/portal/home/shareinfo");
         }
         else{

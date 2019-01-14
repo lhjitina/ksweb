@@ -40,7 +40,7 @@ const routes: Routes = [
         {path: "regulation", component:RegulationComponent},
         {path: "regulationdetail", component: RegulationdetailComponent},
         {path: "summary", component: SummaryComponent},
-        {path: "summary-detail", component: SummarydetailComponent},
+        {path: "summarydetail", component: SummarydetailComponent},
         {path: "partnerdoc", component: PdocComponent},
         {path: "pdocdetail", component:PdocdetailComponent},
         {path: "contract", component: ContractComponent},
@@ -54,6 +54,7 @@ const routes: Routes = [
           {path: "regulation", component: RegulationmanagmentComponent},
           {path: "regulationdetail", component: RegulationdetailComponent},
           {path: "summary", component: SummarymanagementComponent},
+          {path: "summarydetail", component: SummarydetailComponent},
           {path: "user", component: UserManagementComponent},
           {path: "useredit", component: UserEditComponent},
           {path: "useradd", component: UserAddComponent},
@@ -62,7 +63,7 @@ const routes: Routes = [
           {path: "contract", component: ContractmanagementComponent},
           {path: "contractdetail", component: ContractdetailComponent}
       ]},
-  ], canActivate:[LoginGuard]}
+  ]}
 ];
 
 @NgModule({

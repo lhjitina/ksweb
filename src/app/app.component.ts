@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { GlobalService } from './global.service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -10,12 +10,12 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'ksoa';
 
-  constructor(private gs: GlobalService,
-              private rt: Router){
+  constructor(){
+
   }
 
-  ngOnInit(): void{
-    this.gs.verifyToken();
+  ngOnInit(){
+
   }
 }
 

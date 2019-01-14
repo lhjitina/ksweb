@@ -15,7 +15,6 @@ import { RespData, RespPage, PageRequest } from './../../common/dto';
 export class InfoportComponent implements OnInit {
 
   infos: ShareInfo[] = [];
-  states: string[] = Global.DOCSTATS;
   searchFormGroup: FormGroup;
   uploadFormGroup: FormGroup;
   uploader:FileUploader;
