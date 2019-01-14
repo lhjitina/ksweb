@@ -33,7 +33,7 @@
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
             "scripts": [
-              "node_modules/js-cookie/src/js.cookie.js"
+         
             ]
           },
           "configurations": {

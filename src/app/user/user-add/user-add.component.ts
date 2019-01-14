@@ -3,8 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../user-management/user-management.component';
 import * as MyValidator from '../../validators';
-import { PublicService } from 'src/app/service/public.service';
 import { Router } from '@angular/router';
+import { PageRequest, RespPage} from './../../common/dto';
 
 @Component({
   selector: 'app-user-add',
@@ -19,7 +19,6 @@ export class UserAddComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
-              private ps: PublicService,
               private rt: Router) {
 
     this.userAddFormGroup = this.fb.group({
@@ -37,9 +36,14 @@ export class UserAddComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.ps.getDepartmentList().subscribe((res: any)=>{
-      this.departments = res;
-    })
+    this.http.post("/api/department/list", new PageRequest).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+       this.departments = res.data;       
+      }
+      else{
+        console.log(res.message);        
+      }
+    });
   }
 
   onSubmit(): void{

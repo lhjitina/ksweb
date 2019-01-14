@@ -59,6 +59,7 @@ export class SummarymanagementComponent implements OnInit {
     };
     page.append("name", this.searchFormGroup.get("name").value);
     this.http.post("/api/console/summary/list", page).subscribe((res: RespPage)=>{
+      console.log(res);
       if (res.code == 0){
         this.summaries = res.data;        
       }

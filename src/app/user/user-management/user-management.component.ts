@@ -2,10 +2,10 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Department } from 'src/app/app.component';
-import { PublicService } from './../../service/public.service';
 import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { DefaultRouteReuseStrategy } from '@angular/router/src/route_reuse_strategy';
+import { PageRequest, RespPage } from './../../common/dto';
 
 @Component({
   selector: 'app-user-management',
@@ -20,7 +20,6 @@ export class UserManagementComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
-              private ps: PublicService,
               private messageService: NzMessageService,
               private modalService: NzModalService) {
     this.userSearchFormGroup = this.fb.group({
@@ -33,25 +32,33 @@ export class UserManagementComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.ps.getDepartmentList().subscribe((res: any)=>{
-      this.departments = res;
-    })
+    this.http.post("/api/department/list", new PageRequest).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+       this.departments = res.data;       
+      }
+      else{
+        console.log(res.message);        
+      }
+    });
     this.onSearch();
   }
 
   onSearch(): void{
     this.users=[];
     console.log("..."+ this.userSearchFormGroup.get("userName").value);
-    this.http.get("/api/user/list", {
-      params:{
-        userName: this.userSearchFormGroup.get("userName").value,
-        tel: this.userSearchFormGroup.get("tel").value,
-        departmentId: this.userSearchFormGroup.get("departmentId").value,
-        email: this.userSearchFormGroup.get("email").value,
-        state: this.userSearchFormGroup.get("state").value
+    var page = new PageRequest();
+    page.append("name", this.userSearchFormGroup.get("userName").value);
+    page.append("tel", this.userSearchFormGroup.get("tel").value);
+    page.append("email", this.userSearchFormGroup.get("email").value);
+    page.append("departmentId", this.userSearchFormGroup.get("departmentId").value);
+    page.append("state", this.userSearchFormGroup.get("state").value);
+    this.http.post("/api/user/list", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.users = res.data;
       }
-    }).subscribe((res: any)=>{
-      this.users = res;
+      else{
+        console.log(res.message);
+      }
     })
   }
 

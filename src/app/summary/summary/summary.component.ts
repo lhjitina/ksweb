@@ -31,7 +31,6 @@ export class SummaryComponent implements OnInit {
 
   onSearch(): void{
     var page = new PageRequest();
-
     var sd = this.sumSearchFormGroup.get("startDate").value;
     var ed = this.sumSearchFormGroup.get("endDate").value;
     if (moment.isDate(sd)) { 
@@ -41,7 +40,9 @@ export class SummaryComponent implements OnInit {
       page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
     };
     page.append("name", this.sumSearchFormGroup.get("name").value);
-    this.http.post("/api/front/regulation/list", page).subscribe((res: RespPage)=>{
+    
+    this.http.post("/api/front/summary/list", page).subscribe((res: RespPage)=>{
+      console.log(res);
       if (res.code == 0){
         this.summaries = res.data;        
       }

@@ -63,7 +63,7 @@ const routes: Routes = [
           {path: "contract", component: ContractmanagementComponent},
           {path: "contractdetail", component: ContractdetailComponent}
       ]},
-  ]}
+  ], canActivate: [LoginGuard]}
 ];
 
 @NgModule({

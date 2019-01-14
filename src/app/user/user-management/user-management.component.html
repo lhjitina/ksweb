@@ -69,14 +69,14 @@
   <tbody>
       <tr *ngFor="let user of userTable.data index as i">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/portal/console/useredit']" 
+        <td><a [routerLink]="['../useredit']" 
                [queryParams]="{id: user.id}">{{user.name}}</a></td>
         <td>{{user.departmentName}}</td>
         <td>{{user.tel}}</td>
         <td>{{user.email}}</td>
         <td>{{user.state}}</td>
         <td>
-          <a [routerLink]="['/portal/console/useredit']" [queryParams]="{id: user.id}">
+          <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">
             <button nz-button nzType="default">修改</button>
           </a>
           <nz-divider nzType="vertical"></nz-divider>

@@ -1,4 +1,4 @@
-import {HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpResponse } from '@angular/common/http';
+import {HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { catchError, mergeMap, filter, tap } from 'rxjs/operators';
@@ -18,12 +18,35 @@ export class KsInterceptor implements HttpInterceptor {
         const authReq = req.clone({ setHeaders: { Authorization: authToken } });
         console.log("interceptor....."+req.urlWithParams)
         return next.handle(authReq).pipe(
-            tap(event=>{
-                if (event instanceof HttpResponse && event.status == 401){
-                    console.log("un authorized");
-                    this.router.navigateByUrl("/login");
+            tap(
+                (event: any) =>{
+                     if (event instanceof HttpResponse){
+                        if (event.status == 401){
+                            console.log("un authorized");
+                            this.router.navigateByUrl("/login");
+                        }
+                        else{
+                            console.log("event status:" + event.status)
+                        }
+                    }
+                    else{
+                        console.log("not httpresponse")
+                        console.log(event);
+                    }
+                },
+                error=>{
+                    console.log("error status=" + error.status);
+                    switch(error.status){
+                        case 401:{
+                            console.log("error 401, router to login");
+                            this.router.navigateByUrl("/login");
+                            break;
+                        }
+                    }
                 }
-            })
+               // return Observable.create(observer => observer.next(event))
+            )
+           
             )
     }
 }

@@ -10,12 +10,12 @@ import { GlobalService } from './global.service';
 export class AppComponent {
   title = 'ksoa';
 
-  constructor(){
+  constructor(private gs: GlobalService){
 
   }
 
   ngOnInit(){
-
+    this.gs.verifyToken();  
   }
 }
 

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { RespData } from './common/dto';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ import { CookieService } from 'ngx-cookie-service';
 export class GlobalService {
 
   private token: string = '';
-  private user: User = null;
-
+  private user: User = new User();
+  public unameSub: Subject<string> = new Subject<string>();
   constructor(private http: HttpClient,
               private rt: Router,
               private cs: CookieService) { 
@@ -21,33 +22,29 @@ export class GlobalService {
     if (this.token == null){ 
       this.token = '';
     }
+    this.user.name = this.cs.get("uname");
+    this.unameSub.next(this.user.name);
+
     console.log("saved token is " + this.token);
   }
   
-  public verifyToken(oktodo: ()=>void, failtodo: ()=>void): void{
-    console.log("verify token");
-//    if (this.token !=''){
-      console.log("verify token...:" + this.token);
-      this.http.get("/api/user/verifytoken").subscribe((res: RespData)=>{
-        console.log("verify return");
+  public verifyToken(): void{
+    console.log("verify token...:" + this.token);
+    this.http.get("/api/user/verifytoken").subscribe((res: RespData)=>{
+      console.log("verify return");
+      console.log(res);
+      if (res != null && res.code == 0){
+        this.user = res.data;
+        this.unameSub.next(this.user.name);
+        this.cs.set("uname", this.user.name, 1000, '/');
+        console.log("verify token is ok, user is :");
+        console.log(this.user);
+      } 
+      else{
         console.log(res);
-        if (res.code == 0){
-          this.user = res.data;
-          console.log("verify token is ok, user is :");
-          console.log(this.user);
-          oktodo();
-        }
-        else{
-          console.log(res.message);
-          this.user = null;
-          this.token = '';
-          this.setToken("");
-          failtodo();
-        }
-      })
-    }
-
-  
+      }
+    })
+  }
 
   public getToken(): string{
       return this.token;
@@ -64,11 +61,15 @@ export class GlobalService {
     return this.user;
   }
   public setUser(user: User): void{
+    console.log("set user:");
+    console.log(user);    
     this.user = user;
-    console.log("set user:" + user);
+    this.cs.set("uname", this.user.name, 1000, '/');
+    this.unameSub.next(user.name);
+
   }
   public isLogin(): boolean {
-    return this.token != '';
+    return this.user.name != null && this.user.name.trim().length != 0;
   }
 
   public logout(): void{
@@ -76,6 +77,7 @@ export class GlobalService {
     this.token = '';
     this.user = null;
     this.setToken("");
+    this.cs.set("uname", '', 1000, '/');
     console.log("get token: " + this.cs.get("token"))
   }
 }

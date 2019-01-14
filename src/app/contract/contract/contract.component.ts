@@ -20,7 +20,8 @@ export class ContractComponent implements OnInit {
       this.searchFormGroup = this.fb.group({
         name: [''],
         startDate: [''],
-        endDate: ['']
+        endDate: [''],
+        state: ['有效']
       });
               }
 
@@ -31,7 +32,16 @@ export class ContractComponent implements OnInit {
 
   onSearch(): void{
     var page = new PageRequest();
+    var sd = this.searchFormGroup.get("startDate").value;
+    var ed = this.searchFormGroup.get("endDate").value;
+    if (moment.isDate(sd)) { 
+      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+    };
+    if (moment.isDate(ed)) { 
+      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+    };
     page.append("name", this.searchFormGroup.get("name").value);
+    page.append("state", this.searchFormGroup.get("state").value);
 
     this.http.post("/api/front/contract/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){

@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import * as MyValidator from './../validators';
 import { Router } from '@angular/router';
-import { PublicService } from '../service/public.service';
 import { GlobalService } from '../global.service';
 
 
@@ -25,8 +24,7 @@ export class PortalComponent implements OnInit {
               private fb: FormBuilder,
               private http: HttpClient,
               private message: NzMessageService,
-              private rt: Router,
-              private pub: PublicService) { 
+              private rt: Router) { 
     this.passwdFormGroup = this.fb.group({
       oldp: [''],
       newPasswd: this.fb.group({
@@ -37,15 +35,11 @@ export class PortalComponent implements OnInit {
               }
 
   ngOnInit() {
-    this.gs.verifyToken(()=>{
-//      this.rt.navigateByUrl("/portal/home");
-      (this.gs.getUser() == null)? this.user = "user is null" : this.user = this.gs.getUser().name;
-    },
-    ()=>{
-      this.rt.navigateByUrl("/login");
-    });   
-    console.log(".......portal...init..........")
-
+    this.user = this.gs.getUser().name;
+    this.gs.unameSub.subscribe((name: string)=>{
+      console.log("refresh name="+ name);
+      this.user = name;
+    })
   }
   onModifyPasswd(): void{
     console.log("modify passwd")
