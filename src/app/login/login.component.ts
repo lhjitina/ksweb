@@ -36,13 +36,20 @@ export class LoginComponent implements OnInit {
       (res: HttpResponse<any>)=>{
         console.log(res);
         if (res.status == 200){
-          console.log("login ok")
-          this.gs.setToken(res.headers.get("authorization"));
-          var respData = res.body as RespData;
-          this.gs.setUser(respData.data);
-          console.log(this.gs.getUser());
-          console.log("route to shareinfo")
-          this.router.navigateByUrl("/portal/home/shareinfo");
+          console.log("login return")
+          const token = res.headers.get("authorization");
+          const respData = res.body as RespData;
+          if (respData.code == 0){
+            console.log("login ok");
+            this.gs.setToken(token);
+            this.gs.setUser(respData.data)
+            console.log(this.gs.getUser());
+            console.log("route to shareinfo")
+            this.router.navigateByUrl("/portal/home/shareinfo");
+          }
+          else{
+            this.msg.create("error", respData.message);
+          }
         }
         else{
           this.msg.create('error', res.statusText);
