@@ -6,7 +6,7 @@ import * as Global from './../../globalvar';
 import * as moment from 'moment';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Contract } from '../contract/contract.component';
-import { RespPage, RespData, PageRequest } from './../../common/dto';
+import { RespPage, RespData, PageRequest, RespPageParser } from './../../common/dto';
 import { GlobalService } from 'src/app/global.service';
 
 @Component({
@@ -61,14 +61,12 @@ export class ContractmanagementComponent implements OnInit {
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("state", this.searchFormGroup.get("state").value);
 
-    this.http.post("/api/console/contract/list", page).subscribe((res: RespPage)=>{
-      if (res.code == 0){
-        this.contracts = res.data;        
-      }
-      else{
-        console.log(res.message);
-        this.contracts = [];
-      }
+    this.http.post("/api/console/contract/list", page).subscribe((res: any)=>{
+      RespPageParser(res, 
+        (data)=>{this.contracts = data;},
+        (pnum)=>{},
+        (err)=>{console.log(err); this.contracts=[]}
+      );
     })
   }
 

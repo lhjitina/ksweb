@@ -34,3 +34,27 @@ export class PageRequest{
         this.param = JSON.parse(str);
     }
 }
+
+export function RespDataParser(rd: RespData, data:(data: any)=>void, err?:(msg: string, code?: number)=>void){
+    if (rd.code == 0){
+        data(rd.data);
+    }
+    else if (err != undefined){
+        err(rd.message, rd.code);
+    }
+}
+
+export function RespPageParser(rp: RespPage, 
+                                data:(data: any)=>void, 
+                                page?: (pnum?: number, psize?: number, total?: number)=>void, 
+                                err?:(msg: string, code?: number)=>void){
+    if (rp.code == 0){
+        data(rp.data);
+        if (page != undefined){
+            page(rp.num, rp.size, rp.total);
+        }
+    }
+    else if (err != undefined){
+        err(rp.message, rp.code);
+    }
+}
