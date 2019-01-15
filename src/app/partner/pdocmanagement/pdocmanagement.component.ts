@@ -7,6 +7,7 @@ import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { PartnerDoc } from './../pdoc/pdoc.component';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-pdocmanagement',
@@ -28,7 +29,8 @@ export class PdocmanagementComponent implements OnInit {
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private modal: NzModalService,
-              private er: ElementRef) {
+              private er: ElementRef,
+              private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       partner: ['']
@@ -74,7 +76,7 @@ export class PdocmanagementComponent implements OnInit {
     var upUrl = "/api/pdoc/upload?partner=" + this.uploadFormGroup.get("partner").value;
     this.uploader.setOptions({
       url: upUrl,
-      authToken: "hello",
+      authToken: this.gs.getToken(),
       removeAfterUpload: true, 
       maxFileSize: 102400000,
       method: "POST"    

@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Contract } from '../contract/contract.component';
 import { RespPage, RespData, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-contractmanagement',
@@ -28,7 +29,8 @@ export class ContractmanagementComponent implements OnInit {
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private er: ElementRef,
-              private modal: NzModalService) {
+              private modal: NzModalService,
+              private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       startDate: [''],
@@ -86,7 +88,7 @@ export class ContractmanagementComponent implements OnInit {
     upUrl = upUrl + issueDate;
     this.uploader.setOptions({
       url: upUrl,
-      authToken: "hello",
+      authToken: this.gs.getToken(),
       removeAfterUpload: true, 
       maxFileSize: 102400000,
       method: "POST"    

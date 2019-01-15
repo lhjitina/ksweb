@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import * as Global from './../../globalvar';
 import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-infoport',
@@ -28,7 +29,8 @@ export class InfoportComponent implements OnInit {
               private fb: FormBuilder,
               private modal: NzModalService,
               private msg: NzMessageService,
-              private er: ElementRef) {
+              private er: ElementRef,
+              private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       tag: ['']
@@ -82,7 +84,7 @@ export class InfoportComponent implements OnInit {
     console.log(upUrl);
     this.uploader.setOptions({
       url: upUrl,
-      authToken: "hello",
+      authToken: this.gs.getToken(),
       removeAfterUpload: true, 
       maxFileSize: 102400000,
       method: "POST"    

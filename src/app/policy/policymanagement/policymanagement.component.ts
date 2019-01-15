@@ -7,6 +7,7 @@ import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Policy } from '../policy/policy.component';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-policymanagement',
@@ -28,7 +29,8 @@ export class PolicymanagementComponent implements OnInit {
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private er: ElementRef,
-              private modal: NzModalService) {
+              private modal: NzModalService,
+              private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       institution: [''],
@@ -89,7 +91,7 @@ export class PolicymanagementComponent implements OnInit {
 
     this.poliUploader.setOptions({
       url: upUrl,
-      authToken: "hello",
+      authToken: this.gs.getToken(),
       removeAfterUpload: true, 
       maxFileSize: 102400000,
       method: "POST"    

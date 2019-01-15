@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { RespPage, RespData, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
 @Component({
   selector: 'app-regulationmanagment',
   templateUrl: './regulationmanagment.component.html',
@@ -31,7 +32,8 @@ export class RegulationmanagmentComponent implements OnInit {
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private er: ElementRef,
-              private modal: NzModalService) {
+              private modal: NzModalService,
+              private gs: GlobalService) {
     this.regSearchFormGroup = this.fb.group({
       departmentId: [''],
       name: [''],
@@ -107,7 +109,7 @@ export class RegulationmanagmentComponent implements OnInit {
     console.log("upload url:"+upUrl);
     this.uploader.setOptions({
       url: upUrl,
-      authToken: "hello",
+      authToken: this.gs.getToken(),
       removeAfterUpload: true, 
       maxFileSize: 10240000,
       method: "POST"    

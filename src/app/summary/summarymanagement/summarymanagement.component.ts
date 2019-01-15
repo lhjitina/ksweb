@@ -7,6 +7,7 @@ import * as globalvar from './../../globalvar';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 import { Summary } from '../summary/summary.component';
 import { RespPage, RespData, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-summarymanagement',
@@ -29,7 +30,8 @@ export class SummarymanagementComponent implements OnInit {
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private er: ElementRef,
-              private modal: NzModalService) {
+              private modal: NzModalService,
+              private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       startDate: [''],
@@ -87,7 +89,7 @@ export class SummarymanagementComponent implements OnInit {
 
     this.uploader.setOptions({
       url: upUrl,
-      authToken: "hello",
+      authToken: this.gs.getToken(),
       removeAfterUpload: true, 
       maxFileSize: 10240000,
       method: "POST"    
