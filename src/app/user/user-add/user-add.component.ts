@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../user-management/user-management.component';
 import * as MyValidator from '../../validators';
 import { Router } from '@angular/router';
-import { PageRequest, RespPage} from './../../common/dto';
+import { PageRequest, RespPage, RespData} from './../../common/dto';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-user-add',
@@ -19,7 +20,8 @@ export class UserAddComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
-              private rt: Router) {
+              private rt: Router,
+              private msg: NzMessageService) {
 
     this.userAddFormGroup = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(16), Validators.minLength(2)]],
@@ -55,9 +57,14 @@ export class UserAddComponent implements OnInit {
 
     console.log(this.userAddFormGroup.value);
 
-    this.http.post("/api/user/add", this.userAddFormGroup.value).subscribe((res: any)=>{
-      this.rt.navigateByUrl("/portal/console/user");
-    });
+    this.http.post("/api/user/add", this.userAddFormGroup.value).subscribe((res: RespData)=>{
+      if (res.code == 0){
+        this.rt.navigateByUrl("../user");
+      }
+      else{
+        this.msg.create('error', "添加用户失败！(" + res.message + ")");
+      }
+     });
   }
 
 }

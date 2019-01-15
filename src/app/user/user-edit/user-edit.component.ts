@@ -70,7 +70,7 @@ export class UserEditComponent implements OnInit {
           this.userEditFormGroup.patchValue({perSum: (user.perSum == 0)? false : true});
           this.userEditFormGroup.patchValue({perCon: (user.perCon == 0)? false : true});
           this.userEditFormGroup.patchValue({perUsr: (user.perUsr == 0)? false : true});
-        }
+          this.userEditFormGroup.patchValue({perDoc: (user.perDoc == 0)? false : true});        }
         else{
           console.log(res.message);
         }
@@ -83,8 +83,13 @@ export class UserEditComponent implements OnInit {
       return;
     }
 
-    this.http.post("/api/user/update", this.userEditFormGroup.value).subscribe((res:any)=>{
-      this.message.create('success', '用户信息修改成功');
+    this.http.post("/api/user/update", this.userEditFormGroup.value).subscribe((res: RespData)=>{
+      if (res.code == 0){
+        this.message.create('success', '用户信息修改成功');
+      }
+      else{
+        this.message.create('error', res.message);
+      }
     });
   }
 
