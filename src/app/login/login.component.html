@@ -1,5 +1,5 @@
 <div nz-row class="loginContainer" nzType="flex" nzJustify="center" nzAlign="middle">
-  <div nz-col nzSpan="5" class="loginBox">
+  <div nz-col [nzXs]="{span: 20}" [nzSm]="{span: 5}" class="loginBox">
     <div class="loginTitle"></div>
     <form nz-form class="loginForm" [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
       <nz-form-item>
