@@ -65,12 +65,12 @@ export class UserEditComponent implements OnInit {
           this.userEditFormGroup.patchValue({email: user.email});
           this.userEditFormGroup.patchValue({departmentId: user.departmentId});
           this.userEditFormGroup.patchValue({state: user.state});
-          this.userEditFormGroup.patchValue({perPol: (user.perPol == 0)? false : true});
-          this.userEditFormGroup.patchValue({perReg: (user.perReg == 0)? false : true});
-          this.userEditFormGroup.patchValue({perSum: (user.perSum == 0)? false : true});
-          this.userEditFormGroup.patchValue({perCon: (user.perCon == 0)? false : true});
-          this.userEditFormGroup.patchValue({perUsr: (user.perUsr == 0)? false : true});
-          this.userEditFormGroup.patchValue({perDoc: (user.perDoc == 0)? false : true});        }
+          this.userEditFormGroup.patchValue({perPol: user.perPol});
+          this.userEditFormGroup.patchValue({perReg: user.perReg});
+          this.userEditFormGroup.patchValue({perSum: user.perSum});
+          this.userEditFormGroup.patchValue({perCon: user.perCon});
+          this.userEditFormGroup.patchValue({perUsr: user.perUsr});
+          this.userEditFormGroup.patchValue({perDoc: user.perDoc});        }
         else{
           console.log(res.message);
         }
