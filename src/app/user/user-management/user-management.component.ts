@@ -125,4 +125,6 @@ export class User{
   public perUsr: boolean;
   public perCon: boolean;
   public perDoc: boolean;
+  public perCw: boolean;
+  public perCr: boolean;
 }

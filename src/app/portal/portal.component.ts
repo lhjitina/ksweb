@@ -5,6 +5,7 @@ import { HttpClient} from '@angular/common/http';
 import * as MyValidator from './../validators';
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
+import { User } from '../user/user-management/user-management.component';
 
 
 @Component({
@@ -36,9 +37,9 @@ export class PortalComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.gs.getUser().name;
-    this.gs.unameSub.subscribe((name: string)=>{
-      console.log("refresh name="+ name);
-      this.user = name;
+    this.gs.userSub.subscribe((user: User)=>{
+      console.log("refresh name="+ user.name);
+      this.user = user.name;
     })
   }
   onModifyPasswd(): void{

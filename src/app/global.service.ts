@@ -13,7 +13,7 @@ export class GlobalService {
 
   private token: string = '';
   private user: User = new User();
-  public unameSub: Subject<string> = new Subject<string>();
+  public userSub: Subject<User> = new Subject<User>();
   constructor(private http: HttpClient,
               private rt: Router,
               private cs: CookieService) { 
@@ -22,9 +22,6 @@ export class GlobalService {
     if (this.token == null){ 
       this.token = '';
     }
-    this.user.name = this.cs.get("uname");
-    this.unameSub.next(this.user.name);
-
     console.log("saved token is " + this.token);
   }
   
@@ -35,7 +32,7 @@ export class GlobalService {
       console.log(res);
       if (res != null && res.code == 0){
         this.user = res.data;
-        this.unameSub.next(this.user.name);
+        this.userSub.next(this.user);
         this.cs.set("uname", this.user.name, 1000, '/');
         console.log("verify token is ok, user is :");
         console.log(this.user);
@@ -65,7 +62,7 @@ export class GlobalService {
     console.log(user);    
     this.user = user;
     this.cs.set("uname", this.user.name, 1000, '/');
-    this.unameSub.next(user.name);
+    this.userSub.next(user);
 
   }
   public isLogin(): boolean {

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../global.service';
+import { User } from './../user/user-management/user-management.component';
 
 @Component({
   selector: 'app-home',
@@ -7,10 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public perCR: boolean = false;
+  public perCW: boolean = false;
+
+  constructor(private gs: GlobalService) { }
 
   ngOnInit() {
-
+    this.gs.userSub.subscribe((user: User)=>{
+      this.perCR = user.perCr;
+      this.perCW = user.perCw;
+      console.log("home init ");
+      console.log(user);
+    })
   }
 
 }
