@@ -119,10 +119,10 @@ export class User{
   public state: string;
   public registTime: Date;
   public lastLoginTime: Date;
-  public perPol: number;
-  public perReg: number;
-  public perSum: number;
-  public perUsr: number;
-  public perCon: number;
-  public perDoc: number;
+  public perPol: boolean;
+  public perReg: boolean;
+  public perSum: boolean;
+  public perUsr: boolean;
+  public perCon: boolean;
+  public perDoc: boolean;
 }
