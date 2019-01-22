@@ -5,17 +5,17 @@ import { FileUploader } from 'ng2-file-upload';
 import * as Global from './../../globalvar';
 import * as moment from 'moment';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
-import { Contract } from '../contract/contract.component';
+import { ContractTemplate } from '../contracttemplate/contracttemplate.component';
 import { RespPage, RespData, PageRequest, RespPageParser } from './../../common/dto';
 import { GlobalService } from 'src/app/global.service';
 
 @Component({
-  selector: 'app-contractmanagement',
-  templateUrl: './contractmanagement.component.html',
-  styleUrls: ['./contractmanagement.component.css']
+  selector: 'app-contracttemplatemanagement',
+  templateUrl: './contracttemplatemanagement.component.html',
+  styleUrls: ['./contracttemplatemanagement.component.css']
 })
-export class ContractmanagementComponent implements OnInit {
-  contracts: Contract[] = [];
+export class ContracttemplatemanagementComponent implements OnInit {
+  contracts: ContractTemplate[] = [];
   states: string[] = Global.DOCSTATS;
   searchFormGroup: FormGroup;
   uploadFormGroup: FormGroup;
@@ -61,7 +61,7 @@ export class ContractmanagementComponent implements OnInit {
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("state", this.searchFormGroup.get("state").value);
 
-    this.http.post("/api/console/contract/list", page).subscribe((res: any)=>{
+    this.http.post("/api/console/contracttemplate/list", page).subscribe((res: any)=>{
       RespPageParser(res, 
         (data)=>{this.contracts = data;},
         (pnum)=>{},
@@ -81,7 +81,7 @@ export class ContractmanagementComponent implements OnInit {
   }
 
   setUploadParams(): void{
-    var upUrl = "/api/contract/upload?issueDate=";
+    var upUrl = "/api/contracttemplate/upload?issueDate=";
     var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
     upUrl = upUrl + issueDate;
     this.uploader.setOptions({
@@ -122,28 +122,28 @@ export class ContractmanagementComponent implements OnInit {
     }
   }
 
-  onAbate(contract: Contract): void{
+  onAbate(contract: ContractTemplate): void{
     this.confirmModal = this.modal.confirm({
       nzTitle: '您确定要作废该模版吗？',
       nzContent: contract.name,
       nzOnOk: () =>{
-        var body = Contract.clone(contract);
+        var body = ContractTemplate.clone(contract);
         body.state = Global.DOCSTAT_ABATED;
-        this.http.post("/api/contract/state", body).subscribe((res: any)=>{
+        this.http.post("/api/contracttemplate/state", body).subscribe((res: any)=>{
           this.onSearch();
         });
       }
    });
   }
 
-  onActive(contract: Contract): void{
+  onActive(contract: ContractTemplate): void{
     this.confirmModal = this.modal.confirm({
       nzTitle: '您确定要生效该模版吗？',
       nzContent: contract.name,
       nzOnOk: () =>{
-        var body = Contract.clone(contract);
+        var body = ContractTemplate.clone(contract);
         body.state = Global.DOCSTAT_ACTIVE;
-        this.http.post("/api/contract/state", body).subscribe((res: any)=>{
+        this.http.post("/api/contracttemplate/state", body).subscribe((res: any)=>{
           this.onSearch();
         });
       }

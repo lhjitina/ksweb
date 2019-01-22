@@ -38,12 +38,12 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
 import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
-import { ContractComponent } from './contract/contract/contract.component';
-import { ContractmanagementComponent } from './contract/contractmanagement/contractmanagement.component';
-import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
 import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
 import { CookieService } from 'ngx-cookie-service';
+import { ContracttemplateComponent } from './contracttemplate/contracttemplate/contracttemplate.component';
+import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
+import { ContracttemplatemanagementComponent } from './contracttemplate/contracttemplatemanagement/contracttemplatemanagement.component';
 
 @NgModule({
   declarations: [
@@ -68,11 +68,12 @@ import { CookieService } from 'ngx-cookie-service';
     PdocComponent,
     PdocdetailComponent,
     PdocmanagementComponent,
-    ContractComponent,
-    ContractmanagementComponent,
-    ContractdetailComponent,
+    ContracttemplateComponent,
     InfoportComponent,
     InfdetailComponent,
+    ContracttemplateComponent,
+    ContracttemplatedetailComponent,
+    ContracttemplatemanagementComponent,
 
   ],
   imports: [

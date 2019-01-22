@@ -5,13 +5,12 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
 @Component({
-  selector: 'app-contract',
-  templateUrl: './contract.component.html',
-  styleUrls: ['./contract.component.css']
+  selector: 'app-contracttemplate',
+  templateUrl: './contracttemplate.component.html',
+  styleUrls: ['./contracttemplate.component.css']
 })
-export class ContractComponent implements OnInit {
-
-  public contracts: Array<Contract>;
+export class ContracttemplateComponent implements OnInit {
+  public contracts: Array<ContractTemplate>;
   public searchFormGroup: FormGroup;
 
   constructor(private cdr: ChangeDetectorRef,
@@ -43,7 +42,7 @@ export class ContractComponent implements OnInit {
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("state", this.searchFormGroup.get("state").value);
 
-    this.http.post("/api/front/contract/list", page).subscribe((res: RespPage)=>{
+    this.http.post("/api/front/contracttemplate/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
         this.contracts = res.data;
       }
@@ -55,7 +54,7 @@ export class ContractComponent implements OnInit {
   }
 
   onDownload(name: string): void{
-    var url = "/api/contract/content/" + name;
+    var url = "/api/contracttemplate/content/" + name;
     this.http.get(url, {responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
@@ -69,7 +68,7 @@ export class ContractComponent implements OnInit {
 }
 
 
-export class Contract {
+export class ContractTemplate {
   public name: string;
   public state: string;
   public issueDate: Date;
@@ -78,8 +77,8 @@ export class Contract {
   public operateTime: Date;
   
   constructor(){}
-  public static clone(c: Contract){
-    var r = new Contract();
+  public static clone(c: ContractTemplate){
+    var r = new ContractTemplate();
     r.name = c.name;
     r.issueDate = c.issueDate;
     r.state = c.state;

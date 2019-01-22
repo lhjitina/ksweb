@@ -20,9 +20,9 @@ import { LoginGuard } from './guard/login.guard';
 import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
 import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
-import { ContractComponent } from './contract/contract/contract.component';
-import { ContractmanagementComponent } from './contract/contractmanagement/contractmanagement.component';
-import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
+import { ContracttemplateComponent } from './contracttemplate/contracttemplate/contracttemplate.component';
+import { ContracttemplatemanagementComponent } from './contracttemplate/contracttemplatemanagement/contracttemplatemanagement.component';
+import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
 import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
 
@@ -43,8 +43,8 @@ const routes: Routes = [
         {path: "summarydetail", component: SummarydetailComponent},
         {path: "partnerdoc", component: PdocComponent},
         {path: "pdocdetail", component:PdocdetailComponent},
-        {path: "contract", component: ContractComponent},
-        {path: "contractdetail", component: ContractdetailComponent}      
+        {path: "contracttemplate", component: ContracttemplateComponent},
+        {path: "contracttemplatedetail", component: ContracttemplatedetailComponent}      
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
@@ -60,8 +60,8 @@ const routes: Routes = [
           {path: "useradd", component: UserAddComponent},
           {path: "partnerdoc", component: PdocmanagementComponent},
           {path: "pdocdetail", component: PdocdetailComponent},
-          {path: "contract", component: ContractmanagementComponent},
-          {path: "contractdetail", component: ContractdetailComponent}
+          {path: "contracttemplate", component: ContracttemplatemanagementComponent},
+          {path: "contracttemplatedetail", component: ContracttemplatedetailComponent}
       ]},
   ], canActivate: [LoginGuard]}
 ];
