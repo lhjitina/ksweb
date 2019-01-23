@@ -36,11 +36,8 @@ export class PortalComponent implements OnInit {
               }
 
   ngOnInit() {
+    console.log("portal init.")
     this.user = this.gs.getUser().name;
-    this.gs.userSub.subscribe((user: User)=>{
-      console.log("refresh name="+ user.name);
-      this.user = user.name;
-    })
   }
   onModifyPasswd(): void{
     console.log("modify passwd")

@@ -25,6 +25,8 @@ import { ContracttemplatemanagementComponent } from './contracttemplate/contract
 import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
 import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
+import { ContractComponent } from './contract/contract/contract.component';
+import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 
 const routes: Routes = [
   {path: "", component: LoginComponent},
@@ -44,7 +46,9 @@ const routes: Routes = [
         {path: "partnerdoc", component: PdocComponent},
         {path: "pdocdetail", component:PdocdetailComponent},
         {path: "contracttemplate", component: ContracttemplateComponent},
-        {path: "contracttemplatedetail", component: ContracttemplatedetailComponent}      
+        {path: "contracttemplatedetail", component: ContracttemplatedetailComponent},
+        {path: "contract", component: ContractComponent},
+        {path: "contractdetail", component: ContractdetailComponent}      
       ]},
 
       {path: "console", component: ConsoleComponent, children:[

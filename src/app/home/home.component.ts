@@ -15,12 +15,14 @@ export class HomeComponent implements OnInit {
   constructor(private gs: GlobalService) { }
 
   ngOnInit() {
-    this.gs.userSub.subscribe((user: User)=>{
-      this.perCR = user.perCr;
-      this.perCW = user.perCw;
-      console.log("home init ");
+    console.log("home init");
+    let user = this.gs.getUser();
+    if (user != null){
+      this.perCR = this.gs.getUser().perCr;
+      this.perCW = this.gs.getUser().perCw;
+      console.log("home get user ");
       console.log(user);
-    })
+    }
   }
 
 }

@@ -44,6 +44,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { ContracttemplateComponent } from './contracttemplate/contracttemplate/contracttemplate.component';
 import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
 import { ContracttemplatemanagementComponent } from './contracttemplate/contracttemplatemanagement/contracttemplatemanagement.component';
+import { ContractComponent } from './contract/contract/contract.component';
+import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,8 @@ import { ContracttemplatemanagementComponent } from './contracttemplate/contract
     ContracttemplateComponent,
     ContracttemplatedetailComponent,
     ContracttemplatemanagementComponent,
+    ContractComponent,
+    ContractdetailComponent,
 
   ],
   imports: [

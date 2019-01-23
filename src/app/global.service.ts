@@ -13,7 +13,8 @@ export class GlobalService {
 
   private token: string = '';
   private user: User = new User();
-  public userSub: Subject<User> = new Subject<User>();
+  private initUrl: string = '/';
+
   constructor(private http: HttpClient,
               private rt: Router,
               private cs: CookieService) { 
@@ -32,13 +33,14 @@ export class GlobalService {
       console.log(res);
       if (res != null && res.code == 0){
         this.user = res.data;
-        this.userSub.next(this.user);
         this.cs.set("uname", this.user.name, 1000, '/');
         console.log("verify token is ok, user is :");
         console.log(this.user);
+        this.rt.navigateByUrl(this.initUrl);
       } 
       else{
         console.log(res);
+        this.rt.navigateByUrl("/login");
       }
     })
   }
@@ -62,9 +64,8 @@ export class GlobalService {
     console.log(user);    
     this.user = user;
     this.cs.set("uname", this.user.name, 1000, '/');
-    this.userSub.next(user);
-
   }
+  
   public isLogin(): boolean {
     return this.user.name != null && this.user.name.trim().length != 0;
   }
@@ -76,5 +77,13 @@ export class GlobalService {
     this.setToken("");
     this.cs.set("uname", '', 1000, '/');
     console.log("get token: " + this.cs.get("token"))
+  }
+
+  public getInitUrl(): string{
+    return this.initUrl;
+  }
+
+  public setInitUrl(url: string): void{
+    this.initUrl = url;
   }
 }
