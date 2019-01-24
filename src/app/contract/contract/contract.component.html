@@ -30,7 +30,7 @@
       </nz-form-control>
 
       <nz-form-control nzSpan="1">
-        <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+        <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()"  *ngIf='perCw'><i nz-icon type="upload"></i></button>
         <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
       </nz-form-control>
     </nz-form-item>
@@ -59,14 +59,16 @@
             {{data.name}}
           </a>
         </td>
-      <td>{{data.tag}}</td>
+      <td>{{data.partner}}</td>
+      <td>{{data.type}}</td>
+      <td>{{data.start | slice: 0: 10}}</td>
+      <td>{{data.end | slice: 0: 10}}</td>
+      <td>{{data.autoRenewal==0? "否": "是"}}</td>
       <td>{{data.operatorName}}</td>
-      <td>{{data.operateTime}}</td>
       <td>
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" (click)="onDownload(data)">下载</button>
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" (click)="onDelete(data)">删除</button>
+        <button nz-button  type="button" nzType="primary" (click)="onDownload(data)">下载</button>
+        <nz-divider nzType="vertical"  *ngIf='perCw'></nz-divider>
+        <button nz-button  type="button" (click)="onDelete(data)" *ngIf='perCw'>删除</button>
         </td>
     </tr>
   </tbody>
@@ -102,7 +104,7 @@
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>    
-          <nz-form-label nzSpan="4">有效期</nz-form-label>
+          <nz-form-label nzSpan="4" nzRequired>有效期</nz-form-label>
           <nz-form-control nzSpan="8">
             <nz-date-picker formControlName="start" nzPlaceHolder="开始日期"></nz-date-picker>
           </nz-form-control>  

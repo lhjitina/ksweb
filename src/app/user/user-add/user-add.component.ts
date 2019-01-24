@@ -28,12 +28,15 @@ export class UserAddComponent implements OnInit {
       tel: ['', [Validators.required, MyValidator.mobielValidator]],
       email:['', [Validators.required, MyValidator.emailValidator] ],
       departmentId: [''],
+      state: ['启用'],
       perPol: ['false'],
       perReg: ['false'],
       perSum: ['false'],
       perDoc: ['false'],
       perCon: ['false'],
-      perUsr: ['false']
+      perUsr: ['false'],
+      perCw: ['false'],
+      perCr: ['false']
     });
    }
 
@@ -59,7 +62,7 @@ export class UserAddComponent implements OnInit {
 
     this.http.post("/api/user/add", this.userAddFormGroup.value).subscribe((res: RespData)=>{
       if (res.code == 0){
-        this.rt.navigateByUrl("../user");
+        this.rt.navigateByUrl("/portal/console/user");
       }
       else{
         this.msg.create('error', "添加用户失败！(" + res.message + ")");

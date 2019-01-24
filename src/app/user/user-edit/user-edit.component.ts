@@ -17,10 +17,10 @@ export class UserEditComponent implements OnInit {
   userEditFormGroup: FormGroup;
   departments: Department[] = [];
 
-  constructor(private rt: ActivatedRoute,
+  constructor(private ar: ActivatedRoute,
               private fb: FormBuilder,
               private http: HttpClient,
-              private router: Router,
+              private rt: Router,
               private message: NzMessageService) {
 
     this.userEditFormGroup = this.fb.group({
@@ -35,7 +35,9 @@ export class UserEditComponent implements OnInit {
       perSum: ['false'],
       perDoc: ['false'],
       perCon: ['false'],
-      perUsr: ['false']
+      perUsr: ['false'],
+      perCw: ['false'],
+      perCr: ['false']
     })
   }
 
@@ -49,7 +51,7 @@ export class UserEditComponent implements OnInit {
         console.log(res.message);        
       }
     });
-    this.rt.queryParams.subscribe((data: any)=>{
+    this.ar.queryParams.subscribe((data: any)=>{
       this.userEditFormGroup.patchValue({id: data["id"]});
       console.log("user id=" + this.userEditFormGroup.get("id").value);
       this.http.get("/api/user/detail", {
@@ -70,7 +72,10 @@ export class UserEditComponent implements OnInit {
           this.userEditFormGroup.patchValue({perSum: user.perSum});
           this.userEditFormGroup.patchValue({perCon: user.perCon});
           this.userEditFormGroup.patchValue({perUsr: user.perUsr});
-          this.userEditFormGroup.patchValue({perDoc: user.perDoc});        }
+          this.userEditFormGroup.patchValue({perDoc: user.perDoc});  
+          this.userEditFormGroup.patchValue({perCw: user.perCw});            
+          this.userEditFormGroup.patchValue({perCr: user.perCr});            
+        }
         else{
           console.log(res.message);
         }
@@ -86,6 +91,7 @@ export class UserEditComponent implements OnInit {
     this.http.post("/api/user/update", this.userEditFormGroup.value).subscribe((res: RespData)=>{
       if (res.code == 0){
         this.message.create('success', '用户信息修改成功');
+        this.rt.navigateByUrl("/portal/console/user");
       }
       else{
         this.message.create('error', res.message);

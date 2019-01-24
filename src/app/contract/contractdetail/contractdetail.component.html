@@ -1,3 +1,23 @@
-<p>
-  contractdetail works!
-</p>
+<div class="pageTag">已签合同</div>
+<div nz-row>
+    <div nz-col nzSpan="10"><b>名称：</b>{{contract.name}}</div>
+
+    <div nz-col nzOffset=10 nzSpan="2">   
+      <button nz-button nzType="default" (click)="onSave()">保存</button>
+  
+    </div> 
+    <div nz-col nzSpan="2"> 
+      <a routerLink="../contract"><button nz-button nzType="primary">返回</button></a>
+    </div>
+  </div>
+  
+  <hr>
+  <div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
+    <pdf-viewer [src]="pdfUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
+  </div>
+  <div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">
+    <img [src]="safeUrl" style="width:100%;" >
+  </div>
+
+
+  

@@ -18,6 +18,7 @@ export class ContractComponent implements OnInit {
   public contracts: Contract[] = [];
   public searchFormGroup: FormGroup;
   public uploadFormGroup: FormGroup;
+  public perCw: boolean = false;
 
   uploader:FileUploader;
   bShowUplodModal: boolean = false;
@@ -27,7 +28,8 @@ export class ContractComponent implements OnInit {
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private gs: GlobalService,
-              private er: ElementRef) {
+              private er: ElementRef,
+              private ms: NzModalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       partner: [''],
@@ -41,14 +43,14 @@ export class ContractComponent implements OnInit {
       partner: [''],
       type: [''],
       digest: [''],
-      start: [''],
-      end: [''],
+      start: ['', Validators.required],
+      end: ['', Validators.required],
       autoRenewal: ['0']
     });
               }
 
   ngOnInit() {
-
+    this.perCw = this.gs.getUser().perCw;
     this.initUploader();
     this.onSearch();
 
@@ -79,14 +81,14 @@ export class ContractComponent implements OnInit {
     })
    }
 
-  onDownload(name: string): void{
-    var url = "/api/contract/content/" + name;
+  onDownload(c: Contract): void{
+    var url = "/api/contract/content/" + c.name;
     this.http.get(url, { observe: 'body', responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
       document.body.appendChild(a);
       a.href = URL.createObjectURL(res);
       a.style.display = "false";
-      a.download = name;
+      a.download = c.name;
       a.click();
       URL.revokeObjectURL(a.href);
     });
@@ -103,9 +105,18 @@ export class ContractComponent implements OnInit {
   }
 
   setUploadParams(): void{
-    var upUrl = "/api/contract/upload?issueDate=";
-    var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
-    upUrl = upUrl + issueDate;
+    var upUrl = "/api/contract/upload?";
+    upUrl += "partner=" + this.uploadFormGroup.get("partner").value;
+    upUrl += "&type=" + this.uploadFormGroup.get("type").value;
+    upUrl += "&digest=" + this.uploadFormGroup.get("digest").value;
+    upUrl += "&autoRenewal=" + this.uploadFormGroup.get("autoRenewal").value;
+
+    var startDate = moment(this.uploadFormGroup.get("start").value).format("YYYY-MM-DD");
+    upUrl += "&start=" + startDate;
+    var endDate = moment(this.uploadFormGroup.get("end").value).format("YYYY-MM-DD");
+    upUrl += "&end=" + endDate;
+
+    console.log("upload contract url:" + upUrl);
     this.uploader.setOptions({
       url: upUrl,
       authToken: this.gs.getToken(),
@@ -144,6 +155,23 @@ export class ContractComponent implements OnInit {
     }
   }
 
+  onDelete(c: Contract): void{
+    this.ms.confirm({
+      nzTitle: '您确定要删除该文件吗？',
+      nzContent: c.name,
+      nzOnOk: () => this.deleteContract(c)
+    })
+  }
+
+  deleteContract(c: Contract): void{
+    let body = {
+      name: c.name
+    };
+    this.http.post("/api/contract/delete", body).subscribe((res: RespData)=>{
+      console.log(res);
+      this.onSearch();
+    });
+  }
 }
 
 

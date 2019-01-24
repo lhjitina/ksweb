@@ -6,7 +6,7 @@
           <img src="./../../../assets/timg.jpg"  width="100%">
       </div>
     </div>
-    <div nz-col [nzOffset]="2" nzSpan="15">
+    <div nz-col [nzOffset]="1" nzSpan="16">
       <div nz-row>
         <div nz-col  [nzSpan]="10">
             <nz-form-item>
@@ -40,7 +40,7 @@
             </nz-form-item>
         </div>
       
-        <div nz-col [nzOffset]="2" [nzSpan]="10">
+        <div nz-col [nzOffset]="2" [nzSpan]="5">
             <nz-form-item>
               <nz-form-label>用户权限</nz-form-label>
               <nz-form-control nzOffset=2>
@@ -58,10 +58,23 @@
               <nz-form-control nzOffset=2>
                 <label nz-checkbox formControlName="perCon">合同模板管理</label>         
              </nz-form-control>              
-             <nz-form-control nzOffset=2>
-                 <label nz-checkbox formControlName="perUsr">用户管理</label>         
-              </nz-form-control>
             </nz-form-item>
+        </div>
+        <div nz-col nzOffset="1" nzSpan="5">
+          <nz-form-item>
+            <nz-form-control>
+            <nz-form-text></nz-form-text>
+          </nz-form-control>
+            <nz-form-control>
+              <label nz-checkbox formControlName="perUsr">用户管理</label>         
+           </nz-form-control>
+           <nz-form-control>
+              <label nz-checkbox formControlName="perCw">合同上传</label>         
+           </nz-form-control>
+           <nz-form-control>
+              <label nz-checkbox formControlName="perCr">合同查看</label>         
+           </nz-form-control>          
+          </nz-form-item>
         </div>
       </div>
 
