@@ -51,16 +51,11 @@
                  {{data.name}}
           </a>
       </td>
-      <td>{{data.meetingDate | slice: 0: 10 }}</td>
+      <td>{{data.meetingDate | date:'yyyy-MM-dd' }}</td>
       <td>{{data.operatorName}}</td>
       <td>{{data.operateTime}}</td>
       <td>
-        <a [routerLink]="['../summarydetail']" 
-            [queryParams]="{name: data.name, date: data.meetingDate, fromUrl: 'console'}">
-            <button nz-button>查看</button>
-        </a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button (click)="onDelete(data)">删除</button>
+        <a (click)="onDelete(data)">删除</a>
       </td>
           </tr>
         </tbody>

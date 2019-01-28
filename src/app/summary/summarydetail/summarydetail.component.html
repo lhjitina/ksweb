@@ -1,7 +1,7 @@
 <div class="pageTag">会议纪要</div>
 <div nz-row>
     <div nz-col nzSpan="7"><b>纪要名称：</b>{{sum.name}}</div>
-    <div nz-col nzSpan="4"><b>会议日期：</b>{{sum.meetingDate | slice:0:10}}</div>
+    <div nz-col nzSpan="4"><b>会议日期：</b>{{sum.meetingDate | date:'yyyy-MM-dd'}}</div>
     <div nz-col nzOffset="7" nzSpan="2">
       <button nz-button nzType="default" disabled ='onPrint()'>打印</button>
     </div>

@@ -53,13 +53,8 @@
       <td>{{data.operatorName}}</td>
       <td>{{data.operateTime}}</td>
       <td>
-        <a [routerLink]="['../pdocdetail']" 
-            [queryParams]="{name: data.name, partner: data.partner, fromUrl: 'console'}">
-            <button nz-button type="button">查看</button>
-        </a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" (click)="onDelete(data)">删除</button>
-        </td>
+        <a (click)="onDelete(data)">删除</a>
+      </td>
     </tr>
   </tbody>
 </nz-table>

@@ -73,19 +73,13 @@
               </a>
             </td>
           <td>{{data.departmentName}}</td>
-          <td>{{data.issueDate | slice: 0: 10 }}</td>
+          <td>{{data.issueDate | date:'yyyy-MM-dd' }}</td>
           <td>{{data.state}}</td>
           <td>{{data.operatorName}}</td>
           <td>{{data.operateTime}}</td>
           <td>
-            <a [routerLink]="['../regulationdetail']" 
-               [queryParams]="{name: data.name, department: data.departmentName, date: data.issueDate, fromUrl: 'console'}">
-               <button nz-button>查看</button>
-            </a>
-            <nz-divider nzType="vertical"></nz-divider>
-            <button nz-button *ngIf="data.state == '作废'" (click)="onActive(data)">生效</button>
-            <button nz-button *ngIf="data.state == '有效'" (click)="onAbate(data)">作废</button>
-            <nz-divider nzType="vertical"></nz-divider>
+            <a *ngIf="data.state == '作废'" (click)="onActive(data)">生效</a>
+            <a *ngIf="data.state == '有效'" (click)="onAbate(data)">作废</a>
          </td>
         </tr>
       </tbody>

@@ -37,13 +37,15 @@
 </form>
   <br>  
     
-<nz-table #basicTable [nzData]="contracts" [nzShowSizeChanger]="true">
+<nz-table #basicTable [nzData]="contracts" [nzShowSizeChanger]="true"
+  [nzWidthConfig]="['30px','200px','100px','100px','150px', '140px', '140px', '60px', '80px', null]">
   <thead>
     <tr>
       <th class="theadbg">序号</th>
       <th class="theadbg">合同名称</th>
       <th class="theadbg">合作方</th>
       <th class="theadbg">合同类型</th>
+      <th class="theadbg">合同摘要</th>
       <th class="theadbg">开始日期</th> 
       <th class="theadbg">终止日期</th> 
       <th class="theadbg">自动续期</th>          
@@ -59,17 +61,72 @@
             {{data.name}}
           </a>
         </td>
-      <td>{{data.partner}}</td>
-      <td>{{data.type}}</td>
-      <td>{{data.start | slice: 0: 10}}</td>
-      <td>{{data.end | slice: 0: 10}}</td>
-      <td>{{data.autoRenewal==0? "否": "是"}}</td>
+      <td>
+        <ng-container  *ngIf='!editCache[data.name].edit'>
+          {{data.partner}}
+        </ng-container>
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <input type="text" nz-input [(ngModel)]="editCache[data.name].data.partner">
+        </ng-container>
+      </td>
+      <td>
+        <ng-container  *ngIf='!editCache[data.name].edit'>
+          {{data.type}}
+        </ng-container>
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <input type="text" nz-input [(ngModel)]="editCache[data.name].data.type">
+        </ng-container>
+      </td>
+      <td>
+        <ng-container  *ngIf='!editCache[data.name].edit'>
+          {{data.digest}}
+        </ng-container>
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <input type="text" nz-input [(ngModel)]="editCache[data.name].data.digest">
+        </ng-container>
+      </td>
+      <td>
+        <ng-container  *ngIf='!editCache[data.name].edit'>
+          {{data.start | date:'yyyy-MM-dd'}}
+        </ng-container>
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <nz-date-picker [(ngModel)]="editCache[data.name].data.start" nzAllowClear='false'></nz-date-picker>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container  *ngIf='!editCache[data.name].edit'>
+          {{data.end | date:'yyyy-MM-dd'}}
+        </ng-container>
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <nz-date-picker [(ngModel)]="editCache[data.name].data.end" nzAllowClear='false'></nz-date-picker>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container  *ngIf='!editCache[data.name].edit'>
+          {{data.autoRenewal==0? "否": "是"}}
+        </ng-container>        
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <nz-select [(ngModel)]="editCache[data.name].data.autoRenewal">
+            <nz-option [nzValue]= "0" nzLabel= "否"></nz-option>            
+            <nz-option [nzValue]= "1" nzLabel= "是"></nz-option> 
+          </nz-select>
+        </ng-container>
+      </td>
       <td>{{data.operatorName}}</td>
       <td>
-        <button nz-button  type="button" nzType="primary" (click)="onDownload(data)">下载</button>
-        <nz-divider nzType="vertical"  *ngIf='perCw'></nz-divider>
-        <button nz-button  type="button" (click)="onDelete(data)" *ngIf='perCw'>删除</button>
-        </td>
+        <ng-container *ngIf='!editCache[data.name].edit'>
+          <a (click)="onDownload(data)">下载</a>
+          <nz-divider nzType="vertical"  *ngIf='perCw'></nz-divider>
+          <a (click)="onDelete(data)" *ngIf='perCw'>删除</a>
+          <nz-divider nzType="vertical"  *ngIf='perCw'></nz-divider>
+          <a (click)="onEdit(data)" *ngIf='perCw'>修改</a>
+        </ng-container>
+        <ng-container  *ngIf='editCache[data.name].edit'>
+          <a (click)="onFinishEdit(data)">确定</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="onCancelEdit(data)">取消</a>
+        </ng-container>
+      </td>
     </tr>
   </tbody>
 </nz-table>
@@ -81,7 +138,8 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="4">名称</nz-form-label>       
         <nz-form-control>
-          <nz-form-text style="text-align:center;">{{uploader?.queue[0]?.file?.name}}</nz-form-text>
+<!---          <nz-form-text style="text-align:center;">{{uploader?.queue[0]?.file?.name}}</nz-form-text>-->
+          <a (click)="review()">{{uploader?.queue[0]?.file?.name}}</a>
         </nz-form-control>
       </nz-form-item>
 
@@ -122,7 +180,7 @@
               </nz-radio-group>
             </nz-form-control>
           </nz-form-item>       
-        </form>
+    </form>
   </ng-template>
 
   <ng-template #modalFooter>

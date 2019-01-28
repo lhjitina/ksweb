@@ -5,7 +5,7 @@ import * as Global from './../../globalvar';
 import * as moment from 'moment';
 import { FileUploader } from 'ng2-file-upload';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { GlobalService } from 'src/app/global.service';
 
 @Component({
@@ -16,6 +16,7 @@ import { GlobalService } from 'src/app/global.service';
 
 export class ContractComponent implements OnInit {
   public contracts: Contract[] = [];
+  public editCache = {};
   public searchFormGroup: FormGroup;
   public uploadFormGroup: FormGroup;
   public perCw: boolean = false;
@@ -29,7 +30,8 @@ export class ContractComponent implements OnInit {
               private fb: FormBuilder,
               private gs: GlobalService,
               private er: ElementRef,
-              private ms: NzModalService) {
+              private ms: NzModalService,
+              private msg: NzMessageService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       partner: [''],
@@ -56,15 +58,65 @@ export class ContractComponent implements OnInit {
 
   }
 
+  updateEditCache(): void{
+    this.contracts.forEach(con=>{
+
+      if (!this.editCache[con.name]){
+        this.editCache[con.name]={
+        edit: false,
+        data: con
+        }
+      }
+    });
+    console.log(this.editCache);
+  }
+
+  onEdit(con: Contract): void{
+    this.editCache[con.name].edit = true;
+    console.log(this.editCache);
+  }
+
+  onCancelEdit(con: Contract): void{
+    this.editCache[con.name].edit = false;
+  }
+
+  onFinishEdit(con: Contract): void{
+    let data = this.editCache[con.name].data as Contract;
+    let body = {
+      name: con.name,
+      partner: data.partner,
+      type: data.type,
+      digest: data.digest,
+      start: moment(data.start).format("YYYY/MM/DD HH:mm:ss"),
+      end: moment(data.end).format("YYYY/MM/DD HH:mm:ss"),
+      autoRenewal: data.autoRenewal
+    };
+    console.log("update contract:");
+    console.log(body);
+    this.http.post("/api/contract/update", body).subscribe((res: RespData)=>{
+      if (res.code == 0){
+        console.log("update contract ok");
+        const index = this.contracts.findIndex(item=>item.name === con.name);
+        Object.assign(this.contracts[index], this.editCache[con.name].data);
+        this.editCache[con.name].edit = false;
+      }
+      else{
+        console.log("update contrace fail: " + res.message);
+        this.editCache[con.name].edit = false;
+        this.msg.create("error", res.message);
+      }
+    });
+  }
+
   onSearch(): void{
     var page = new PageRequest();  
     var sd = this.searchFormGroup.get("startDate").value;
     var ed = this.searchFormGroup.get("endDate").value;
     if (moment.isDate(sd)) { 
-      page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
+      page.append("startDate", moment(sd).format("YYYY/MM/DD")) 
     };
     if (moment.isDate(ed)) { 
-      page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
+      page.append("endDate", moment(ed).format("YYYY/MM/DD")) 
     };
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("partner", this.searchFormGroup.get("partner").value);
@@ -72,7 +124,8 @@ export class ContractComponent implements OnInit {
 
     this.http.post("/api/contract/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
-        this.contracts = res.data;        
+        this.contracts = res.data;    
+        this.updateEditCache();    
       }
       else{
         console.log(res.message);
@@ -171,6 +224,16 @@ export class ContractComponent implements OnInit {
       console.log(res);
       this.onSearch();
     });
+  }
+
+  review(): void{
+    let name = this.uploader.queue[0].file.name;
+    let docType = Global.fileType(name);
+    console.log("review: " + name + "type:" + docType);
+    if (docType === 'application/pdf' || docType === 'image/jpeg'){
+      let url = window.URL.createObjectURL(this.uploader.queue[0].some);
+      window.open(url);
+    }
   }
 }
 

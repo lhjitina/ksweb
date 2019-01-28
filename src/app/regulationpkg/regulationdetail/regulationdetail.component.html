@@ -2,7 +2,7 @@
 <div nz-row>
   <div nz-col nzSpan="7"><b>文件名称：</b>{{reg.name}}</div>
   <div nz-col nzSpan="4"><b>发文部门：</b>{{reg.departmentName}}</div>
-  <div nz-col nzSpan="4"><b>发文日期：</b>{{reg.issueDate | slice:0:10}}</div>
+  <div nz-col nzSpan="4"><b>发文日期：</b>{{reg.issueDate | date:'yyyy-MM-dd'}}</div>
   <div nz-col nzSpan="3"><b>状态：</b>{{reg.state}}</div>
   <div nz-col nzSpan="2">
     <button nz-button nzType="default" disabled ='onPrint()'>打印</button>

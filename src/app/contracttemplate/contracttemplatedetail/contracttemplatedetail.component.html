@@ -1,7 +1,7 @@
 <div class="pageTag">合同模版</div>
 <div nz-row>
     <div nz-col nzSpan="10"><b>模版名称：</b>{{contract.name}}</div>
-    <div nz-col nzSpan="6"><b>发布日期：</b>{{contract.issueDate | slice:0:10}}</div>
+    <div nz-col nzSpan="6"><b>发布日期：</b>{{contract.issueDate | date:'yyyy-MM-dd'}}</div>
     <div nz-col nzSpan="4"><b>状态：</b>{{contract.state}}</div>
     <div nz-col nzSpan="2">   
       <button nz-button nzType="default" (click)="onSave()">保存</button>

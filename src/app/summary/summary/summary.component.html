@@ -41,14 +41,9 @@
                 {{data.name}}
               </a>
             </td>
-          <td>{{data.meetingDate | slice:0:10}}</td>
+          <td>{{data.meetingDate | date:'yyyy-MM-dd'}}</td>
           <td>           
-            <a [routerLink]="['../summarydetail']" 
-               [queryParams]="{name: data.name, date: data.meetingDate, fromUrl: 'home'}">
-              <button nz-button nzType="primary">查看</button>
-            </a>           
-            <nz-divider nzType="vertical"></nz-divider>
-            <button nz-button nzType="default" (click)="onDownload(data.name)">下载</button>
+            <a (click)="onDownload(data.name)">下载</a>
           </td>
         </tr>
       </tbody>

@@ -76,11 +76,9 @@
         <td>{{user.email}}</td>
         <td>{{user.state}}</td>
         <td>
-          <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">
-            <button nz-button nzType="default">修改</button>
-          </a>
+          <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">修改</a>
           <nz-divider nzType="vertical"></nz-divider>
-          <button nz-button nzType="default" (click)="onResetPasswd(user)">重置密码</button>
+          <a (click)="onResetPasswd(user)">重置密码</a>
         </td>       
       </tr>
   </tbody>

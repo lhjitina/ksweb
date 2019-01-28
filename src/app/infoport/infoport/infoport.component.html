@@ -51,18 +51,13 @@
         </td>
       <td>{{data.tag}}</td>
       <td>{{data.operatorName}}</td>
-      <td>{{data.operateTime}}</td>
+      <td>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>
-        <a [routerLink]="['../infodetail']" 
-            [queryParams]="{name: data.name, tag: data.tag}">
-            <button nz-button type="button">查看</button>
-        </a>
+        <a (click)="onDownload(data)">下载</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" (click)="onDownload(data)">下载</button>
+        <a (click)="onRefresh(data)">更新</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" (click)="onRefresh(data)">更新</button>
-        <nz-divider nzType="vertical"></nz-divider>
-        <button nz-button  type="button" (click)="onDelete(data)">删除</button>
+        <a (click)="onDelete(data)">删除</a>
         </td>
     </tr>
   </tbody>
