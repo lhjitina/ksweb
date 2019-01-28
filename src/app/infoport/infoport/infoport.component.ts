@@ -24,6 +24,7 @@ export class InfoportComponent implements OnInit {
   uploadTYPE: string = "upload"; //or "refresh"
   refreshedinfo = new ShareInfo();
   confirmModal: NzModalRef; 
+  fuzzySearchFormGroup: FormGroup;
 
   constructor(private http: HttpClient,
               private fb: FormBuilder,
@@ -35,7 +36,10 @@ export class InfoportComponent implements OnInit {
       name: [''],
       tag: ['']
     });
-
+    this.fuzzySearchFormGroup = this.fb.group({
+      keys: ['']
+    });
+    
     this.uploadFormGroup = this.fb.group({
       tag: ['']
     });

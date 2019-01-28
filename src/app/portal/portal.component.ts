@@ -19,6 +19,7 @@ export class PortalComponent implements OnInit {
   bShowPasswdModal: boolean = false;
   passwdFormGroup: FormGroup;
   processing: boolean = false;
+  isHome = true;
 
   constructor(private gs: GlobalService,
               private modal: NzModalService,
@@ -79,6 +80,15 @@ export class PortalComponent implements OnInit {
     this.rt.navigateByUrl("login");
   }
 
+  onHome(): void{
+    this.isHome = true;
+  }
+
+  onConsole(): void{
+    console.log("click console")
+    this.isHome = false;
+  }
+  
   JsonFromMap(m: Map<string, string>): string{
     var str = '{';
     m.forEach((v, k, mm)=>{

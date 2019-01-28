@@ -2,15 +2,49 @@
   <nz-header>
         <div class="logo"></div>
         <ul nz-menu  [nzTheme]="'dark'" [nzMode]="'horizontal'" class="menu">
-          <li nz-menu-item><a routerLink="./home">首页</a></li>
-          <li nz-menu-item><a routerLink="./console">控制台</a></li>
+          <li nz-menu-item>
+            <a routerLink="./home" (click)="onHome()">
+              <i nz-icon type="home" theme="outline"></i>
+              <div class="mobile-hide">首页</div>
+            </a>
+          </li>
+          <li nz-menu-item>
+            <a routerLink="./console" (click)="onConsole()">
+              <i nz-icon type="setting" theme="outline"></i>
+              <div class="mobile-hide">管理</div>
+            </a>
+          </li>
           <li nz-submenu style="float:right;">
-            <span title><i nz-icon type="user"></i>{{user}}</span>
+            <span title>
+              <i nz-icon type="user"></i>
+              <div class='mobile-hide'>{{user}}</div>
+            </span>
             <ul>
               <li nz-menu-item (click)="onModifyPasswd()">修改密码</li>
               <li nz-menu-item (click)="onLogout()">退出</li>
             </ul>
           </li> 
+          <li nz-submenu class="mobile-func-menu">
+            <span title>
+              <i nz-icon type="ordered-list" theme="outline"></i>
+            </span>
+            <ul [hidden]="isHome == false">
+              <li nz-menu-item><a routerLink="./home/shareinfo">信息共享</a></li>
+              <li nz-menu-item><a routerLink="./home/regulation">规章制度</a></li>
+              <li nz-menu-item><a routerLink="./home/summary">会议纪要</a></li>
+              <li nz-menu-item><a routerLink="./home/partnerdoc">伙伴资料</a></li>
+              <li nz-menu-item><a routerLink="./home/policy">行业政策</a></li>
+              <li nz-menu-item><a routerLink="./home/contracttemplate">合同模版</a></li>
+              <li nz-menu-item *ngIf="perCR || perCW"><a routerLink="./home/contract">已签合同</a></li>
+            </ul>
+            <ul [hidden]="isHome == true">
+                <li nz-menu-item><a routerLink="./console/regulation">规章制度管理</a></li>
+                <li nz-menu-item><a routerLink="./console/summary">会议纪要管理</a></li>
+                <li nz-menu-item><a routerLink="./console/partnerdoc">伙伴资料管理</a></li>
+                <li nz-menu-item><a routerLink="./console/policy">行业政策管理</a></li>
+                <li nz-menu-item><a routerLink="./console/contracttemplate">合同模版管理</a></li>
+            </ul>
+          </li>
         </ul>
   </nz-header>  
   <div style="width: 100%;">

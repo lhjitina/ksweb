@@ -7,15 +7,55 @@
     color: #f00;
 }
 
-.pageTag{
-    margin: -60px 0 30px -24px;
-    background-color: #fa8c35;
-    color: white;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    height: 36px;
-    width: 150px;
-    padding-top: 8px;
-    text-align: center;
-    font-size: 1.2em;
+@media screen and (min-width: 768px){
+    .pageTag{
+        margin: -60px 0 20px -24px;
+        background-color: #fa8c35;
+        color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        height: 36px;
+        width: 150px;
+        padding-top: 8px;
+        text-align: center;
+        font-size: 1.2em;
+    }
+    .mobile-hide{
+        display: inline;
+    }
+    .mobile-show{
+        display: none;
+    }
+    .main-view{
+        padding: 50px 30px 30px 30px;       
+    }
+
+}
+
+@media screen and (max-width: 768px){
+    .pageTag{
+        margin: -50px 0 10px -24px;
+        background-color: #fa8c35;
+        color: white;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        height: 26px;
+        width: 120px;
+        padding-top: 3px;
+        text-align: center;
+    }    
+    .mobile-hide{
+        display: none;
+    }
+    .mobile-show{
+        display: block;
+
+    }
+    .main-view{
+        padding: 30px 0px 0px 0px;       
+    }
+}
+
+.upload{
+    margin-top:4px;
 }

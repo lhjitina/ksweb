@@ -1,33 +1,47 @@
 <div class="pageTag">信息共享</div>
-<form nz-form [formGroup]="searchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
- 
-    <nz-form-item> 
-      <nz-form-label>文件名称</nz-form-label>
-      <nz-form-control>
-        <input  nz-input formControlName="name" style="width:200px;" placeholder="文件名称">
-      </nz-form-control>
-    </nz-form-item>
-   
-    <nz-form-item>
-      <nz-form-label>标签</nz-form-label>
-      <nz-form-control>
-        <input  nz-input formControlName="tag" style="width:200px;" placeholder="标签名称">
-      </nz-form-control>
-    </nz-form-item>
-                        
-     <nz-form-item>
-      <nz-form-control>
-        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-      <nz-form-control>
-        <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 5px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
-        <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
-      </nz-form-control>
-    </nz-form-item>
-</form>
+    <form class="mobile-hide" nz-form [formGroup]="searchFormGroup"  (ngSubmit)="onSearch()">
+        <nz-form-item> 
+          <nz-form-label nzSpan="2">文件名称</nz-form-label>
+          <nz-form-control nzSpan="6">
+            <input  nz-input formControlName="name"  placeholder="文件名称">
+          </nz-form-control>
+
+          <nz-form-label nzSpan="1">标签</nz-form-label>
+          <nz-form-control nzSpan="6">
+            <input  nz-input formControlName="tag"  placeholder="标签名称">
+          </nz-form-control>
+
+          <nz-form-control  nzOffset="1" nzSpan="1">
+            <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+          </nz-form-control>
+
+          <nz-form-control  nzSpan="1">
+            <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+              <i nz-icon type="upload"></i>
+            </button>
+          </nz-form-control> 
+        </nz-form-item>
+    </form>
+    <form class="mobile-show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+      <nz-form-item>
+        <nz-form-control nzSpan="16">
+          <input  nz-input formControlName="keys"  placeholder="查询内容">
+        </nz-form-control>
+        <nz-form-control nzOffset="1" nzSpan="3">
+          <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+        </nz-form-control>
+        <nz-form-control nzOffset="1" nzSpan="3">
+          <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+            <i nz-icon type="upload"></i>
+          </button>
+        </nz-form-control> 
+      </nz-form-item>
+    </form>
+
+
+    <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+
+
   <br>  
     
 <nz-table #basicTable [nzData]="infos" [nzShowSizeChanger]="true">
