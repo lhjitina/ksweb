@@ -164,7 +164,8 @@ export class InfoportComponent implements OnInit {
     this.uploadFormGroup.patchValue({"tag": info.tag});
   }
 
-  onDownload(info: ShareInfo): void{
+  onDownload(data: any): void{
+    let info = data as ShareInfo;
     var url = "/api/share/content?name=" + info.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       var a = document.createElement('a');
@@ -175,6 +176,17 @@ export class InfoportComponent implements OnInit {
       a.click();
       URL.revokeObjectURL(a.href);  
     });
+  }
+
+  cardTitle(i: any, data: any): string{
+    let info = data as ShareInfo;
+    i += 1;
+    return "[" + i + "] " + info.name; 
+  }
+
+  onClickCard(data: any){
+    let info = data as ShareInfo;
+    console.log("click card" + info.name);
   }
 }
 

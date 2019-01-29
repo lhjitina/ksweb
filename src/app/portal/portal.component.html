@@ -5,19 +5,19 @@
           <li nz-menu-item>
             <a routerLink="./home" (click)="onHome()">
               <i nz-icon type="home" theme="outline"></i>
-              <div class="mobile-hide">首页</div>
+              <div class="pc_show">首页</div>
             </a>
           </li>
           <li nz-menu-item>
             <a routerLink="./console" (click)="onConsole()">
               <i nz-icon type="setting" theme="outline"></i>
-              <div class="mobile-hide">管理</div>
+              <div class="pc_show">管理</div>
             </a>
           </li>
           <li nz-submenu style="float:right;">
             <span title>
               <i nz-icon type="user"></i>
-              <div class='mobile-hide'>{{user}}</div>
+              <div class='pc_show'>{{user}}</div>
             </span>
             <ul>
               <li nz-menu-item (click)="onModifyPasswd()">修改密码</li>

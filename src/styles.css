@@ -1,14 +1,8 @@
-.consoleTableHead{
-    background-color: #fedcbd;
-    color: #fff;
-}
-
-.testcss{
-    color: #f00;
-}
-
-@media screen and (min-width: 768px){
-    .pageTag{
+@media screen and (min-width: 769px){
+    body{
+        --sc_size: 'lg';
+    }    
+    .page_tag{
         margin: -60px 0 20px -24px;
         background-color: #fa8c35;
         color: white;
@@ -20,20 +14,22 @@
         text-align: center;
         font-size: 1.2em;
     }
-    .mobile-hide{
+    .pc_show{
         display: inline;
     }
-    .mobile-show{
+    .mobile_show{
         display: none;
     }
-    .main-view{
+    .main_view{
         padding: 50px 30px 30px 30px;       
     }
-
 }
-
 @media screen and (max-width: 768px){
-    .pageTag{
+    body{
+        --sc_size: 'sm';
+    }
+ 
+    .page_tag{
         margin: -50px 0 10px -24px;
         background-color: #fa8c35;
         color: white;
@@ -44,14 +40,14 @@
         padding-top: 3px;
         text-align: center;
     }    
-    .mobile-hide{
+    .pc_show{
         display: none;
     }
-    .mobile-show{
+    .mobile_show{
         display: block;
 
     }
-    .main-view{
+    .main_view{
         padding: 30px 0px 0px 0px;       
     }
 }

@@ -1,5 +1,5 @@
-<div class="pageTag">信息共享</div>
-    <form class="mobile-hide" nz-form [formGroup]="searchFormGroup"  (ngSubmit)="onSearch()">
+<div class="page_tag">信息共享</div>
+    <form class="pc_show" nz-form [formGroup]="searchFormGroup"  (ngSubmit)="onSearch()">
         <nz-form-item> 
           <nz-form-label nzSpan="2">文件名称</nz-form-label>
           <nz-form-control nzSpan="6">
@@ -22,7 +22,7 @@
           </nz-form-control> 
         </nz-form-item>
     </form>
-    <form class="mobile-show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+    <form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
       <nz-form-item>
         <nz-form-control nzSpan="16">
           <input  nz-input formControlName="keys"  placeholder="查询内容">
@@ -38,13 +38,11 @@
       </nz-form-item>
     </form>
 
-
     <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
-
 
   <br>  
     
-<nz-table #basicTable [nzData]="infos" [nzShowSizeChanger]="true">
+<nz-table class="pc_show" #basicTable [nzData]="infos" [nzShowSizeChanger]="true" >
   <thead>
     <tr>
       <th class="theadbg">序号</th>
@@ -76,7 +74,19 @@
     </tr>
   </tbody>
 </nz-table>
-  
+
+<div class="mobile_show" *ngFor="let data of infos; let i=index" style="margin-bottom: 5px; background: #ECECEC;">
+  <nz-card  style="width:100%;" [nzTitle]="cardTitle(i, data)" [nzExtra]="extraTemplate" (click)="onClickCard(data)">
+    <p>Card content</p>
+    <p>Card content</p>
+    <p>Card content</p>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a (click)="onDownload(data)">下载</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="onDelete(data)">删除</a>
+  </ng-template>
+</div>
 <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传共享信息" 
       [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
   <ng-template #pdocContent>
