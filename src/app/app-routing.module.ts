@@ -21,7 +21,6 @@ import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
 import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
 import { ContracttemplateComponent } from './contracttemplate/contracttemplate/contracttemplate.component';
-import { ContracttemplatemanagementComponent } from './contracttemplate/contracttemplatemanagement/contracttemplatemanagement.component';
 import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
 import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
@@ -64,8 +63,6 @@ const routes: Routes = [
           {path: "useradd", component: UserAddComponent},
           {path: "partnerdoc", component: PdocmanagementComponent},
           {path: "pdocdetail", component: PdocdetailComponent},
-          {path: "contracttemplate", component: ContracttemplatemanagementComponent},
-          {path: "contracttemplatedetail", component: ContracttemplatedetailComponent}
       ]},
   ], canActivate: [LoginGuard]}
 ];

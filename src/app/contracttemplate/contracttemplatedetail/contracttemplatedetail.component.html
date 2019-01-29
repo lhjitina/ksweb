@@ -1,24 +1,29 @@
 <div class="page_tag">合同模版</div>
 <div nz-row>
-    <div nz-col nzSpan="10"><b>模版名称：</b>{{contract.name}}</div>
-    <div nz-col nzSpan="6"><b>发布日期：</b>{{contract.issueDate | date:'yyyy-MM-dd'}}</div>
-    <div nz-col nzSpan="4"><b>状态：</b>{{contract.state}}</div>
-    <div nz-col nzSpan="2">   
-      <button nz-button nzType="default" (click)="onSave()">保存</button>
-  
-    </div> 
-    <div nz-col nzSpan="2"> 
-      <a routerLink="../contracttemplate"><button nz-button nzType="primary">返回</button></a>
+    <div nz-col  nzXs="18" nzSm="20" nzMd="10" nzLg="10" nzXl="10" nzXXl="10">
+      <b>模版名称：</b>{{contract.name}}
     </div>
-  </div>
+    <div nz-col  class="pc_show" nzMd="6" nzLg="6" nzXl="6" nzXXl="6">
+      <b>发布日期：</b>{{contract.issueDate | date:'yyyy-MM-dd'}}
+    </div>
+    <div nz-col  class="pc_show" nzMd="4" nzLg="4" nzXl="4" nzXXl="4">
+      <b>状态：</b>{{contract.state}}
+    </div>
+    <div nz-col  nzXs="3" nzSm="3" nzMd="2" nzLg="1" nzXl="1" nzXXl="1">   
+      <a (click)="onSave()">保存</a>
+    </div> 
+    <div nz-col  nzXs="3" nzSm="3" nzMd="2" nzLg="1" nzXl="1" nzXXl="1"> 
+      <a routerLink="../contracttemplate">返回</a>
+    </div>
+</div>
   
-  <hr>
-  <div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
-    <pdf-viewer [src]="pdfUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
-  </div>
-  <div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">
-    <img [src]="safeUrl" style="width:100%;" >
-  </div>
+<hr>
+<div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
+  <pdf-viewer [src]="pdfUrl"  [render-text]="true" [fit-to-page]="true" style="display: block;"></pdf-viewer>
+</div>
+<div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">
+  <img [src]="safeUrl" style="width:100%;" >
+</div>
 
 
   

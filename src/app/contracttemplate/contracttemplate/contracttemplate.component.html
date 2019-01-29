@@ -1,50 +1,128 @@
 <div class="page_tag">合同模版</div>
-<form nz-form [formGroup]="searchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
-    <nz-form-item>
-      <nz-form-label>模版名称</nz-form-label>
-      <nz-form-control>
-          <input  type="text" nz-input formControlName="name" style="width:200px;" >
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label>发布日期</nz-form-label>
+<form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
+  <nz-form-item>
+    <nz-form-label nzSpan="2">模版名称</nz-form-label>
+    <nz-form-control nzSpan="4">
+      <input  type="text" nz-input formControlName="name" >
+    </nz-form-control>
+
+    <nz-form-label nzSpan="3">发布日期</nz-form-label>
+    <nz-form-control nzSpan="3">
+      <nz-date-picker formControlName="startDate"  nzPlaceHolder="开始日期"></nz-date-picker>
+    </nz-form-control>
+    <nz-form-control nzSpan="3">
+      <nz-date-picker formControlName="endDate" nzPlaceHolder="结束日期"></nz-date-picker>
+    </nz-form-control>
+
+    <nz-form-label nzSpan="2">状态</nz-form-label>     
+    <nz-form-control nzSpan="3">
+    <nz-select formControlName="state" nzPlaceHolder="状态"
+      nz-popover nzContent="状态">
+      <nz-option *ngFor="let option of states" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+    </nz-select>
+    </nz-form-control>
+
+    <nz-form-control nzOffset="1" nzSpan="1">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+
+    <nz-form-control nzSpan="1" *ngIf="perCon()">
+      <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+  <nz-form-item>
+    <nz-form-control nzSpan="16">
+      <input  nz-input formControlName="keys"  placeholder="查询内容">
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+        <i nz-icon type="upload"></i>
+      </button>
+    </nz-form-control> 
+  </nz-form-item>
+</form>
+<input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+
+<nz-table class="pc_show" #basicTable [nzData]="contracts" [nzShowSizeChanger]="true">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>模版名称</th>
+      <th>发布日期</th>
+      <th>状态</th>
+      <th>操作人</th>
+      <th>操作时间</th>          
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data index as i">
+      <td>{{i+1}}</td>
+      <td>
+        <a  [routerLink]="['../contracttemplatedetail']" 
+            [queryParams]="{name: data.name, date: data.issueDate}">
+            {{data.name}}
+        </a>
+      </td>
+      <td>{{data.issueDate | date:'yyyy-MM-dd'}}</td>
+      <td>{{data.state}}</td>
+      <td>{{data.operatorName}}</td>
+      <td>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>           
+        <a (click)="onDownload(data.name)">下载</a>
+        <nz-divider nzType="vertical" *ngIf="perCon()"></nz-divider>
+        <a *ngIf="perCon() && (data.state == '作废')" (click)="onActive(data)">生效</a>
+        <a *ngIf="perCon() && (data.state == '有效')" (click)="onAbate(data)">作废</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<div class="mobile_show" *ngFor="let data of contracts; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
+  <nz-card  style="width:100%;" 
+      [nzTitle]="cardTitle(i, data)" 
+      [nzExtra]="extraTemplate" 
+      [routerLink]="['../contracttemplatedetail']" 
+      [queryParams]="{name: data.name, date: data.issueDate}">
+      <p><strong>发布日期：</strong>{{data.issueDate | date:'yyyy-MM-dd'}}</p>
+      <p><strong>状态：</strong>{{data.state}}</p>
+      <p>操作人：{{data.operatorName}}</p>
+      <p>操作时间：{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a (click)="onDownload(data)">下载</a>
+  </ng-template>
+</div>
+
+<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传合同模版" 
+      [nzContent]="poliContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <ng-template #poliContent>
+    <form nz-form [formGroup]="uploadFormGroup">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">模版名称</nz-form-label>       
         <nz-form-control>
-          <nz-date-picker formControlName="startDate"  nzPlaceHolder="开始日期"></nz-date-picker>
-          <span>~</span>
-          <nz-date-picker formControlName="endDate" nzPlaceHolder="结束日期"></nz-date-picker>
+          <nz-form-text style="text-align:center;">{{uploader?.queue[0]?.file?.name}}</nz-form-text>
         </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-    </nz-form-item>
-  </form>
-  
-  <hr>
-  
-  <nz-table #basicTable [nzData]="contracts" [nzPageSize]="" [nzShowSizeChanger]="true"
-      [nzWidthConfig]="['120px','350px',null]">
-      <thead>
-        <tr>
-          <th>序号</th>
-          <th>模版名称</th>
-          <th>发布日期</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of basicTable.data index as i">
-          <td>{{i+1}}</td>
-          <td><a [routerLink]="['../contracttemplatedetail']" 
-                 [queryParams]="{name: data.name, date: data.issueDate, fromUrl: 'home'}">
-                {{data.name}}
-              </a>
-            </td>
-          <td>{{data.issueDate | date:'yyyy-MM-dd'}}</td>
-          <td>           
-            <a (click)="onDownload(data.name)">下载</a>
-          </td>
-        </tr>
-      </tbody>
-  </nz-table>
+      </nz-form-item>
+       
+      <nz-form-item>  
+        <nz-form-label [nzSpan]="4">发布日期</nz-form-label>
+        <nz-form-control>
+            <nz-date-picker formControlName="issueDate" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+   </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+      <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+      <button nz-button type="submit" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+  </ng-template>
+</nz-modal>
+
   

@@ -1,6 +1,5 @@
 <div class="page_tag">已签合同</div>
-<form nz-form [formGroup]="searchFormGroup" [nzLayout] ="'inline'" (ngSubmit)="onSearch()">
- 
+<form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
     <nz-form-item> 
       <nz-form-label nzSpan="1">名称</nz-form-label>
       <nz-form-control nzSpan="3">
@@ -31,26 +30,41 @@
 
       <nz-form-control nzSpan="1">
         <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()"  *ngIf='perCw'><i nz-icon type="upload"></i></button>
-        <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
-      </nz-form-control>
+     </nz-form-control>
     </nz-form-item>
 </form>
-  <br>  
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup" (ngSubmit)="onFuzzySearch()">
+  <nz-form-item>
+    <nz-form-control nzSpan="16">
+      <input  nz-input formControlName="keys"  placeholder="查询内容">
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()" *ngIf='perCw'>
+        <i nz-icon type="upload"></i>
+      </button>
+    </nz-form-control> 
+  </nz-form-item>  
+</form>
+<input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+ 
     
-<nz-table #basicTable [nzData]="contracts" [nzShowSizeChanger]="true"
+<nz-table class="pc_show" #basicTable [nzData]="contracts" [nzShowSizeChanger]="true"
   [nzWidthConfig]="['30px','200px','100px','100px','150px', '140px', '140px', '60px', '80px', null]">
   <thead>
     <tr>
-      <th class="theadbg">序号</th>
-      <th class="theadbg">合同名称</th>
-      <th class="theadbg">合作方</th>
-      <th class="theadbg">合同类型</th>
-      <th class="theadbg">合同摘要</th>
-      <th class="theadbg">开始日期</th> 
-      <th class="theadbg">终止日期</th> 
-      <th class="theadbg">自动续期</th>          
-      <th class="theadbg">操作人</th>
-      <th class="theadbg">操作</th>
+      <th>序号</th>
+      <th>合同名称</th>
+      <th>合作方</th>
+      <th>合同类型</th>
+      <th>合同摘要</th>
+      <th>开始日期</th> 
+      <th>终止日期</th> 
+      <th>自动续期</th>          
+      <th>操作人</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
@@ -130,7 +144,29 @@
     </tr>
   </tbody>
 </nz-table>
-  
+
+<div class="mobile_show" *ngFor="let data of contracts; let i=index" 
+    style="margin-bottom: 10px; background: #ECECEC;">
+    <nz-card  style="width:100%;" 
+      [nzTitle]="cardTitle(i, data)" 
+      [nzExtra]="extraTemplate" 
+      [routerLink]="['../contractdetail']" 
+      [queryParams]="{name: data.name}">
+      <p><strong>合 作 方：</strong>{{data.partner}}</p>
+      <p><strong>合同类型：</strong>{{data.type}}</p>      
+      <p><strong>合同摘要：</strong>{{data.digest}}</p>
+      <p><strong>开始日期：</strong>{{data.start | date:'yyyy-MM-dd'}}</p>
+      <p><strong>终止日期：</strong>{{data.end | date:'yyyy-MM-dd'}}</p>
+      <p><strong>自动续期：</strong>{{data.autoRenewal==0? "否": "是"}}</p>
+      <p><strong>操 作 人：</strong>{{data.operatorName}}</p>
+    </nz-card>  
+    <ng-template #extraTemplate>
+      <a (click)="onDownload(data)">下载</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="onDelete(data)" *ngIf='perCw'>删除</a>
+    </ng-template>
+</div>
+
 <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传已签合同" 
       [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
   <ng-template #pdocContent>

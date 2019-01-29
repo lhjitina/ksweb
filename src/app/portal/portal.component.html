@@ -17,9 +17,10 @@
           <li nz-submenu style="float:right;">
             <span title>
               <i nz-icon type="user"></i>
-              <div class='pc_show'>{{user}}</div>
+              <div class='pc_show'>{{user.name}}</div>
             </span>
             <ul>
+              <li nz-menu-item >{{user.name}}</li>
               <li nz-menu-item (click)="onModifyPasswd()">修改密码</li>
               <li nz-menu-item (click)="onLogout()">退出</li>
             </ul>
@@ -35,7 +36,7 @@
               <li nz-menu-item><a routerLink="./home/partnerdoc">伙伴资料</a></li>
               <li nz-menu-item><a routerLink="./home/policy">行业政策</a></li>
               <li nz-menu-item><a routerLink="./home/contracttemplate">合同模版</a></li>
-              <li nz-menu-item *ngIf="perCR || perCW"><a routerLink="./home/contract">已签合同</a></li>
+              <li nz-menu-item *ngIf="perCwCr()"><a routerLink="./home/contract">已签合同</a></li>
             </ul>
             <ul [hidden]="isHome == true">
                 <li nz-menu-item><a routerLink="./console/regulation">规章制度管理</a></li>

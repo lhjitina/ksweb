@@ -15,7 +15,7 @@ import { User } from '../user/user-management/user-management.component';
 })
 export class PortalComponent implements OnInit {
 
-  user: string = "guest";
+  user: User = null;
   bShowPasswdModal: boolean = false;
   passwdFormGroup: FormGroup;
   processing: boolean = false;
@@ -38,7 +38,7 @@ export class PortalComponent implements OnInit {
 
   ngOnInit() {
     console.log("portal init.")
-    this.user = this.gs.getUser().name;
+    this.user = this.gs.getUser();
   }
   onModifyPasswd(): void{
     console.log("modify passwd")
@@ -89,6 +89,10 @@ export class PortalComponent implements OnInit {
     this.isHome = false;
   }
   
+  perCwCr(): boolean{
+    return this.user.perCr || this.user.perCw;
+  }
+
   JsonFromMap(m: Map<string, string>): string{
     var str = '{';
     m.forEach((v, k, mm)=>{

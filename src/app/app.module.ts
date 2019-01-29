@@ -43,7 +43,6 @@ import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ContracttemplateComponent } from './contracttemplate/contracttemplate/contracttemplate.component';
 import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
-import { ContracttemplatemanagementComponent } from './contracttemplate/contracttemplatemanagement/contracttemplatemanagement.component';
 import { ContractComponent } from './contract/contract/contract.component';
 import { ContractdetailComponent } from './contract/contractdetail/contractdetail.component';
 
@@ -75,7 +74,6 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     InfdetailComponent,
     ContracttemplateComponent,
     ContracttemplatedetailComponent,
-    ContracttemplatemanagementComponent,
     ContractComponent,
     ContractdetailComponent,
 

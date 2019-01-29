@@ -19,6 +19,7 @@ export class ContractComponent implements OnInit {
   public editCache = {};
   public searchFormGroup: FormGroup;
   public uploadFormGroup: FormGroup;
+  public fuzzySearchFormGroup: FormGroup;  
   public perCw: boolean = false;
 
   uploader:FileUploader;
@@ -40,7 +41,9 @@ export class ContractComponent implements OnInit {
       endDate: ['']
 
     });
-
+    this.fuzzySearchFormGroup = this.fb.group({
+      keys: ['']
+    });
     this.uploadFormGroup = this.fb.group({
       partner: [''],
       type: [''],
@@ -234,6 +237,12 @@ export class ContractComponent implements OnInit {
       let url = window.URL.createObjectURL(this.uploader.queue[0].some);
       window.open(url);
     }
+  }
+
+  cardTitle(i: any, data: any): string{
+    let info = data as Contract;
+    i += 1;
+    return "[" + i + "] " + info.name; 
   }
 }
 

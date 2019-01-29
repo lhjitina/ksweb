@@ -1,47 +1,45 @@
 <div class="page_tag">信息共享</div>
-    <form class="pc_show" nz-form [formGroup]="searchFormGroup"  (ngSubmit)="onSearch()">
-        <nz-form-item> 
-          <nz-form-label nzSpan="2">文件名称</nz-form-label>
-          <nz-form-control nzSpan="6">
-            <input  nz-input formControlName="name"  placeholder="文件名称">
-          </nz-form-control>
+<form class="pc_show" nz-form [formGroup]="searchFormGroup"  (ngSubmit)="onSearch()">
+    <nz-form-item> 
+      <nz-form-label nzSpan="3">文件名称</nz-form-label>
+      <nz-form-control nzSpan="6">
+        <input  nz-input formControlName="name"  placeholder="文件名称">
+      </nz-form-control>
 
-          <nz-form-label nzSpan="1">标签</nz-form-label>
-          <nz-form-control nzSpan="6">
-            <input  nz-input formControlName="tag"  placeholder="标签名称">
-          </nz-form-control>
+      <nz-form-label nzSpan="2">标签</nz-form-label>
+      <nz-form-control nzSpan="6">
+        <input  nz-input formControlName="tag"  placeholder="标签名称">
+      </nz-form-control>
 
-          <nz-form-control  nzOffset="1" nzSpan="1">
-            <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-          </nz-form-control>
+      <nz-form-control  nzOffset="1" nzSpan="2">
+        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+      </nz-form-control>
 
-          <nz-form-control  nzSpan="1">
-            <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
-              <i nz-icon type="upload"></i>
-            </button>
-          </nz-form-control> 
-        </nz-form-item>
-    </form>
-    <form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
-      <nz-form-item>
-        <nz-form-control nzSpan="16">
-          <input  nz-input formControlName="keys"  placeholder="查询内容">
-        </nz-form-control>
-        <nz-form-control nzOffset="1" nzSpan="3">
-          <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-        </nz-form-control>
-        <nz-form-control nzOffset="1" nzSpan="3">
-          <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
-            <i nz-icon type="upload"></i>
-          </button>
-        </nz-form-control> 
-      </nz-form-item>
-    </form>
+      <nz-form-control  nzSpan="1">
+        <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+          <i nz-icon type="upload"></i>
+        </button>
+      </nz-form-control> 
+    </nz-form-item>
+</form>
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+  <nz-form-item>
+    <nz-form-control nzSpan="16">
+      <input  nz-input formControlName="keys"  placeholder="查询内容">
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+        <i nz-icon type="upload"></i>
+      </button>
+    </nz-form-control> 
+  </nz-form-item>
+</form>
 
-    <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+<input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
 
-  <br>  
-    
 <nz-table class="pc_show" #basicTable [nzData]="infos" [nzShowSizeChanger]="true" >
   <thead>
     <tr>
@@ -75,11 +73,15 @@
   </tbody>
 </nz-table>
 
-<div class="mobile_show" *ngFor="let data of infos; let i=index" style="margin-bottom: 5px; background: #ECECEC;">
-  <nz-card  style="width:100%;" [nzTitle]="cardTitle(i, data)" [nzExtra]="extraTemplate" (click)="onClickCard(data)">
-    <p>Card content</p>
-    <p>Card content</p>
-    <p>Card content</p>
+<div class="mobile_show" *ngFor="let data of infos; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
+  <nz-card  style="width:100%;" 
+    [nzTitle]="cardTitle(i, data)" 
+    [nzExtra]="extraTemplate" 
+    [routerLink]="['../infodetail']" 
+    [queryParams]="{name: data.name, tag: data.tag}">
+    <p>标签：{{data.tag}}</p>
+    <p>操作人：{{data.operatorName}}</p>
+    <p>操作时间：{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
   </nz-card>
   <ng-template #extraTemplate>
     <a (click)="onDownload(data)">下载</a>
@@ -87,6 +89,7 @@
     <a (click)="onDelete(data)">删除</a>
   </ng-template>
 </div>
+
 <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传共享信息" 
       [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
   <ng-template #pdocContent>
