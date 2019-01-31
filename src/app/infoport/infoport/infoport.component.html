@@ -1,22 +1,19 @@
 <div class="page_tag">信息共享</div>
 <form class="pc_show" nz-form [formGroup]="searchFormGroup"  (ngSubmit)="onSearch()">
     <nz-form-item> 
-      <nz-form-label nzSpan="3">文件名称</nz-form-label>
+      <nz-form-label nzSpan="2">文件名称</nz-form-label>
       <nz-form-control nzSpan="6">
         <input  nz-input formControlName="name"  placeholder="文件名称">
       </nz-form-control>
 
-      <nz-form-label nzSpan="2">标签</nz-form-label>
+      <nz-form-label nzSpan="1">标签</nz-form-label>
       <nz-form-control nzSpan="6">
         <input  nz-input formControlName="tag"  placeholder="标签名称">
       </nz-form-control>
 
-      <nz-form-control  nzOffset="1" nzSpan="2">
-        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-      </nz-form-control>
-
-      <nz-form-control  nzSpan="1">
-        <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+      <nz-form-control nzSpan="3">
+        <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left:10px;"><i nz-icon type="search"></i></button>
+        <button nz-button type="button" nzType="primary" nzShape="circle"  style="margin-left:10px;" (click)="onUpload()">
           <i nz-icon type="upload"></i>
         </button>
       </nz-form-control> 

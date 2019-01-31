@@ -29,26 +29,27 @@ export class PdocComponent implements OnInit {
               private modal: NzModalService,
               private er: ElementRef) {
     this.searchFormGroup = this.fb.group({
-      fileName: [''],
+      name: [''],
       partner: [''],
     });
+
     this.uploadFormGroup = this.fb.group({
       partner: ['', Validators.required]
     });
+
     this.fuzzySearchFormGroup = this.fb.group({
       keys: ['']
     });
               }
 
   ngOnInit() {
-
     this.onSearch();
     this.initUploader();
   }
 
   onSearch(): void{
     var page = new PageRequest();  
-    page.append("name", this.searchFormGroup.get("fileName").value);
+    page.append("name", this.searchFormGroup.get("name").value);
     page.append("partner", this.searchFormGroup.get("partner").value);
 
     this.http.post("/api/front/pdoc/list", page).subscribe((res: RespPage)=>{

@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder,  FormGroup,  Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
-
+import * as globalvar from './../../globalvar';
+import { FileUploader } from 'ng2-file-upload';
+import { NzModalService } from 'ng-zorro-antd';
+import { GlobalService } from 'src/app/global.service';
 @Component({
   selector: 'app-policy',
   templateUrl: './policy.component.html',
@@ -11,22 +14,40 @@ import { RespData, RespPage, PageRequest } from './../../common/dto';
 })
 
 export class PolicyComponent implements OnInit {
-  public policies: Array<Policy>;
-  public searchFormGroup: FormGroup;
+  policies: Policy[] = [];
+  states: string[] = globalvar.DOCSTATS;
+  searchFormGroup: FormGroup;
+  uploadFormGroup: FormGroup;
+  test: string = "test";
+  poliUploader:FileUploader;
+  bShowUplodModal: boolean = false;
+  bHasClicked: boolean = false;
+  fuzzySearchFormGroup: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private http: HttpClient) {
-
-              }
-
-  ngOnInit() {
+              private http: HttpClient,
+              private er: ElementRef,
+              private modal: NzModalService,
+              private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       institution: [''],
       startDate: [''],
-      endDate: ['']
+      endDate: [''],
+      state: [globalvar.DOCSTAT_ACTIVE]
+    });                
+    this.uploadFormGroup = this.fb.group({
+      institution: ['', Validators.required],
+      issueDate: ['', Validators.required]
+    });              
+    this.fuzzySearchFormGroup = this.fb.group({
+      keys: ['']
     });
+              }
+
+  ngOnInit() {
     this.onSearch();
+    this.initUploader();
   }
 
   onSearch(): void{
@@ -41,6 +62,7 @@ export class PolicyComponent implements OnInit {
     };
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("institution", this.searchFormGroup.get("institution").value);
+    page.append("state", this.searchFormGroup.get("state").value);
     this.http.post("/api/front/policy/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
         this.policies = res.data;        
@@ -58,13 +80,13 @@ export class PolicyComponent implements OnInit {
       this.bShowUplodModal = false;
       this.poliUploader.clearQueue();
       this.er.nativeElement.querySelector(".reg-upload").value='';
-      this.getAll();
+      this.onSearch();
     }
   }
 
   setUploadParams(): void{
-    var upUrl = "/api/policy/upload?institution=" + this.poliUploadFormGroup.get("institution").value;
-    var issueDate = moment(this.poliUploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
+    var upUrl = "/api/policy/upload?institution=" + this.uploadFormGroup.get("institution").value;
+    var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
     upUrl = upUrl + "&issueDate=" + issueDate;
 
     this.poliUploader.setOptions({
@@ -97,7 +119,7 @@ export class PolicyComponent implements OnInit {
   }
 
   nzOnOk(): void{
-    if (this.poliUploadFormGroup.valid){
+    if (this.uploadFormGroup.valid){
       this.setUploadParams();
       this.poliUploader.uploadAll();
       this.bHasClicked = true;
@@ -108,7 +130,7 @@ export class PolicyComponent implements OnInit {
   }
 
   onAbate(policy: Policy): void{
-    this.confirmModal = this.modal.confirm({
+    this.modal.confirm({
       nzTitle: '您确定要作废该文件吗？',
       nzContent: policy.name,
       nzOnOk: () =>{
@@ -122,7 +144,7 @@ export class PolicyComponent implements OnInit {
   }
 
   onActive(policy: Policy): void{
-    this.confirmModal = this.modal.confirm({
+    this.modal.confirm({
       nzTitle: '您确定要生效该文件吗？',
       nzContent: policy.name,
       nzOnOk: () =>{
@@ -135,13 +157,6 @@ export class PolicyComponent implements OnInit {
    });
   } 
 
-  getAll(): void{
-    this.http.get("/api/console/policy/list").subscribe((res: any)=>{
-      this.policies = res;
-    });
-  }
-
-
   onDownload(name: string): void{
     var url = "/api/policy/content/" + name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
@@ -153,6 +168,16 @@ export class PolicyComponent implements OnInit {
       a.click();
       URL.revokeObjectURL(a.href);
     });
+  }
+
+  perPol(): boolean{
+    return this.gs.getUser().perPol;
+  }
+
+  cardTitle(i: any, data: any): string{
+    let info = data as Policy;
+    i += 1;
+    return "[" + i + "] " + info.name; 
   }
 }
 

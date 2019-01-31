@@ -14,12 +14,10 @@ import { User } from '../user/user-management/user-management.component';
   styleUrls: ['./portal.component.css']
 })
 export class PortalComponent implements OnInit {
-
   user: User = null;
   bShowPasswdModal: boolean = false;
   passwdFormGroup: FormGroup;
   processing: boolean = false;
-  isHome = true;
 
   constructor(private gs: GlobalService,
               private modal: NzModalService,
@@ -79,18 +77,13 @@ export class PortalComponent implements OnInit {
     this.gs.logout();
     this.rt.navigateByUrl("login");
   }
-
-  onHome(): void{
-    this.isHome = true;
-  }
-
-  onConsole(): void{
-    console.log("click console")
-    this.isHome = false;
-  }
   
   perCwCr(): boolean{
     return this.user.perCr || this.user.perCw;
+  }
+
+  perUsr(): boolean{
+    return this.user.perUsr;
   }
 
   JsonFromMap(m: Map<string, string>): string{

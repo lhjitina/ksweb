@@ -20,7 +20,6 @@ registerLocaleData(zh);
 
 import { RegulationComponent } from './regulationpkg/regulation/regulation.component';
 import { RegulationdetailComponent } from './regulationpkg/regulationdetail/regulationdetail.component';
-import { ConsoleComponent } from './console/console.component';
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
@@ -29,7 +28,6 @@ import { PortalComponent } from './portal/portal.component';
 import { KsInterceptor } from './KsInterceptor';
 import { PolicyComponent } from './policy/policy/policy.component';
 import { PolicydetailComponent } from './policy/policydetail/policydetail.component';
-import { PolicymanagementComponent } from './policy/policymanagement/policymanagement.component';
 import { SummaryComponent } from './summary/summary/summary.component';
 import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
@@ -49,7 +47,6 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     HomeComponent,
     RegulationComponent,
     RegulationdetailComponent,
-    ConsoleComponent,
     UserManagementComponent,
     UserAddComponent,
     UserEditComponent,
@@ -57,7 +54,6 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     PortalComponent,
     PolicyComponent,
     PolicydetailComponent,
-    PolicymanagementComponent,
     SummaryComponent,
     SummarydetailComponent,
     BreadcrumbComponent,

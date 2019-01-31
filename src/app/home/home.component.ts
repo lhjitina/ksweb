@@ -8,21 +8,19 @@ import { User } from './../user/user-management/user-management.component';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  public perCR: boolean = false;
-  public perCW: boolean = false;
-
   constructor(private gs: GlobalService) { }
 
   ngOnInit() {
-    console.log("home init");
-    let user = this.gs.getUser();
-    if (user != null){
-      this.perCR = this.gs.getUser().perCr;
-      this.perCW = this.gs.getUser().perCw;
-      console.log("home get user ");
-      console.log(user);
-    }
+  }
+
+  perCw(): boolean{
+    return this.gs.getUser().perCw;
+  }
+  perCr(): boolean{
+    return this.gs.getUser().perCr;
+  }
+  perUsr(): boolean{
+    return this.gs.getUser().perUsr;
   }
 
 }

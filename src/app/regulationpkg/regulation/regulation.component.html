@@ -26,7 +26,7 @@
     </nz-form-control>
     <nz-form-control nzSpan="3">
       <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left: 10px;"><i nz-icon type="search"></i></button>
-      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" (click)="onUpload()" *ngIf="perReg()"><i nz-icon type="upload"></i></button>
     </nz-form-control>  
   </nz-form-item>
 </form>

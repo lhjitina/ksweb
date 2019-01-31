@@ -1,86 +1,112 @@
 <div class="page_tag">用户管理</div>
-<form nz-form [formGroup]="userSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()">
+<form class="pc_show" nz-form [formGroup]="userSearchFormGroup" (ngSubmit)="onSearch()">
   <nz-form-item>
-    <nz-form-label>姓名</nz-form-label>
-    <nz-form-control>
-        <input  type="text" nz-input formControlName="userName" style="width:120px;" placeholder="用户名">
+    <nz-form-label nzSpan="1">姓名</nz-form-label>
+    <nz-form-control nzSpan="2">
+      <input  type="text" nz-input formControlName="userName" placeholder="用户名">
     </nz-form-control>
-  </nz-form-item>
+    <nz-form-label nzSpan="1">手机</nz-form-label>
+    <nz-form-control nzSpan="3">
+        <input  type="tel" nz-input formControlName="tel" placeholder="电话">
+    </nz-form-control>
 
-  <nz-form-item>
-    <nz-form-label>手机</nz-form-label>
-    <nz-form-control>
-        <input  type="tel" nz-input formControlName="tel" style="width:120px;" placeholder="电话">
+    <nz-form-label nzSpan="1">邮箱</nz-form-label>
+    <nz-form-control nzSpan="4">
+        <input  type="email" nz-input formControlName="email" placeholder="邮箱">
     </nz-form-control>
-  </nz-form-item>
- 
-  <nz-form-item>
-    <nz-form-label>邮箱</nz-form-label>
-    <nz-form-control>
-        <input  type="email" nz-input formControlName="email" style="width:150px;" placeholder="邮箱">
-    </nz-form-control>
-  </nz-form-item>
 
-  <nz-form-item>
-    <nz-form-label>部门</nz-form-label>
-    <nz-form-control>
-        <nz-select formControlName="departmentId" style="width: 120px;"  nzAllowClear nzPlaceHolder="请选择" >
+    <nz-form-label nzSpan="1">部门</nz-form-label>
+    <nz-form-control nzSpan="3">
+        <nz-select formControlName="departmentId"  nzAllowClear nzPlaceHolder="请选择" >
          <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
         </nz-select>
     </nz-form-control>
-  </nz-form-item>
 
-  <nz-form-item>
-      <nz-form-label>状态</nz-form-label>
-    <nz-form-control>
-        <nz-select formControlName="state" style="width: 100px;"  nzAllowClear nzPlaceHolder="请选择" >
+      <nz-form-label nzSpan="1">状态</nz-form-label>
+    <nz-form-control nzSpan="3">
+        <nz-select formControlName="state" nzAllowClear nzPlaceHolder="请选择" >
          <nz-option [nzValue]= "'启用'" [nzLabel]= "'启用'"></nz-option> 
          <nz-option [nzValue]= "'禁用'" [nzLabel]= "'禁用'"></nz-option> 
         </nz-select>
     </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-      <button type="submit" nz-button nzType="primary" nzShape="circle" >
+    <nz-form-control nzSpan="4">
+      <button type="submit" nz-button nzType="primary" nzShape="circle" style="margin-left:10px;">
         <i nz-icon type="search"></i></button>
-      <a [routerLink]="['/portal/console/useradd']"> 
+      <a [routerLink]="['../useradd']"> 
         <button type="button" nz-button nzType="primary" nzShape="circle"  style="margin-left:10px;">
-          <i nz-icon type="plus"></i></button>
+          <i nz-icon type="plus"></i>
+        </button>
       </a>
+    </nz-form-control>
   </nz-form-item>
 </form>
-
-<br>
-
-<nz-table #userTable [nzData]="users"  [nzShowSizeChanger]="true"
-  [nzWidthConfig]="['60px','120px','120px','120px','220px','80px',null]">
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup" (ngSubmit)="onFuzzySearch()">
+  <nz-form-item>
+    <nz-form-control nzSpan="16">
+        <input  nz-input formControlName="keys"  placeholder="姓名／电话／邮箱">
+    </nz-form-control>
+    <nz-form-control nzSpan="3">
+        <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left:10px;">
+          <i nz-icon type="search"></i>
+        </button>
+    </nz-form-control>
+    <nz-form-control>
+        <a [routerLink]="['../useradd']"> 
+          <button type="button" nz-button nzType="primary" nzShape="circle"  style="margin-left:10px;">
+            <i nz-icon type="plus"></i>
+          </button>
+        </a>
+    </nz-form-control> 
+  </nz-form-item>  
+</form>
+<nz-table class="pc_show" #userTable [nzData]="users"  [nzShowSizeChanger]="true">
   <thead>
     <tr>
-        <th class="consoleTableHead">序号</th>
-        <th class="consoleTableHead">姓名</th>
-        <th class="consoleTableHead">部门</th>
-        <th class="consoleTableHead">手机</th>
-        <th class="consoleTableHead">邮箱</th>
-        <th class="consoleTableHead">状态</th>
-        <th class="consoleTableHead">操作</th>
+      <th>序号</th>
+      <th>姓名</th>
+      <th>部门</th>
+      <th>手机</th>
+      <th>邮箱</th>
+      <th>状态</th>
+      <th>操作</th>
     </tr>
   </thead>
     
   <tbody>
-      <tr *ngFor="let user of userTable.data index as i">
-        <td>{{i+1}}</td>
-        <td><a [routerLink]="['../useredit']" 
-               [queryParams]="{id: user.id}">{{user.name}}</a></td>
-        <td>{{user.departmentName}}</td>
-        <td>{{user.tel}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.state}}</td>
-        <td>
-          <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">修改</a>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a (click)="onResetPasswd(user)">重置密码</a>
-        </td>       
-      </tr>
+    <tr *ngFor="let user of userTable.data index as i">
+      <td>{{i+1}}</td>
+      <td>
+        <a [routerLink]="['../useredit']" 
+           [queryParams]="{id: user.id}">
+           {{user.name}}
+        </a>
+      </td>
+      <td>{{user.departmentName}}</td>
+      <td>{{user.tel}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.state}}</td>
+      <td>
+        <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">修改</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="onResetPasswd(user)">重置密码</a>
+      </td>       
+    </tr>
   </tbody>
 </nz-table>
+
+<div class="mobile_show" *ngFor="let user of users; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
+  <nz-card  style="width:100%;" 
+    [nzTitle]="cardTitle(i, user)" 
+    [nzExtra]="extraTemplate">
+    <p><strong>部门：</strong>{{user.departmentName}}</p>
+    <p><strong>手机：</strong>{{user.tel}}</p>
+    <p><strong>邮箱：</strong>{{user.email}}</p>
+    <p><strong>状态：</strong>{{user.state}}</p>  
+  </nz-card>   
+  <ng-template #extraTemplate>
+    <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">修改</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="$event.stopPropagation(); onResetPasswd(user)">重置密码</a>
+  </ng-template>
+</div>
 

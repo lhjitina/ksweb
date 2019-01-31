@@ -85,13 +85,15 @@ export class UserEditComponent implements OnInit {
 
   onSubmit(): void{
     if (!this.userEditFormGroup.valid){
+      console.log("user info invalid")
+      console.log(this.userEditFormGroup.value)
       return;
     }
-
+    console.log("edit user")
     this.http.post("/api/user/update", this.userEditFormGroup.value).subscribe((res: RespData)=>{
       if (res.code == 0){
         this.message.create('success', '用户信息修改成功');
-        this.rt.navigateByUrl("/portal/console/user");
+        this.rt.navigateByUrl("/portal/home/user");
       }
       else{
         this.message.create('error', res.message);

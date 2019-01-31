@@ -1,8 +1,8 @@
 <div class="page_tag">行业政策</div>
 <form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
   <nz-form-item>
-    <nz-form-label nzSpan="2">文件名称</nz-form-label>
-    <nz-form-control nzSpan="4">
+    <nz-form-label nzSpan="1">名称</nz-form-label>
+    <nz-form-control nzSpan="3">
       <input  type="text" nz-input formControlName="name" placeholder="文件名称">
     </nz-form-control>
 
@@ -20,16 +20,30 @@
     </nz-form-control>
     <nz-form-label nzSpan="1">状态</nz-form-label>
     <nz-form-control nzSpan="2">
-        <nz-select formControlName="state" nzPlaceHolder="状态"
-          nz-popover nzContent="状态">
-          <nz-option *ngFor="let option of states" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
-        </nz-select>
-        </nz-form-control>
-    <nz-form-control>
+      <nz-select formControlName="state" nzPlaceHolder="状态">
+        <nz-option *ngFor="let option of states" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+      </nz-select>
+    </nz-form-control>
+    <nz-form-control nzSpan="4">
       <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left: 10px;"><i nz-icon type="search"></i></button>
-      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" (click)="onUpload()" *ngIf="perPol()"><i nz-icon type="upload"></i></button>
     </nz-form-control>
   </nz-form-item>
+</form>
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+    <nz-form-item>
+      <nz-form-control nzSpan="16">
+        <input  nz-input formControlName="keys"  placeholder="查询内容">
+      </nz-form-control>
+      <nz-form-control nzOffset="1" nzSpan="3">
+        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+      </nz-form-control>
+      <nz-form-control nzOffset="1" nzSpan="3" *ngIf="perPol()">
+        <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()" *ngIf="perPol()">
+          <i nz-icon type="upload"></i>
+        </button>
+      </nz-form-control> 
+    </nz-form-item>
 </form>
 <input type="file" ng2FileSelect [uploader]="poliUploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
 
@@ -63,10 +77,63 @@
       <td>           
         <a (click)="onDownload(data.name)">下载</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a *ngIf="data.state == '作废'" (click)="onActive(data)">生效</a>
-        <a *ngIf="data.state == '有效'" (click)="onAbate(data)">作废</a>
+        <a *ngIf="perPol() && data.state == '作废'" (click)="onActive(data)">生效</a>
+        <a *ngIf="perPol() && data.state == '有效'" (click)="onAbate(data)">作废</a>
       </td>
     </tr>
   </tbody>
 </nz-table>
+
+<div class="mobile_show" *ngFor="let data of policies; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
+  <nz-card  style="width:100%;" 
+    [nzTitle]="cardTitle(i, data)" 
+    [nzExtra]="extraTemplate" 
+    [routerLink]="['../policydetail']" 
+    [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate}">
+    <p><strong>发文部门：</strong>{{data.institution}}</p>
+    <p><strong>发文日期：</strong>{{data.issueDate | date:'yyyy-MM-dd'}}</p>
+    <p><strong>状态：</strong>{{data.state}}</p>
+    <p><strong>操作人：</strong>{{data.operatorName}}</p>
+    <p><strong>操作时间：</strong>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a (click)="$event.stopPropagation(); onDownload(data.name)">下载</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a *ngIf="perPol() && data.state == '作废'" (click)="$event.stopPropagation(); onActive(data)">生效</a>
+    <a *ngIf="perPol() && data.state == '有效'" (click)="$event.stopPropagation(); onAbate(data)">作废</a>
+  </ng-template>
+</div>
+
+<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传行业政策" 
+      [nzContent]="poliContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <ng-template #poliContent>
+    <form nz-form [formGroup]="uploadFormGroup">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">文件名称</nz-form-label>       
+        <nz-form-control>
+          <nz-form-text style="text-align:center;">{{poliUploader?.queue[0]?.file?.name}}</nz-form-text>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">发文部门</nz-form-label>
+        <nz-form-control >
+          <input nz-input type="text" formControlName="institution" style="width:175px; ">
+        </nz-form-control>
+      </nz-form-item>
+       
+      <nz-form-item>  
+        <nz-form-label [nzSpan]="4">发文日期</nz-form-label>
+        <nz-form-control>
+            <nz-date-picker formControlName="issueDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+   </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+      <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+      <button nz-button type="submit" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+  </ng-template>
+</nz-modal>
   

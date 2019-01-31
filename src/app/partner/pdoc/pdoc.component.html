@@ -1,21 +1,26 @@
 <div class="page_tag">伙伴资料</div>
-<form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
+<form  nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
   <nz-form-item>
     <nz-form-label nzSpan="2">文件名称</nz-form-label>
     <nz-form-control nzSpan="6">
-        <input  type="text" nz-input formControlName="fileName" placeholder="文件名称">
+      <input  nz-input formControlName="name"  placeholder="文件名称"/>
     </nz-form-control>
 
     <nz-form-label nzSpan="2">合作伙伴</nz-form-label>
     <nz-form-control nzSpan="6">
-        <input nz-input type="text" formControlName="partner" placeholder="合作伙伴" >
+        <input nz-input formControlName="partner" placeholder="合作伙伴" />
     </nz-form-control>
-    <nz-form-control>
-      <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left: 10px;"><i nz-icon type="search"></i></button>
-      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" *ngIf="perDoc()" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+    <nz-form-control nzSpan="4">
+        <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left: 10px;">
+          <i nz-icon type="search"></i>
+        </button>
+        <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;"  (click)="onUpload()" *ngIf="perDoc()">
+          <i nz-icon type="upload"></i>
+        </button>
     </nz-form-control>  
   </nz-form-item>
 </form>
+
 <form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
   <nz-form-item>
     <nz-form-control nzSpan="16">
@@ -80,7 +85,7 @@
     <nz-divider nzType="vertical"></nz-divider>
     <a (click)="$event.stopPropagation(); onDelete(data)">删除</a>  
   </ng-template>
-  </div>  
+</div>  
 <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传合作伙伴资料" 
       [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
   <ng-template #pdocContent>

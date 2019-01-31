@@ -20,8 +20,6 @@ export class ContractComponent implements OnInit {
   public searchFormGroup: FormGroup;
   public uploadFormGroup: FormGroup;
   public fuzzySearchFormGroup: FormGroup;  
-  public perCw: boolean = false;
-
   uploader:FileUploader;
   bShowUplodModal: boolean = false;
   bHasClicked: boolean = false;
@@ -55,7 +53,6 @@ export class ContractComponent implements OnInit {
               }
 
   ngOnInit() {
-    this.perCw = this.gs.getUser().perCw;
     this.initUploader();
     this.onSearch();
 
@@ -243,6 +240,10 @@ export class ContractComponent implements OnInit {
     let info = data as Contract;
     i += 1;
     return "[" + i + "] " + info.name; 
+  }
+
+  perCw(): boolean{
+    return this.gs.getUser().perCw;
   }
 }
 

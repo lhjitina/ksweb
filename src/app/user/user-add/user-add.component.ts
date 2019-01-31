@@ -62,7 +62,7 @@ export class UserAddComponent implements OnInit {
 
     this.http.post("/api/user/add", this.userAddFormGroup.value).subscribe((res: RespData)=>{
       if (res.code == 0){
-        this.rt.navigateByUrl("/portal/console/user");
+        this.rt.navigateByUrl("/portal/home/user");
       }
       else{
         this.msg.create('error', "添加用户失败！(" + res.message + ")");

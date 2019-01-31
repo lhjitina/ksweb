@@ -12,11 +12,9 @@
     <nz-form-control nzSpan="4">
       <nz-date-picker formControlName="endDate"  nzPlaceHolder="结束日期"></nz-date-picker>
     </nz-form-control>
-    <nz-form-control nzOffset="1" nzSpan="1">
-      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-    </nz-form-control>
-    <nz-form-control nzOffset="1" nzSpan="1" *ngIf="perSum()">
-      <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+    <nz-form-control nzSpan="3">
+      <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left:10px;"><i nz-icon type="search"></i></button>
+      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left:10px;" (click)="onUpload()" *ngIf="perSum()"><i nz-icon type="upload"></i></button>
     </nz-form-control>
   </nz-form-item>
 </form>

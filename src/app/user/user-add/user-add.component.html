@@ -1,5 +1,5 @@
 <div class="page_tag">用户管理</div>
-<form nz-form [formGroup]="userAddFormGroup" (ngSubmit)="onSubmit()">
+<form class="pc_show" nz-form [formGroup]="userAddFormGroup" (ngSubmit)="onSubmit()">
   <div nz-row>
     <div nz-col [nzOffset]="1" [nzSpan]="5">
       <div >
@@ -19,14 +19,14 @@
             <nz-form-item>
               <nz-form-label [nzSpan]="6" nzFor="tel" nzRequired>手机</nz-form-label>
               <nz-form-control  [nzSpan]="18" >
-                <input nz-input type="tel" formControlName="tel" tabindex="3">
+                <input nz-input type="tel" formControlName="tel" >
               </nz-form-control>
             </nz-form-item>
       
             <nz-form-item>
               <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>邮箱</nz-form-label>
               <nz-form-control [nzSpan]="18" >
-                <input nz-input type="email" formControlName="email" tabindex="4">
+                <input nz-input type="email" formControlName="email">
               </nz-form-control>
             </nz-form-item>
       
@@ -40,7 +40,7 @@
             </nz-form-item>
         </div>
       
-        <div nz-col [nzOffset]="2" [nzSpan]="5">
+        <div nz-col [nzOffset]="1" [nzSpan]="7">
             <nz-form-item>
               <nz-form-label>用户权限</nz-form-label>
               <nz-form-control nzOffset=2>
@@ -90,4 +90,81 @@
       </div>
     </div>
   </div>
+</form>
+<form class="mobile_show" nz-form [formGroup]="userAddFormGroup" (ngSubmit)="onSubmit()">
+  <nz-form-item>
+    <nz-form-control nzSpan="5">
+        <nz-form-label nzRequired >姓名</nz-form-label>
+    </nz-form-control>
+
+    <nz-form-control nzSpan="18" >
+      <input type="text" nz-input  formControlName="name"  placeholder="姓名">
+    </nz-form-control>
+  </nz-form-item>
+                      
+  <nz-form-item>
+    <nz-form-label nzSpan="5" nzRequired>手机</nz-form-label>
+    <nz-form-control  nzSpan="18" >
+      <input nz-input type="tel" formControlName="tel" >
+    </nz-form-control>
+  </nz-form-item>
+        
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"  nzRequired>邮箱</nz-form-label>
+    <nz-form-control [nzSpan]="18" >
+      <input nz-input type="email" formControlName="email">
+    </nz-form-control>
+  </nz-form-item>
+        
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"  nzRequired>部门</nz-form-label>
+    <nz-form-control  [nzSpan]="18" >
+      <nz-select formControlName="departmentId"  nzAllowClear nzPlaceHolder="请选择" >
+        <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+        
+  <nz-form-label>用户权限</nz-form-label>
+  <nz-form-item>
+    <nz-form-control nzOffset="2" nzSpan="10">
+        <label nz-checkbox formControlName="perPol">行业政策管理</label>
+      </nz-form-control>
+      <nz-form-control nzOffset="2" nzSpan="10">
+        <label nz-checkbox formControlName="perReg">规章制度管理</label>
+      </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzOffset=2 nzSpan="10">
+        <label nz-checkbox formControlName="perSum">会议纪要管理</label>          
+      </nz-form-control>
+      <nz-form-control nzOffset=2 nzSpan="10">
+          <label nz-checkbox formControlName="perDoc">伙伴资料管理</label>         
+      </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzOffset=2 nzSpan="10">
+      <label nz-checkbox formControlName="perCon">合同模板管理</label>         
+    </nz-form-control> 
+    <nz-form-control nzOffset=2 nzSpan="10">
+        <label nz-checkbox formControlName="perUsr">用户管理</label>         
+     </nz-form-control>  
+  </nz-form-item>
+  <nz-form-item>    
+    <nz-form-control nzOffset=2 nzSpan="10">
+        <label nz-checkbox formControlName="perCw">合同上传</label>         
+      </nz-form-control>
+      <nz-form-control nzOffset=2 nzSpan="10">
+        <label nz-checkbox formControlName="perCr">合同查看</label>         
+      </nz-form-control> 
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzOffset="7" nzSpan="4">
+      <a routerLink="../user"><button nz-button type="button" nzType="default">返回</button></a>
+    </nz-form-control>
+    <nz-form-control nzOffset="2" nzSpan="4">
+      <button nz-button type="submit" nzType="primary">确定</button>
+    </nz-form-control>
+  </nz-form-item>
 </form>

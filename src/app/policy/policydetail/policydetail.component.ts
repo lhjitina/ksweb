@@ -27,7 +27,7 @@ export class PolicydetailComponent implements OnInit {
 
   ngOnInit() {
     this.routerInfo.queryParams.subscribe((data: Params)=>this.getRouterParam(data));
-    var url = "/api/regulation/content/" + this.policy.name;
+    var url = "/api/policy/content/" + this.policy.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
       this.content = res.slice(0, res.size, this.docType);
       (this.docType == "application/pdf")? this.pdfUrl = URL.createObjectURL(this.content) : this.pdfUrl='';

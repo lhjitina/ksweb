@@ -15,6 +15,7 @@ import { PageRequest, RespPage } from './../../common/dto';
 export class UserManagementComponent implements OnInit {
 
   userSearchFormGroup: FormGroup;
+  fuzzySearchFormGroup: FormGroup;
   users: User[] = [];
   departments: Department[] = [];
 
@@ -28,7 +29,10 @@ export class UserManagementComponent implements OnInit {
       email: [''],
       departmentId:[''],
       state:['启用']
-    })
+    });
+    this.fuzzySearchFormGroup = this.fb.group({
+      keys: ['']
+    });
    }
 
   ngOnInit() {
@@ -107,6 +111,12 @@ export class UserManagementComponent implements OnInit {
       this.onSearch();
     })
   }
+
+  cardTitle(i: any, data: any): string{
+    let info = data as User;
+    i += 1;
+    return "[" + i + "] " + info.name; 
+  } 
 }
 
 export class User{
