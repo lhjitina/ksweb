@@ -1,51 +1,101 @@
 <div class="page_tag">会议纪要</div>
-<form nz-form [formGroup]="sumSearchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
-    <nz-form-item>
-      <nz-form-label>纪要名称</nz-form-label>
-      <nz-form-control>
-          <input  type="text" nz-input formControlName="name" style="width:200px;" placeholder="纪要名称">
-      </nz-form-control>
-    </nz-form-item>
+<form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
+  <nz-form-item>
+    <nz-form-label nzSpan="1">名称</nz-form-label>
+    <nz-form-control nzSpan="6">
+        <input type="text" nz-input formControlName="name" placeholder="纪要名称">
+    </nz-form-control>
+    <nz-form-label nzSpan="2">会议日期</nz-form-label>
+    <nz-form-control nzSpan="4">
+      <nz-date-picker formControlName="startDate"  nzPlaceHolder="开始日期"></nz-date-picker>
+    </nz-form-control>
+    <nz-form-control nzSpan="4">
+      <nz-date-picker formControlName="endDate"  nzPlaceHolder="结束日期"></nz-date-picker>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="1">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="1" *ngIf="perSum()">
+      <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+  <nz-form-item>
+    <nz-form-control nzSpan="16">
+      <input  nz-input formControlName="keys"  placeholder="查询内容">
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3" *ngIf="perSum()">
+      <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+        <i nz-icon type="upload"></i>
+      </button>
+    </nz-form-control> 
+  </nz-form-item>
+</form>
+<input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
   
-    <nz-form-item>
-        <nz-form-label>会议日期</nz-form-label>
-        <nz-form-control>
-          <nz-date-picker formControlName="startDate"  nzPlaceHolder="开始日期"></nz-date-picker>
-          <span>~</span>
-          <nz-date-picker formControlName="endDate"  nzPlaceHolder="结束日期"></nz-date-picker>
-        </nz-form-control>
-    </nz-form-item>
+<nz-table #basicTable [nzData]="summaries" [nzShowSizeChanger]="true">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>纪要名称</th>
+      <th>会议日期</th>
+      <th>操作人</th>
+      <th>操作时间</th>          
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data index as i">
+      <td>{{i+1}}</td>
+      <td>
+        <a [routerLink]="['../summarydetail']" 
+           [queryParams]="{name: data.name, date: data.meetingDate}">
+              {{data.name}}
+        </a>
+      </td>
+      <td>{{data.meetingDate }}</td>
+      <td>{{data.operatorName}}</td>
+      <td>{{data.operateTime }}</td>
+      <td>           
+        <a (click)="onDownload(data.name)">下载</a>
+        <nz-divider nzType="vertical" *ngIf="perSum()"></nz-divider>
+        <a (click)="onDelete(data)" *ngIf="perSum()">删除</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传会议纪要" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+    <ng-template #modalContent>
+      <form nz-form [formGroup]="uploadFormGroup" >
+        <nz-form-item>
+          <nz-form-label>纪要名称</nz-form-label>
+          <nz-form-control>
+            <nz-form-text>{{uploader.queue[0]?.file?.name}}</nz-form-text>
+          </nz-form-control>
+        </nz-form-item>
   
-    <nz-form-item>
-        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-    </nz-form-item>
-  </form>
+        <nz-form-item>
+          <nz-form-label>会议日期</nz-form-label>
+          <nz-form-control>
+              <nz-date-picker formControlName="meetingDate"  nzPlaceHolder="会议日期" ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+    
+      </form>
+    
+      <div>
+          <nz-progress [nzPercent]="uploadProg" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
+      </div>
+    </ng-template>
   
-  <br>
-  
-  <nz-table #basicTable [nzData]="summaries" [nzPageSize]="" [nzShowSizeChanger]="true">
-      <thead>
-      
-        <tr>
-          <th class="theadbg">序号</th>
-          <th class="theadbg">纪要名称</th>
-          <th class="theadbg">会议日期</th>
-          <th class="theadbg">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of basicTable.data index as i">
-          <td>{{i+1}}</td>
-          <td><a [routerLink]="['../summarydetail']" 
-                 [queryParams]="{name: data.name, date: data.meetingDate, fromUrl: 'home'}">
-                {{data.name}}
-              </a>
-            </td>
-          <td>{{data.meetingDate | date:'yyyy-MM-dd'}}</td>
-          <td>           
-            <a (click)="onDownload(data.name)">下载</a>
-          </td>
-        </tr>
-      </tbody>
-  </nz-table>
+    <ng-template #modalFooter>
+      <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+      <button nz-button type="submit" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+    </ng-template>
+</nz-modal>
   

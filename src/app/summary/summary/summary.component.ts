@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { FormBuilder,  FormGroup, FormControl, AbstractControl, Validators} from '@angular/forms';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
+import { GlobalService } from 'src/app/global.service';
+import { FileUploader } from 'ng2-file-upload';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-summary',
@@ -11,35 +13,50 @@ import { RespData, RespPage, PageRequest } from './../../common/dto';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
-  public summaries: Array<Summary>;
-  public sumSearchFormGroup: FormGroup;
+  summaries: Summary[] = [];
+  searchFormGroup: FormGroup;
+  uploadFormGroup: FormGroup;
+  fuzzySearchFormGroup: FormGroup;
 
-  constructor(private cdr: ChangeDetectorRef,
-              private fb: FormBuilder,
-              private http: HttpClient) {
+  uploader:FileUploader;
+  bShowUplodModal: boolean = false;
+  bHasClicked: boolean = false;
+
+  constructor(private fb: FormBuilder,
+              private http: HttpClient,
+              private gs: GlobalService,
+              private er: ElementRef,
+              private modal: NzModalService) {
 
               }
 
   ngOnInit() {
-    this.sumSearchFormGroup = this.fb.group({
+    this.searchFormGroup = this.fb.group({
       name: [''],
       startDate: [''],
       endDate: ['']
     });
+    this.fuzzySearchFormGroup = this.fb.group({
+      keys: ['']
+    }); 
+    this.uploadFormGroup = this.fb.group({
+      meetingDate: ['', Validators.required]
+    });
     this.onSearch();
+    this.initUploader();
   }
 
   onSearch(): void{
     var page = new PageRequest();
-    var sd = this.sumSearchFormGroup.get("startDate").value;
-    var ed = this.sumSearchFormGroup.get("endDate").value;
+    var sd = this.searchFormGroup.get("startDate").value;
+    var ed = this.searchFormGroup.get("endDate").value;
     if (moment.isDate(sd)) { 
       page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
     };
     if (moment.isDate(ed)) { 
       page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
     };
-    page.append("name", this.sumSearchFormGroup.get("name").value);
+    page.append("name", this.searchFormGroup.get("name").value);
     
     this.http.post("/api/front/summary/list", page).subscribe((res: RespPage)=>{
       console.log(res);
@@ -65,6 +82,84 @@ export class SummaryComponent implements OnInit {
       URL.revokeObjectURL(a.href);
     });
   }
+
+  perSum(): boolean{
+    return this.gs.getUser().perSum;
+  }
+  
+  initUploader(): void{
+    this.uploader = new FileUploader({});
+    this.uploader.onCompleteAll=()=>{
+      this.bShowUplodModal = false;
+      this.uploader.clearQueue();
+      this.er.nativeElement.querySelector(".reg-upload").value='';
+      this.onSearch();
+    }
+  }
+
+  setUploadParams(): void{
+    var upUrl = "/api/summary/upload?meetingDate=";
+    var meetingDate = moment(this.uploadFormGroup.get("meetingDate").value).format("YYYY-MM-DD");
+    upUrl += meetingDate;
+
+    this.uploader.setOptions({
+      url: upUrl,
+      authToken: this.gs.getToken(),
+      removeAfterUpload: true, 
+      maxFileSize: 10240000,
+      method: "POST"    
+    })
+  }
+
+  onUpload(): void{
+    this.uploader.clearQueue();
+    let e = this.er.nativeElement.querySelector(".reg-upload");
+    e.click();
+    this.bHasClicked = false;
+  }
+
+  selectFileChange(event: any): void{
+    if (this.uploader.queue.length>0){
+      this.bShowUplodModal = true;
+    }
+  }
+
+  nzOnCancel():void{
+    this.bShowUplodModal = false;
+    this.uploader.cancelAll();
+    this.uploader.clearQueue(); 
+    this.er.nativeElement.querySelector(".reg-upload").value='';
+  }
+
+  nzOnOk(): void{
+    console.log("start upload....")
+    if (this.uploadFormGroup.valid){
+      this.setUploadParams();
+      this.uploader.uploadAll();
+      this.bHasClicked = true;
+    }
+    else{
+      console.log("....upload param error.....")
+    }
+  }
+
+  onDelete(sum: Summary): void{
+    this.modal.confirm({
+      nzTitle: '您确定要删除该纪要吗？',
+      nzContent: sum.name,
+      nzOkType : 'danger',
+      nzOnOk: () =>{
+        this.http.get("/api/summary/delete", {
+          params:{
+            name: sum.name
+          }
+        }).subscribe((res: any)=>{
+          this.onSearch();
+        });
+      }
+    });    
+  }
+
 }
 
 

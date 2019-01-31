@@ -74,7 +74,8 @@ export class ContracttemplateComponent implements OnInit {
     }) 
   }
 
-  onDownload(data: any): void{
+  onDownload(data: any, $evnet: Event): void{
+    $evnet.stopPropagation();
     let ct = data as ContractTemplate;
     var url = "/api/contracttemplate/content/" + ct.name;
     this.http.get(url, {responseType: 'blob'}).subscribe((res: Blob)=>{
