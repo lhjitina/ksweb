@@ -1,19 +1,19 @@
 <div class="page_tag">伙伴资料</div>
 <div nz-row>
-    <div nz-col nzSpan="8"><b>文件名称：</b>{{pdoc.name}}</div>
-    <div nz-col nzSpan="6"><b>合作伙伴：</b>{{pdoc.partner}}</div>
-    <div nz-col nzOffset="6" nzSpan="2">   
-      <button nz-button nzType="default" (click)="onSave()">保存</button>
-  
-    </div> 
-    <div nz-col nzSpan="2"> 
-      <a routerLink="../partnerdoc"><button nz-button nzType="primary">返回</button></a>
+    <div nz-col nzXs="18" nzSm="18" nzMd="12" nzLg="12" nzXl="12" nzXXl="12"><b>文件名称：</b>{{pdoc.name}}</div>
+    <div nz-col class="pc_show" nzMd="9" nzLg="9" nzXl="9" nzXXl="9"><b>合作伙伴：</b>{{pdoc.partner}}</div>
+    <div nz-col nzXs="6" nzSm="6" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
+      <a (click)="onSave()">保存</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a routerLink="../partnerdoc">返回</a>
     </div>
   </div>
   
   <hr>
   <div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
-    <pdf-viewer [src]="pdfUrl"  [render-text]="true" style="display: block;"></pdf-viewer>
+    <pdf-viewer [src]="pdfUrl"  [render-text]="true" 
+      [fit-to-page]="true" style="display: block;">
+    </pdf-viewer>
   </div>
   <div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">
     <img [src]="safeUrl" style="width:100%;">

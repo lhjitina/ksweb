@@ -1,23 +1,19 @@
 <div class="page_tag">会议纪要</div>
 <div nz-row>
-    <div nz-col nzSpan="7"><b>纪要名称：</b>{{sum.name}}</div>
-    <div nz-col nzSpan="4"><b>会议日期：</b>{{sum.meetingDate | date:'yyyy-MM-dd'}}</div>
-    <div nz-col nzOffset="7" nzSpan="2">
-      <button nz-button nzType="default" disabled ='onPrint()'>打印</button>
-    </div>
-    <div nz-col nzSpan="2">   
-      <button nz-button nzType="default" (click)="onSave()">保存</button>
-  
-    </div> 
-    <div nz-col nzSpan="2"> 
-      <a routerLink="../summary"><button nz-button nzType="primary">返回</button></a>
+    <div nz-col nzXs="18" nzSm="18" nzMd="15" nzLg="15" nzXl="15" nzXXl="15"><b>纪要名称：</b>{{sum.name}}</div>
+    <div nz-col class="pc_show" nz-col nzMd="6" nzLg="6" nzXl="6" nzXXl="6"><b>会议日期：</b>{{sum.meetingDate | date:'yyyy-MM-dd'}}</div>
+    <div nz-col  nzXs="6" nzSm="6" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
+      <a (click)="onSave()">保存</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a routerLink="../summary">返回</a>
     </div>
   </div>
   
   <hr>
   <div style="margin-bottom: 30px;" *ngIf="docType == 'application/pdf'">
-    <pdf-viewer [src]="pdfUrl"  [render-text]="true"
-    style="display: block;"></pdf-viewer>
+    <pdf-viewer [src]="pdfUrl"  [render-text]="true" [fit-to-page]="true"
+      style="display: block;">
+    </pdf-viewer>
   </div>
   <div style="margin-bottom: 30px;" *ngIf="docType == 'image/jpeg'">
     <img [src]="safeUrl"   style="width:100%;">

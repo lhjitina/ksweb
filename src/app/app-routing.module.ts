@@ -4,7 +4,6 @@ import { HomeComponent } from './home/home.component';
 import { RegulationComponent } from './regulationpkg/regulation/regulation.component';
 import { RegulationdetailComponent } from './regulationpkg/regulationdetail/regulationdetail.component';
 import { ConsoleComponent } from './console/console.component';
-import { RegulationmanagmentComponent } from './regulationpkg/regulationmanagment/regulationmanagment.component';
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
@@ -14,12 +13,10 @@ import { PolicyComponent } from './policy/policy/policy.component';
 import { PolicydetailComponent } from './policy/policydetail/policydetail.component';
 import { PolicymanagementComponent } from './policy/policymanagement/policymanagement.component';
 import { SummaryComponent } from './summary/summary/summary.component';
-import { SummarymanagementComponent } from './summary/summarymanagement/summarymanagement.component';
 import { SummarydetailComponent } from './summary/summarydetail/summarydetail.component';
 import { LoginGuard } from './guard/login.guard';
 import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
-import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
 import { ContracttemplateComponent } from './contracttemplate/contracttemplate/contracttemplate.component';
 import { ContracttemplatedetailComponent } from './contracttemplate/contracttemplatedetail/contracttemplatedetail.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
@@ -51,17 +48,13 @@ const routes: Routes = [
       ]},
 
       {path: "console", component: ConsoleComponent, children:[
-          {path: "", component: RegulationmanagmentComponent},
           {path: "policy", component: PolicymanagementComponent},
           {path: "policydetail", component: PolicydetailComponent},
-          {path: "regulation", component: RegulationmanagmentComponent},
           {path: "regulationdetail", component: RegulationdetailComponent},
-          {path: "summary", component: SummarymanagementComponent},
           {path: "summarydetail", component: SummarydetailComponent},
           {path: "user", component: UserManagementComponent},
           {path: "useredit", component: UserEditComponent},
           {path: "useradd", component: UserAddComponent},
-          {path: "partnerdoc", component: PdocmanagementComponent},
           {path: "pdocdetail", component: PdocdetailComponent},
       ]},
   ], canActivate: [LoginGuard]}

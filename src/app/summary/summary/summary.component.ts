@@ -159,7 +159,11 @@ export class SummaryComponent implements OnInit {
       }
     });    
   }
-
+  cardTitle(i: any, data: any): string{
+    let info = data as Summary;
+    i += 1;
+    return "[" + i + "] " + info.name; 
+  }
 }
 
 

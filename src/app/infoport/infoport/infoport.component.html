@@ -84,9 +84,9 @@
     <p>操作时间：{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
   </nz-card>
   <ng-template #extraTemplate>
-    <a (click)="onDownload(data)">下载</a>
+    <a (click)="$event.stopPropagation(); onDownload(data)">下载</a>
     <nz-divider nzType="vertical"></nz-divider>
-    <a (click)="onDelete(data)">删除</a>
+    <a (click)="$event.stopPropagation(); onDelete(data)">删除</a>
   </ng-template>
 </div>
 

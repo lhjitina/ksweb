@@ -161,9 +161,9 @@
       <p><strong>操 作 人：</strong>{{data.operatorName}}</p>
     </nz-card>  
     <ng-template #extraTemplate>
-      <a (click)="onDownload(data)">下载</a>
+      <a (click)="$event.stopPropagation(); onDownload(data)">下载</a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a (click)="onDelete(data)" *ngIf='perCw'>删除</a>
+      <a (click)="$event.stopPropagation(); onDelete(data)" *ngIf='perCw'>删除</a>
     </ng-template>
 </div>
 

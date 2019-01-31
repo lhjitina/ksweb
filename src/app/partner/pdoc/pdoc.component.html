@@ -1,49 +1,109 @@
 <div class="page_tag">伙伴资料</div>
-<form nz-form [formGroup]="searchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
-    <nz-form-item>
-      <nz-form-label>文件名称</nz-form-label>
-      <nz-form-control>
-          <input  type="text" nz-input formControlName="fileName" style="width:200px;" placeholder="文件名称">
-      </nz-form-control>
-    </nz-form-item>
+<form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
+  <nz-form-item>
+    <nz-form-label nzSpan="2">文件名称</nz-form-label>
+    <nz-form-control nzSpan="6">
+        <input  type="text" nz-input formControlName="fileName" placeholder="文件名称">
+    </nz-form-control>
+
+    <nz-form-label nzSpan="2">合作伙伴</nz-form-label>
+    <nz-form-control nzSpan="6">
+        <input nz-input type="text" formControlName="partner" placeholder="合作伙伴" >
+    </nz-form-control>
+    <nz-form-control>
+      <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left: 10px;"><i nz-icon type="search"></i></button>
+      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" *ngIf="perDoc()" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+    </nz-form-control>  
+  </nz-form-item>
+</form>
+<form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup"  (ngSubmit)="onFuzzySearch()">
+  <nz-form-item>
+    <nz-form-control nzSpan="16">
+      <input  nz-input formControlName="keys"  placeholder="查询内容">
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3">
+      <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
+    </nz-form-control>
+    <nz-form-control nzOffset="1" nzSpan="3" *ngIf="perDoc()">
+      <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
+        <i nz-icon type="upload"></i>
+      </button>
+    </nz-form-control> 
+  </nz-form-item>
+</form>
+<input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
   
-    <nz-form-item>
-      <nz-form-label>合作伙伴</nz-form-label>
-      <nz-form-control>
-          <input nz-input type="text" formControlName="partner" style="width: 200px;" placeholder="合作伙伴" >
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-    </nz-form-item>
-  </form>
-  
-  <hr>
-  
-  <nz-table #basicTable [nzData]="pdocs" [nzPageSize]="" [nzShowSizeChanger]="true"
+<nz-table class="pc_show" #basicTable [nzData]="pdocs" [nzPageSize]="" [nzShowSizeChanger]="true"
       [nzWidthConfig]="['120px','350px','180px', null]">
-      <thead>
-        <tr>
-          <th class="theadbg">序号</th>
-          <th class="theadbg">文件名称</th>
-          <th class="theadbg">合作伙伴</th>
-          <th class="theadbg">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of basicTable.data index as i">
-          <td>{{i+1}}</td>
-          <td><a [routerLink]="['../pdocdetail']" 
-                 [queryParams]="{name: data.name, partner: data.partner, fromUrl: 'home'}">
-                {{data.name}}
-              </a>
-          </td>
-          <td>{{data.partner}}</td>
-          <td>           
-            <a (click)="onDownload(data)">下载</a>
-          </td>
-        </tr>
-      </tbody>
-  </nz-table>
-  
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>文件名称</th>
+      <th>合作伙伴</th>
+      <th style="width:8em;">操作人</th>
+      <th style="width:12em;">操作时间</th>
+      <th style="width:8em;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data index as i">
+      <td>{{i+1}}</td>
+      <td>
+        <a  [routerLink]="['../pdocdetail']" 
+            [queryParams]="{name: data.name, partner: data.partner}">
+            {{data.name}}
+        </a>
+      </td>
+      <td>{{data.partner}}</td>
+      <td>{{data.operatorName}}</td>
+      <td>{{data.operateTime | date:'yyyy-MM-dd'}}</td>
+      <td>           
+        <a (click)="onDownload(data)">下载</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a *ngIf="perDoc()" (click)="onDelete(data)">删除</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<div class="mobile_show" *ngFor="let data of pdocs; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
+  <nz-card  style="width:100%;" 
+    [nzTitle]="cardTitle(i, data)" 
+    [nzExtra]="extraTemplate" 
+    [routerLink]="['../pdocdetail']" 
+    [queryParams]="{name: data.name, partner: data.partner}">
+    <p><strong>合作伙伴：</strong>{{data.partner}}</p>
+    <p><strong>操作人：</strong>{{data.operatorName}}</p>
+    <p><strong>操作时间：</strong>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a (click)="$event.stopPropagation(); onDownload(data)">下载</a>    
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="$event.stopPropagation(); onDelete(data)">删除</a>  
+  </ng-template>
+  </div>  
+<nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传合作伙伴资料" 
+      [nzContent]="pdocContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
+  <ng-template #pdocContent>
+    <form nz-form [formGroup]="uploadFormGroup">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">文件名称</nz-form-label>       
+        <nz-form-control>
+          <nz-form-text style="text-align:center;">{{uploader?.queue[0]?.file?.name}}</nz-form-text>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="4">合作伙伴</nz-form-label>
+        <nz-form-control >
+          <input nz-input type="text" formControlName="partner" style="width:175px; ">
+        </nz-form-control>
+      </nz-form-item>
+       
+   </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+      <button nz-button type="button" nzType="default" (click)="nzOnCancel()">取消</button>
+      <button nz-button type="submit" nzType="primary" [disabled]="bHasClicked" (click)="nzOnOk()">确定</button>
+  </ng-template>
+</nz-modal>

@@ -25,10 +25,10 @@
     <nz-form-control nzSpan="16">
       <input  nz-input formControlName="keys"  placeholder="查询内容">
     </nz-form-control>
-    <nz-form-control nzOffset="1" nzSpan="3">
+    <nz-form-control nzOffset="1" nzSpan="2">
       <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
     </nz-form-control>
-    <nz-form-control nzOffset="1" nzSpan="3" *ngIf="perSum()">
+    <nz-form-control nzOffset="1" nzSpan="2" *ngIf="perSum()">
       <button nz-button type="button" nzType="primary" nzShape="circle" class="upload" (click)="onUpload()">
         <i nz-icon type="upload"></i>
       </button>
@@ -37,7 +37,7 @@
 </form>
 <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
   
-<nz-table #basicTable [nzData]="summaries" [nzShowSizeChanger]="true">
+<nz-table class="pc_show" #basicTable [nzData]="summaries" [nzShowSizeChanger]="true">
   <thead>
     <tr>
       <th>序号</th>
@@ -57,9 +57,9 @@
               {{data.name}}
         </a>
       </td>
-      <td>{{data.meetingDate }}</td>
+      <td>{{data.meetingDate | date:'yyyy-MM-dd' }}</td>
       <td>{{data.operatorName}}</td>
-      <td>{{data.operateTime }}</td>
+      <td>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>           
         <a (click)="onDownload(data.name)">下载</a>
         <nz-divider nzType="vertical" *ngIf="perSum()"></nz-divider>
@@ -68,6 +68,23 @@
     </tr>
   </tbody>
 </nz-table>
+
+<div class="mobile_show" *ngFor="let data of summaries; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
+  <nz-card  style="width:100%;" 
+    [nzTitle]="cardTitle(i, data)" 
+    [nzExtra]="extraTemplate" 
+    [routerLink]="['../summarydetail']" 
+    [queryParams]="{name: data.name, date: data.meetingDate}">
+    <p><strong>会议日期：</strong>{{data.meetingDate | date:'yyyy-MM-dd'}}</p>
+    <p><strong>操 作 人：</strong>{{data.operatorName}}</p>
+    <p><strong>操作时间：</strong>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a (click)="$event.stopPropagation(); onDownload(data.name)">下载</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="$event.stopPropagation(); onDelete(data)">删除</a>
+  </ng-template>
+</div>
 
 <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传会议纪要" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
     <ng-template #modalContent>

@@ -1,60 +1,72 @@
 <div class="page_tag">行业政策</div>
-<form nz-form [formGroup]="searchFormGroup" [nzLayout]="'inline'" (ngSubmit)="onSearch()" class="regsearch">
-    <nz-form-item>
-      <nz-form-label>文件名称</nz-form-label>
-      <nz-form-control>
-          <input  type="text" nz-input formControlName="name" style="width:120px;" placeholder="文件名称">
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-      <nz-form-label>发文部门</nz-form-label>
-      <nz-form-control>
-          <input nz-input type="text" formControlName="institution" style="width: 120px;" >
-      </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-        <nz-form-label>发文日期</nz-form-label>
-        <nz-form-control>
-          <nz-date-picker formControlName="startDate"  nzPlaceHolder="开始日期"></nz-date-picker>
-          <span>~</span>
-          <nz-date-picker formControlName="endDate" nzPlaceHolder="结束日期"></nz-date-picker>
+<form class="pc_show" nz-form [formGroup]="searchFormGroup" (ngSubmit)="onSearch()">
+  <nz-form-item>
+    <nz-form-label nzSpan="2">文件名称</nz-form-label>
+    <nz-form-control nzSpan="4">
+      <input  type="text" nz-input formControlName="name" placeholder="文件名称">
+    </nz-form-control>
+
+    <nz-form-label nzSpan="2">发文部门</nz-form-label>
+    <nz-form-control nzSpan="3">
+      <input nz-input type="text" formControlName="institution">
+    </nz-form-control>
+
+    <nz-form-label nzSpan="2">发文日期</nz-form-label>
+    <nz-form-control nzSpan="3">
+      <nz-date-picker formControlName="startDate"  nzPlaceHolder="开始日期"></nz-date-picker>
+    </nz-form-control>
+    <nz-form-control nzSpan="3">      
+      <nz-date-picker formControlName="endDate" nzPlaceHolder="结束日期" style="margin-left:5px;"></nz-date-picker>
+    </nz-form-control>
+    <nz-form-label nzSpan="1">状态</nz-form-label>
+    <nz-form-control nzSpan="2">
+        <nz-select formControlName="state" nzPlaceHolder="状态"
+          nz-popover nzContent="状态">
+          <nz-option *ngFor="let option of states" [nzValue]= "option" [nzLabel]= "option"></nz-option> 
+        </nz-select>
         </nz-form-control>
-    </nz-form-item>
-  
-    <nz-form-item>
-        <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
-    </nz-form-item>
-  </form>
-  
-  <hr>
-  
-  <nz-table #basicTable [nzData]="policies" [nzPageSize]="" [nzShowSizeChanger]="true"
-      [nzWidthConfig]="['120px','350px','180px','180px',null]">
-      <thead>
-        <tr>
-          <th class="theadbg">序号</th>
-          <th class="theadbg">文件名称</th>
-          <th class="theadbg">发文部门</th>
-          <th class="theadbg">发文日期</th>
-          <th class="theadbg">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of basicTable.data index as i">
-          <td>{{i+1}}</td>
-          <td><a [routerLink]="['../policydetail']" 
-                 [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate, fromUrl: 'home'}">
-                {{data.name}}
-              </a>
-            </td>
-          <td>{{data.institution}}</td>
-          <td>{{data.issueDate | date:'yyyy-MM-dd'}}</td>
-          <td>           
-            <a (click)="onDownload(data.name)">下载</a>
-          </td>
-        </tr>
-      </tbody>
-  </nz-table>
+    <nz-form-control>
+      <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left: 10px;"><i nz-icon type="search"></i></button>
+      <button nz-button type="button" nzType="primary" nzShape="circle" style="margin-left: 10px;" (click)="onUpload()"><i nz-icon type="upload"></i></button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<input type="file" ng2FileSelect [uploader]="poliUploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
+
+<nz-table class="pc_show" #basicTable [nzData]="policies" [nzShowSizeChanger]="true">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>文件名称</th>
+      <th>发文部门</th>
+      <th style="width:8em;">发文日期</th>
+      <th style="width:5em;">状态</th>
+      <th style="width:6em;">操作人</th>
+      <th style="width:12em;">操作时间</th>
+      <th style="width:8em;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data index as i">
+      <td>{{i+1}}</td>
+      <td>
+        <a  [routerLink]="['../policydetail']" 
+            [queryParams]="{name: data.name, institution: data.institution, date: data.issueDate}">
+              {{data.name}}
+        </a>
+      </td>
+      <td>{{data.institution}}</td>
+      <td>{{data.issueDate | date:'yyyy-MM-dd'}}</td>
+      <td>{{data.state}}</td>
+      <td>{{data.operatorName}}</td>
+      <td>{{data.operateTime}}</td>
+      <td>           
+        <a (click)="onDownload(data.name)">下载</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a *ngIf="data.state == '作废'" (click)="onActive(data)">生效</a>
+        <a *ngIf="data.state == '有效'" (click)="onAbate(data)">作废</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
   

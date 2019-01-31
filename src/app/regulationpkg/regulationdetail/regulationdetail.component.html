@@ -1,24 +1,18 @@
 <div class="page_tag">规章制度</div>
 <div nz-row>
-  <div nz-col nzSpan="7"><b>文件名称：</b>{{reg.name}}</div>
-  <div nz-col nzSpan="4"><b>发文部门：</b>{{reg.departmentName}}</div>
-  <div nz-col nzSpan="4"><b>发文日期：</b>{{reg.issueDate | date:'yyyy-MM-dd'}}</div>
-  <div nz-col nzSpan="3"><b>状态：</b>{{reg.state}}</div>
-  <div nz-col nzSpan="2">
-    <button nz-button nzType="default" disabled ='onPrint()'>打印</button>
-  </div>
-  <div nz-col nzSpan="2">   
-    <button nz-button nzType="default" (click)="onSave()">保存</button>
-
-  </div> 
-  <div nz-col nzSpan="2"> 
-    <a routerLink="../regulation"><button nz-button nzType="primary">返回</button></a>
+  <div nz-col  nzXs="18" nzSm="18" nzMd="13" nzLg="9" nzXl="9" nzXXl="9"><b>文件名称：</b>{{reg.name}}</div>
+  <div nz-col  class="pc_show" nzMd="4" nzLg="6" nzXl="6" nzXXl="6"><b>发文部门：</b>{{reg.departmentName}}</div>
+  <div nz-col  class="pc_show" nzMd="4" nzLg="6" nzXl="6" nzXXl="6"><b>发文日期：</b>{{reg.issueDate | date:'yyyy-MM-dd'}}</div>
+  <div nz-col nzXs="6" nzSm="6" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
+    <a (click)="onSave()">保存</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a routerLink="../regulation">返回</a>
   </div>
 </div>
 
 <hr>
 <div style="margin-bottom: 30px;" *ngIf="docType=='application/pdf'">
-  <pdf-viewer [src]="pdfUrl"  [render-text]="true"
+  <pdf-viewer [src]="pdfUrl"  [render-text]="true" [fit-to-page]="true"
   style="display: block;"></pdf-viewer>
 </div>
 <div style="margin-bottom: 30px;" *ngIf="docType=='image/jpeg'">

@@ -21,8 +21,6 @@ registerLocaleData(zh);
 import { RegulationComponent } from './regulationpkg/regulation/regulation.component';
 import { RegulationdetailComponent } from './regulationpkg/regulationdetail/regulationdetail.component';
 import { ConsoleComponent } from './console/console.component';
-import { RegulationmanagmentComponent } from './regulationpkg/regulationmanagment/regulationmanagment.component';
-import { SummarymanagementComponent } from './summary/summarymanagement/summarymanagement.component';
 import { UserManagementComponent } from './user/user-management/user-management.component';
 import { UserAddComponent } from './user/user-add/user-add.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
@@ -37,7 +35,6 @@ import { SummarydetailComponent } from './summary/summarydetail/summarydetail.co
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { PdocComponent } from './partner/pdoc/pdoc.component';
 import { PdocdetailComponent } from './partner/pdocdetail/pdocdetail.component';
-import { PdocmanagementComponent } from './partner/pdocmanagement/pdocmanagement.component';
 import { InfoportComponent } from './infoport/infoport/infoport.component';
 import { InfdetailComponent } from './infoport/infdetail/infdetail.component';
 import { CookieService } from 'ngx-cookie-service';
@@ -53,8 +50,6 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     RegulationComponent,
     RegulationdetailComponent,
     ConsoleComponent,
-    RegulationmanagmentComponent,
-    SummarymanagementComponent,
     UserManagementComponent,
     UserAddComponent,
     UserEditComponent,
@@ -68,7 +63,6 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     BreadcrumbComponent,
     PdocComponent,
     PdocdetailComponent,
-    PdocmanagementComponent,
     ContracttemplateComponent,
     InfoportComponent,
     InfdetailComponent,
@@ -76,7 +70,6 @@ import { ContractdetailComponent } from './contract/contractdetail/contractdetai
     ContracttemplatedetailComponent,
     ContractComponent,
     ContractdetailComponent,
-
   ],
   imports: [
     BrowserModule,

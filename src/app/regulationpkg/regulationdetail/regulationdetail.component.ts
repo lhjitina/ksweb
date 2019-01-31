@@ -17,7 +17,7 @@ export class RegulationdetailComponent implements OnInit {
   public reg = new Regulation();
   public fromUrl: string;  
   public pdfUrl: any;
-  public safeUrl: any;
+  public safeUrl: SafeResourceUrl;
   public docType: string;
   public content: Blob;
   public durl: string;
@@ -64,8 +64,4 @@ export class RegulationdetailComponent implements OnInit {
     setTimeout(()=>{URL.revokeObjectURL(url)}, 2000);
   }
 
-  ngOnDestroy(){
-    URL.revokeObjectURL(this.pdfUrl);
-    URL.revokeObjectURL(this.safeUrl);
-  }
 }

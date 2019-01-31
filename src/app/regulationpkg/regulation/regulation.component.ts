@@ -1,9 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { FormBuilder,  FormGroup, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Department } from 'src/app/app.component';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
+import * as globalvar from './../../globalvar';
+import { FileUploader } from 'ng2-file-upload';
+import { NzModalService } from 'ng-zorro-antd';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-regulation',
@@ -11,25 +15,40 @@ import { RespData, RespPage, PageRequest } from './../../common/dto';
   styleUrls: ['./regulation.component.css']
 })
 export class RegulationComponent implements OnInit {
+  departments: Department[] = [];
+  regulations: Regulation[] = [];
+  states: string[] = globalvar.DOCSTATS;
+  searchFormGroup: FormGroup;
+  uploadFormGroup: FormGroup;
+  abateFormGroup: FormGroup;
+  fuzzySearchFormGroup: FormGroup;
+  uploader:FileUploader;
+  bShowUplodModal: boolean = false;
+  bHasClicked: boolean = false;
 
-  public Regulations: Array<Regulation>;
-  public departments: Department[];
-  public pageSize: number = 2;
-  public regSearchFormGroup: FormGroup;
-
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private er: ElementRef,
               private fb: FormBuilder,
-              private http: HttpClient) {
-    this.regSearchFormGroup = this.fb.group({
+              private http: HttpClient,
+              private modal: NzModalService,
+              private gs: GlobalService) {
+    this.searchFormGroup = this.fb.group({
       name: [''],
       departmentId: [''],
       startDate: [''],
-      endDate: ['']
+      endDate: [''],
+      state: [globalvar.DOCSTAT_ACTIVE]   
     });
-              }
+    this.uploadFormGroup = this.fb.group({
+      department: ['', Validators.required],
+      issueDate: ['', Validators.required]
+    });              
+    this.fuzzySearchFormGroup = this.fb.group({
+      keys: ['']
+    });
+  }
 
   ngOnInit() {
-
+    this.initUploader();
     this.onSearch();
     this.getDepartments();
   }
@@ -47,32 +66,32 @@ export class RegulationComponent implements OnInit {
 
   onSearch(): void{
     var page = new PageRequest();  
-    var sd = this.regSearchFormGroup.get("startDate").value;
-    var ed = this.regSearchFormGroup.get("endDate").value;
+    var sd = this.searchFormGroup.get("startDate").value;
+    var ed = this.searchFormGroup.get("endDate").value;
     if (moment.isDate(sd)) { 
       page.append("startDate", moment(sd).format("YYYY-MM-DD")) 
     };
     if (moment.isDate(ed)) { 
       page.append("endDate", moment(ed).format("YYYY-MM-DD")) 
     };
-    page.append("name", this.regSearchFormGroup.get("name").value);
-    page.append("departmentId", this.regSearchFormGroup.get("departmentId").value);
-    console.log("request with")
-    console.log(page)
+    page.append("name", this.searchFormGroup.get("name").value);
+    page.append("departmentId", this.searchFormGroup.get("departmentId").value);
+    page.append("state", this.searchFormGroup.get("state").value);
+
     this.http.post("/api/front/regulation/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
-        this.Regulations = res.data;        
+        this.regulations = res.data;        
       }
       else{
         console.log(res.message);
-        this.Regulations = [];
+        this.regulations = [];
       }
     })
    }
 
   onDepartmentSelectChange(): void {
-    if(this.regSearchFormGroup.get("departmentId").value == null){
-      this.regSearchFormGroup.patchValue({departmentId: ''});
+    if(this.searchFormGroup.get("departmentId").value == null){
+      this.searchFormGroup.patchValue({departmentId: ''});
     } 
   }
 
@@ -88,7 +107,100 @@ export class RegulationComponent implements OnInit {
       URL.revokeObjectURL(a.href);
     });
   }
+  initUploader(): void{
+    this.uploader = new FileUploader({});
+    this.uploader.onCompleteAll=()=>{
+      this.bShowUplodModal = false;
+      this.uploader.clearQueue();
+      this.er.nativeElement.querySelector(".reg-upload").value='';
+      this.onSearch();
+    }
+  }
 
+  setUploadParams(): void{
+    var upUrl = "/api/regulation/upload?department=" + this.uploadFormGroup.get("department").value;
+    var issueDate = moment(this.uploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
+    upUrl = upUrl + "&issueDate=" + issueDate;
+
+    console.log("upload url:"+upUrl);
+    this.uploader.setOptions({
+      url: upUrl,
+      authToken: this.gs.getToken(),
+      removeAfterUpload: true, 
+      maxFileSize: 10240000,
+      method: "POST"    
+    })
+  }
+
+  onUpload(): void{
+    this.uploader.clearQueue();
+    let e = this.er.nativeElement.querySelector(".reg-upload");
+    e.click();
+    this.bHasClicked = false;
+  }
+
+  selectFileChange(event: any): void{
+    if (this.uploader.queue.length>0){
+      this.bShowUplodModal = true;
+    }
+  }
+
+  nzOnCancel():void{
+    this.bShowUplodModal = false;
+    this.uploader.cancelAll();
+    this.uploader.clearQueue(); 
+    this.er.nativeElement.querySelector(".reg-upload").value='';
+  }
+
+  nzOnOk(): void{
+    console.log("start upload....")
+    if (this.uploadFormGroup.valid){
+      this.setUploadParams();
+      this.uploader.uploadAll();
+      this.bHasClicked = true;
+    }
+    else{
+      console.log("....upload param error.....")
+    }
+  }
+
+  onAbate(reg: Regulation): void{
+    this.modal.confirm({
+      nzTitle: '您确定要作废该文件吗？',
+      nzContent: reg.name,
+      nzOnOk: () =>{
+        var body = Regulation.clone(reg);
+        body.state = globalvar.DOCSTAT_ABATED;
+        this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
+          this.onSearch();
+        });
+      }
+    });
+  }
+
+  onActive(reg: Regulation): void{
+    this.modal.confirm({
+      nzTitle: '您确定要生效该文件吗？',
+      nzContent: reg.name,
+      nzOnOk: () =>{
+        var body = Regulation.clone(reg);
+        body.state = globalvar.DOCSTAT_ACTIVE;
+        this.http.post("/api/regulation/state", body).subscribe((res: any)=>{
+          this.onSearch();
+        });
+      }
+   });
+  } 
+
+  cardTitle(i: any, data: any): string{
+    let info = data as Regulation;
+    i += 1;
+    return "[" + i + "] " + info.name; 
+  }
+
+  perReg(): boolean{
+    return this.gs.getUser().perReg;
+  }
 }
 
 

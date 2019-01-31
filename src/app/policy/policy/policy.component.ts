@@ -52,6 +52,96 @@ export class PolicyComponent implements OnInit {
     })  
   }
 
+  initUploader(): void{
+    this.poliUploader = new FileUploader({});
+    this.poliUploader.onCompleteAll=()=>{
+      this.bShowUplodModal = false;
+      this.poliUploader.clearQueue();
+      this.er.nativeElement.querySelector(".reg-upload").value='';
+      this.getAll();
+    }
+  }
+
+  setUploadParams(): void{
+    var upUrl = "/api/policy/upload?institution=" + this.poliUploadFormGroup.get("institution").value;
+    var issueDate = moment(this.poliUploadFormGroup.get("issueDate").value).format("YYYY-MM-DD");
+    upUrl = upUrl + "&issueDate=" + issueDate;
+
+    this.poliUploader.setOptions({
+      url: upUrl,
+      authToken: this.gs.getToken(),
+      removeAfterUpload: true, 
+      maxFileSize: 102400000,
+      method: "POST"    
+    })
+  }
+
+  onUpload(): void{
+    this.poliUploader.clearQueue();
+    let e = this.er.nativeElement.querySelector(".reg-upload");
+    e.click();
+    this.bHasClicked = false;
+  }
+
+  selectFileChange(event: any): void{
+    if (this.poliUploader.queue.length>0){
+      this.bShowUplodModal = true;
+    }
+  }
+
+  nzOnCancel():void{
+    this.bShowUplodModal = false;
+    this.poliUploader.cancelAll();
+    this.poliUploader.clearQueue(); 
+    this.er.nativeElement.querySelector(".reg-upload").value='';
+  }
+
+  nzOnOk(): void{
+    if (this.poliUploadFormGroup.valid){
+      this.setUploadParams();
+      this.poliUploader.uploadAll();
+      this.bHasClicked = true;
+    }
+    else{
+      console.log("....upload param error.....")
+    }
+  }
+
+  onAbate(policy: Policy): void{
+    this.confirmModal = this.modal.confirm({
+      nzTitle: '您确定要作废该文件吗？',
+      nzContent: policy.name,
+      nzOnOk: () =>{
+        var body = Policy.clone(policy);
+        body.state = globalvar.DOCSTAT_ABATED;
+        this.http.post("/api/policy/state", body).subscribe((res: any)=>{
+          this.onSearch();
+        });
+      }
+   });
+  }
+
+  onActive(policy: Policy): void{
+    this.confirmModal = this.modal.confirm({
+      nzTitle: '您确定要生效该文件吗？',
+      nzContent: policy.name,
+      nzOnOk: () =>{
+        var body = Policy.clone(policy);
+        body.state = globalvar.DOCSTAT_ACTIVE;
+        this.http.post("/api/policy/state", body).subscribe((res: any)=>{
+          this.onSearch();
+        });
+      }
+   });
+  } 
+
+  getAll(): void{
+    this.http.get("/api/console/policy/list").subscribe((res: any)=>{
+      this.policies = res;
+    });
+  }
+
+
   onDownload(name: string): void{
     var url = "/api/policy/content/" + name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
