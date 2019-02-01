@@ -173,6 +173,19 @@ export class SummaryComponent implements OnInit {
     i += 1;
     return "[" + i + "] " + info.name; 
   }
+
+  onFuzzySearch(): void{
+    var page = new PageRequest();  
+    page.append("keys", this.fuzzySearchFormGroup.get("keys").value);
+    this.http.post("/api/summary/fuzzy", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.summaries = res.data;
+      }
+      else{
+        this.summaries = [];
+      }
+    })     
+  } 
 }
 
 

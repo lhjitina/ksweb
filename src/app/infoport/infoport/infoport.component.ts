@@ -200,7 +200,7 @@ export class InfoportComponent implements OnInit {
 
   onFuzzySearch(): void{
     var page = new PageRequest();  
-    page.append("keys", this.searchFormGroup.get("keys").value);
+    page.append("keys", this.fuzzySearchFormGroup.get("keys").value);
     this.http.post("/api/share/fuzzy", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
         this.infos = res.data;

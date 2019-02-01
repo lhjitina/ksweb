@@ -43,20 +43,18 @@
 <form class="mobile_show" nz-form [formGroup]="fuzzySearchFormGroup" (ngSubmit)="onFuzzySearch()">
   <nz-form-item>
     <nz-form-control nzSpan="16">
-        <input  nz-input formControlName="keys"  placeholder="姓名／电话／邮箱">
+        <input  nz-input formControlName="keys"  placeholder="姓名／电话／邮件／部门">
     </nz-form-control>
-    <nz-form-control nzSpan="3">
+    <nz-form-control nzSpan="8">
         <button nz-button type="submit" nzType="primary" nzShape="circle" style="margin-left:10px;">
           <i nz-icon type="search"></i>
         </button>
-    </nz-form-control>
-    <nz-form-control>
         <a [routerLink]="['../useradd']"> 
           <button type="button" nz-button nzType="primary" nzShape="circle"  style="margin-left:10px;">
             <i nz-icon type="plus"></i>
           </button>
-        </a>
-    </nz-form-control> 
+        </a>   
+    </nz-form-control>
   </nz-form-item>  
 </form>
 <nz-table class="pc_show" #userTable [nzData]="users"  [nzShowSizeChanger]="true">

@@ -188,6 +188,19 @@ export class PolicyComponent implements OnInit {
     i += 1;
     return "[" + i + "] " + info.name; 
   }
+
+  onFuzzySearch(): void{
+    var page = new PageRequest();  
+    page.append("keys", this.fuzzySearchFormGroup.get("keys").value);
+    this.http.post("/api/policy/fuzzy", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.policies = res.data;
+      }
+      else{
+        this.policies = [];
+      }
+    })     
+  }
 }
 
 

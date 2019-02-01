@@ -211,6 +211,19 @@ export class RegulationComponent implements OnInit {
   perReg(): boolean{
     return this.gs.getUser().perReg;
   }
+
+  onFuzzySearch(): void{
+    var page = new PageRequest();  
+    page.append("keys", this.fuzzySearchFormGroup.get("keys").value);
+    this.http.post("/api/regulation/fuzzy", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.regulations = res.data;
+      }
+      else{
+        this.regulations = [];
+      }
+    })     
+  }  
 }
 
 

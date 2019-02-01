@@ -117,6 +117,19 @@ export class UserManagementComponent implements OnInit {
     i += 1;
     return "[" + i + "] " + info.name; 
   } 
+
+  onFuzzySearch(): void{
+    var page = new PageRequest();  
+    page.append("keys", this.fuzzySearchFormGroup.get("keys").value);
+    this.http.post("/api/user/fuzzy", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.users = res.data;
+      }
+      else{
+        this.users = [];
+      }
+    })     
+  }
 }
 
 export class User{

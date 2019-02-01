@@ -252,6 +252,19 @@ export class ContractComponent implements OnInit {
   perCw(): boolean{
     return this.gs.getUser().perCw;
   }
+
+  onFuzzySearch(): void{
+    var page = new PageRequest();  
+    page.append("keys", this.fuzzySearchFormGroup.get("keys").value);
+    this.http.post("/api/contract/fuzzy", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.contracts = res.data;
+      }
+      else{
+        this.contracts = [];
+      }
+    })     
+  }
 }
 
 

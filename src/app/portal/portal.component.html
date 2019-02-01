@@ -23,7 +23,7 @@
               <li nz-menu-item><a routerLink="./home/policy"><i nz-icon type="database" theme="twotone"></i>行业政策</a></li>
               <li nz-menu-item><a routerLink="./home/contracttemplate"><i nz-icon type="copy" theme="twotone"></i>合同模版</a></li>
               <li nz-menu-item *ngIf="perCwCr()"><a routerLink="./home/contract"><i nz-icon type="copy" theme="twotone"></i>已签合同</a></li>
-              <li nz-menu-item *ngIf="perUsr()"><a routerLink="./user"><i nz-icon type="team" ></i>用户管理</a></li>              </ul>
+              <li nz-menu-item *ngIf="perUsr()"><a routerLink="./home/user"><i nz-icon type="team" ></i>用户管理</a></li>              </ul>
           </li>
           <li nz-menu-item style="float:right;">
               <a routerLink="./home" (click)="onHome()">
