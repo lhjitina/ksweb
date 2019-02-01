@@ -11,8 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./contracttemplatedetail.component.css']
 })
 export class ContracttemplatedetailComponent implements OnInit {
-   public contract: ContractTemplate = new ContractTemplate();
-  public fromUrl: string;  
+  public contract: ContractTemplate = new ContractTemplate();
   public pdfUrl: any;
   public safeUrl: any;
   public docType: string;
@@ -37,7 +36,7 @@ export class ContracttemplatedetailComponent implements OnInit {
   getRouterParam(data: Params) : void{
     this.contract.name = data["name"];
     this.contract.issueDate = data["date"];
-    this.fromUrl = data["fromUrl"];
+    this.contract.state = data["state"];
     this.docType = Global.fileType(this.contract.name);
   }
 

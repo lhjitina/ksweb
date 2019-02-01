@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
 import * as globalvar from './../../globalvar';
 import { FileUploader } from 'ng2-file-upload';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { GlobalService } from 'src/app/global.service';
 @Component({
   selector: 'app-policy',
@@ -28,6 +28,7 @@ export class PolicyComponent implements OnInit {
               private http: HttpClient,
               private er: ElementRef,
               private modal: NzModalService,
+              private msg: NzMessageService,
               private gs: GlobalService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
@@ -63,7 +64,7 @@ export class PolicyComponent implements OnInit {
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("institution", this.searchFormGroup.get("institution").value);
     page.append("state", this.searchFormGroup.get("state").value);
-    this.http.post("/api/front/policy/list", page).subscribe((res: RespPage)=>{
+    this.http.post("/api/policy/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
         this.policies = res.data;        
       }
@@ -82,7 +83,15 @@ export class PolicyComponent implements OnInit {
       this.er.nativeElement.querySelector(".reg-upload").value='';
       this.onSearch();
     }
-  }
+    this.poliUploader.onSuccessItem=(item: any, response: string, status: number, headers: any): any=>{
+      let res: RespData = JSON.parse(response);
+      if (status != 200){
+        this.msg.create('error', "发生错误：" + status);
+      }
+      else if (res.code != 0){
+        this.msg.create('error', res.message);
+      }
+    }; }
 
   setUploadParams(): void{
     var upUrl = "/api/policy/upload?institution=" + this.uploadFormGroup.get("institution").value;

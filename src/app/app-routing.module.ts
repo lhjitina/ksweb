@@ -26,7 +26,6 @@ const routes: Routes = [
   {path: "", component: LoginComponent},
   {path: "login", component: LoginComponent},
   {path: "portal", component: PortalComponent, children:[
-      {path: "", component: HomeComponent},
       {path: "home", component: HomeComponent, children:[
         {path: "", component:InfoportComponent},
         {path: "shareinfo", component: InfoportComponent},

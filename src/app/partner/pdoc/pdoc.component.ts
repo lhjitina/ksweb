@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
 import { GlobalService } from 'src/app/global.service';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { FileUploader } from 'ng2-file-upload';
 import * as globalvar from './../../globalvar';
 
@@ -27,6 +27,7 @@ export class PdocComponent implements OnInit {
               private fb: FormBuilder,
               private http: HttpClient,
               private modal: NzModalService,
+              private msg: NzMessageService,
               private er: ElementRef) {
     this.searchFormGroup = this.fb.group({
       name: [''],
@@ -52,7 +53,7 @@ export class PdocComponent implements OnInit {
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("partner", this.searchFormGroup.get("partner").value);
 
-    this.http.post("/api/front/pdoc/list", page).subscribe((res: RespPage)=>{
+    this.http.post("/api/pdoc/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
         this.pdocs = res.data;
       }
@@ -87,6 +88,15 @@ export class PdocComponent implements OnInit {
       this.er.nativeElement.querySelector(".reg-upload").value='';
       this.onSearch();
     }
+    this.uploader.onSuccessItem=(item: any, response: string, status: number, headers: any): any=>{
+      let res: RespData = JSON.parse(response);
+      if (status != 200){
+        this.msg.create('error', "发生错误：" + status);
+      }
+      else if (res.code != 0){
+        this.msg.create('error', res.message);
+      }
+    };  
   }
 
   setUploadParams(): void{
@@ -144,7 +154,7 @@ export class PdocComponent implements OnInit {
     var body = {
       name: pdoc.name,
     }
-    this.http.post("/api/console/pdoc/delete", body).subscribe((res: RespData)=>{
+    this.http.post("/api/pdoc/delete", body).subscribe((res: RespData)=>{
       if (res.code == 0){
         this.onSearch();
       }

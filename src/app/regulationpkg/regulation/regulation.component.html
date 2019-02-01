@@ -106,28 +106,28 @@
 
 <nz-modal [nzVisible]="bShowUplodModal" nzTitle="上传规章制度" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="nzOnCancel()">
     <ng-template #modalContent>
-      <p>文件名称：{{uploader.queue[0]?.file?.name}}</p>
+      <p><strong>文件名称：</strong>{{uploader.queue[0]?.file?.name}}</p>
       <form nz-form [formGroup]="uploadFormGroup" >
         <nz-form-item>
-          <nz-form-label>发文部门</nz-form-label>
-          <nz-form-control>
-            <nz-select formControlName="department" style="width:175px; ">
-                  <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
+          <nz-form-label nzSpan="4" nzRequired>发文部门</nz-form-label>
+          <nz-form-control nzSpan="9">
+            <nz-select formControlName="department">
+                <nz-option *ngFor="let option of departments" [nzValue]= "option.id" [nzLabel]= "option.name"></nz-option> 
             </nz-select>
           </nz-form-control>
         </nz-form-item>
         
         <nz-form-item>
-          <nz-form-label>发文日期</nz-form-label>
-          <nz-form-control>
-              <nz-date-picker formControlName="issueDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
+          <nz-form-label nzSpan="4" nzRequired>发文日期</nz-form-label>
+          <nz-form-control nzSpan="10">
+              <nz-date-picker formControlName="issueDate"  nzPlaceHolder="发文日期"></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
 
       </form>
 
       <div>
-          <nz-progress [nzPercent]="uploadProg" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
+          <nz-progress [nzPercent]="uploader.progress" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
       </div>
     </ng-template>
     <ng-template #modalFooter>

@@ -6,12 +6,12 @@
         <input  nz-input formControlName="name" placeholder="合同名称">
       </nz-form-control>
 
-      <nz-form-label nzSpan="2">合作方</nz-form-label>
+      <nz-form-label nzSpan="1" >合作方</nz-form-label>
       <nz-form-control nzSpan="3">
         <input  nz-input formControlName="partner"  placeholder="合作方">
       </nz-form-control>
 
-      <nz-form-label nzSpan="2">类型</nz-form-label>
+      <nz-form-label nzSpan="1">类型</nz-form-label>
       <nz-form-control nzSpan="2">
         <input  nz-input formControlName="type" placeholder="类型">
       </nz-form-control>
@@ -21,7 +21,7 @@
         <nz-date-picker formControlName="startDate" nzPlaceHolder="日期范围开始"></nz-date-picker>
       </nz-form-control>  
       <nz-form-control nzSpan="3">       
-        <nz-date-picker formControlName="endDate"  nzPlaceHolder="日期范围结束"></nz-date-picker>
+        <nz-date-picker formControlName="endDate"  nzPlaceHolder="日期范围结束" style="margin-left:10px;"></nz-date-picker>
       </nz-form-control>
 
       <nz-form-control nzSpan="3">
@@ -39,7 +39,7 @@
       <button nz-button type="submit" nzType="primary" nzShape="circle"><i nz-icon type="search"></i></button>
     </nz-form-control>
     <nz-form-control nzOffset="1" nzSpan="3">
-      <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()" *ngIf='perCw'>
+      <button nz-button type="button" nzType="primary" nzShape="circle" (click)="onUpload()" *ngIf='perCw()'>
         <i nz-icon type="upload"></i>
       </button>
     </nz-form-control> 
@@ -48,9 +48,8 @@
 <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
  
     
-<nz-table class="pc_show" #basicTable [nzData]="contracts" [nzShowSizeChanger]="true"
-  [nzWidthConfig]="['30px','200px','100px','100px','150px', '140px', '140px', '60px', '80px', null]">
-  <thead>
+<nz-table class="pc_show" #basicTable [nzData]="contracts" [nzShowSizeChanger]="true">
+   <thead>
     <tr>
       <th>序号</th>
       <th>合同名称</th>
@@ -59,9 +58,9 @@
       <th>合同摘要</th>
       <th>开始日期</th> 
       <th>终止日期</th> 
-      <th>自动续期</th>          
+      <th style="width: 5em;">自动续期</th>          
       <th>操作人</th>
-      <th>操作</th>
+      <th style="width: 12em;">操作</th>
     </tr>
   </thead>
   <tbody>
@@ -127,10 +126,10 @@
       <td>
         <ng-container *ngIf='!editCache[data.name].edit'>
           <a (click)="onDownload(data)">下载</a>
-          <nz-divider nzType="vertical"  *ngIf='perCw'></nz-divider>
-          <a (click)="onDelete(data)" *ngIf='perCw'>删除</a>
-          <nz-divider nzType="vertical"  *ngIf='perCw'></nz-divider>
-          <a (click)="onEdit(data)" *ngIf='perCw'>修改</a>
+          <nz-divider nzType="vertical"  *ngIf='perCw()'></nz-divider>
+          <a (click)="onDelete(data)" *ngIf='perCw()'>删除</a>
+          <nz-divider nzType="vertical"  *ngIf='perCw()'></nz-divider>
+          <a (click)="onEdit(data)" *ngIf='perCw()'>修改</a>
         </ng-container>
         <ng-container  *ngIf='editCache[data.name].edit'>
           <a (click)="onFinishEdit(data)">确定</a>
@@ -160,7 +159,7 @@
     <ng-template #extraTemplate>
       <a (click)="$event.stopPropagation(); onDownload(data)">下载</a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a (click)="$event.stopPropagation(); onDelete(data)" *ngIf='perCw'>删除</a>
+      <a (click)="$event.stopPropagation(); onDelete(data)" *ngIf='perCw()'>删除</a>
     </ng-template>
 </div>
 

@@ -116,14 +116,14 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="4">发文部门</nz-form-label>
+        <nz-form-label [nzSpan]="4" nzRequired>发文部门</nz-form-label>
         <nz-form-control >
           <input nz-input type="text" formControlName="institution" style="width:175px; ">
         </nz-form-control>
       </nz-form-item>
        
       <nz-form-item>  
-        <nz-form-label [nzSpan]="4">发文日期</nz-form-label>
+        <nz-form-label [nzSpan]="4" nzRequired>发文日期</nz-form-label>
         <nz-form-control>
             <nz-date-picker formControlName="issueDate"  nzPlaceHolder="发文日期" ></nz-date-picker>
         </nz-form-control>

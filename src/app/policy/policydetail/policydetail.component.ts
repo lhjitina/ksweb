@@ -29,6 +29,7 @@ export class PolicydetailComponent implements OnInit {
     this.routerInfo.queryParams.subscribe((data: Params)=>this.getRouterParam(data));
     var url = "/api/policy/content/" + this.policy.name;
     this.http.get(url, { responseType: 'blob'}).subscribe((res: Blob)=>{
+      console.log("policy detail return")
       this.content = res.slice(0, res.size, this.docType);
       (this.docType == "application/pdf")? this.pdfUrl = URL.createObjectURL(this.content) : this.pdfUrl='';
       (this.docType == "image/jpeg")? this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.content)) : this.safeUrl='';

@@ -88,15 +88,15 @@
     <ng-template #modalContent>
       <form nz-form [formGroup]="uploadFormGroup" >
         <nz-form-item>
-          <nz-form-label>纪要名称</nz-form-label>
-          <nz-form-control>
+          <nz-form-label nzSpan="4">纪要名称</nz-form-label>
+          <nz-form-control nzSpan="20">
             <nz-form-text>{{uploader.queue[0]?.file?.name}}</nz-form-text>
           </nz-form-control>
         </nz-form-item>
   
         <nz-form-item>
-          <nz-form-label>会议日期</nz-form-label>
-          <nz-form-control>
+          <nz-form-label nzSpan="4">会议日期</nz-form-label>
+          <nz-form-control nzSpan="9">
               <nz-date-picker formControlName="meetingDate"  nzPlaceHolder="会议日期" ></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
@@ -104,7 +104,7 @@
       </form>
     
       <div>
-          <nz-progress [nzPercent]="uploadProg" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
+          <nz-progress [nzPercent]="uploader.progress" nzStatus="active" [hidden]="!uploader.isUploading"></nz-progress> 
       </div>
     </ng-template>
   

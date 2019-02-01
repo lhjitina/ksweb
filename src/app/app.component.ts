@@ -15,9 +15,12 @@ export class AppComponent {
   }
 
   ngOnInit(){
-    console.log("app init...")
-    console.log(window.location.pathname);
-    this.gs.setInitUrl(window.location.pathname);
+    if (window.location.pathname === '/'){
+      this.gs.setInitUrl("/portal/home");
+    }
+    else{
+      this.gs.setInitUrl(window.location.pathname);
+    }
     this.gs.verifyToken();  
   }
 }

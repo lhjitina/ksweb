@@ -1,16 +1,16 @@
 import {HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { catchError, mergeMap, filter, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GlobalService } from './global.service';
-import { EventHandlerVars } from '@angular/compiler/src/compiler_util/expression_converter';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
-
+import { RespData } from './common/dto';
+import { NzMessageService } from 'ng-zorro-antd';
 @Injectable()
 export class KsInterceptor implements HttpInterceptor {
     constructor(private router: Router,
-        private gs: GlobalService){}
+        private gs: GlobalService,
+        private msg: NzMessageService){}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{ 
         const authToken = this.gs.getToken();
@@ -21,17 +21,13 @@ export class KsInterceptor implements HttpInterceptor {
             tap(
                 (event: any) =>{
                      if (event instanceof HttpResponse){
-                        if (event.status == 401){
-                            console.log("un authorized");
-                            this.router.navigateByUrl("/login");
+                        let res = event.body as RespData;
+                        console.log("res body:")
+                        console.log(event.body)
+                        if (res.code != 0){
+                            console.log("error code: " + res.code);
+                            this.msg.create('error', res.message);
                         }
-                        else{
-                            console.log("event status:" + event.status)
-                        }
-                    }
-                    else{
-                        console.log("not httpresponse")
-                        console.log(event);
                     }
                 },
                 error=>{
@@ -42,9 +38,11 @@ export class KsInterceptor implements HttpInterceptor {
                             this.router.navigateByUrl("/login");
                             break;
                         }
+                        default:{
+                            this.msg.create('error', "服务器发生错误，错误码："+error.status);
+                        }
                     }
                 }
-               // return Observable.create(observer => observer.next(event))
             )
            
             )

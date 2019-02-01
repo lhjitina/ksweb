@@ -75,6 +75,15 @@ export class InfoportComponent implements OnInit {
       this.er.nativeElement.querySelector(".reg-upload").value='';
       this.onSearch();
     }
+    this.uploader.onSuccessItem=(item: any, response: string, status: number, headers: any): any=>{
+      let res: RespData = JSON.parse(response);
+      if (status != 200){
+        this.msg.create('error', "发生错误：" + status);
+      }
+      else if (res.code != 0){
+        this.msg.create('error', res.message);
+      }
+    };
   }
 
   setUploadParams(): void{
@@ -187,6 +196,19 @@ export class InfoportComponent implements OnInit {
   onClickCard(data: any){
     let info = data as ShareInfo;
     console.log("click card" + info.name);
+  }
+
+  onFuzzySearch(): void{
+    var page = new PageRequest();  
+    page.append("keys", this.searchFormGroup.get("keys").value);
+    this.http.post("/api/share/fuzzy", page).subscribe((res: RespPage)=>{
+      if (res.code == 0){
+        this.infos = res.data;
+      }
+      else{
+        this.infos = [];
+      }
+    })     
   }
 }
 

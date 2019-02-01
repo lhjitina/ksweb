@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
 import { GlobalService } from 'src/app/global.service';
 import { FileUploader } from 'ng2-file-upload';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-summary',
@@ -26,11 +26,8 @@ export class SummaryComponent implements OnInit {
               private http: HttpClient,
               private gs: GlobalService,
               private er: ElementRef,
-              private modal: NzModalService) {
-
-              }
-
-  ngOnInit() {
+              private modal: NzModalService,
+              private msg: NzMessageService) {
     this.searchFormGroup = this.fb.group({
       name: [''],
       startDate: [''],
@@ -42,6 +39,9 @@ export class SummaryComponent implements OnInit {
     this.uploadFormGroup = this.fb.group({
       meetingDate: ['', Validators.required]
     });
+              }
+
+  ngOnInit() {
     this.onSearch();
     this.initUploader();
   }
@@ -58,7 +58,7 @@ export class SummaryComponent implements OnInit {
     };
     page.append("name", this.searchFormGroup.get("name").value);
     
-    this.http.post("/api/front/summary/list", page).subscribe((res: RespPage)=>{
+    this.http.post("/api/summary/list", page).subscribe((res: RespPage)=>{
       console.log(res);
       if (res.code == 0){
         this.summaries = res.data;        
@@ -95,6 +95,15 @@ export class SummaryComponent implements OnInit {
       this.er.nativeElement.querySelector(".reg-upload").value='';
       this.onSearch();
     }
+    this.uploader.onSuccessItem=(item: any, response: string, status: number, headers: any): any=>{
+      let res: RespData = JSON.parse(response);
+      if (status != 200){
+        this.msg.create('error', "发生错误：" + status);
+      }
+      else if (res.code != 0){
+        this.msg.create('error', res.message);
+      }
+    };  
   }
 
   setUploadParams(): void{

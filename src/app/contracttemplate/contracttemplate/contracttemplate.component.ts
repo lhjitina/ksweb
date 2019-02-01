@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import * as Global from './../../globalvar';
 import { RespData, RespPage, PageRequest } from './../../common/dto';
 import { FileUploader } from 'ng2-file-upload';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { GlobalService } from 'src/app/global.service';
 
 @Component({
@@ -30,6 +30,7 @@ export class ContracttemplateComponent implements OnInit {
               private fb: FormBuilder,
               private http: HttpClient,
               private modal: NzModalService,
+              private msg: NzMessageService,
               private gs: GlobalService) {
       this.searchFormGroup = this.fb.group({
         name: [''],
@@ -63,7 +64,7 @@ export class ContracttemplateComponent implements OnInit {
     page.append("name", this.searchFormGroup.get("name").value);
     page.append("state", this.searchFormGroup.get("state").value);
 
-    this.http.post("/api/front/contracttemplate/list", page).subscribe((res: RespPage)=>{
+    this.http.post("/api/contracttemplate/list", page).subscribe((res: RespPage)=>{
       if (res.code == 0){
         this.contracts = res.data;
       }
@@ -96,6 +97,15 @@ export class ContracttemplateComponent implements OnInit {
       this.er.nativeElement.querySelector(".reg-upload").value='';
       this.onSearch();
     }
+    this.uploader.onSuccessItem=(item: any, response: string, status: number, headers: any): any=>{
+      let res: RespData = JSON.parse(response);
+      if (status != 200){
+        this.msg.create('error', "发生错误：" + status);
+      }
+      else if (res.code != 0){
+        this.msg.create('error', res.message);
+      }
+    };  
   }
 
   setUploadParams(): void{

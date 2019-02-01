@@ -24,7 +24,6 @@ export class ContractComponent implements OnInit {
   bShowUplodModal: boolean = false;
   bHasClicked: boolean = false;
 
-  confirmModal: NzModalRef; 
   constructor(private http: HttpClient,
               private fb: FormBuilder,
               private gs: GlobalService,
@@ -91,8 +90,7 @@ export class ContractComponent implements OnInit {
       end: moment(data.end).format("YYYY/MM/DD HH:mm:ss"),
       autoRenewal: data.autoRenewal
     };
-    console.log("update contract:");
-    console.log(body);
+
     this.http.post("/api/contract/update", body).subscribe((res: RespData)=>{
       if (res.code == 0){
         console.log("update contract ok");
@@ -155,6 +153,15 @@ export class ContractComponent implements OnInit {
       this.er.nativeElement.querySelector(".reg-upload").value='';
       this.onSearch();
     }
+    this.uploader.onSuccessItem=(item: any, response: string, status: number, headers: any): any=>{
+      let res: RespData = JSON.parse(response);
+      if (status != 200){
+        this.msg.create('error', "发生错误：" + status);
+      }
+      else if (res.code != 0){
+        this.msg.create('error', res.message);
+      }
+    }; 
   }
 
   setUploadParams(): void{
