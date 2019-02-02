@@ -14,6 +14,7 @@
         text-align: center;
         font-size: 1.2em;
     }
+
     .pc_show{
         display: inline;
     }
@@ -24,11 +25,12 @@
         padding: 50px 30px 30px 30px;       
     }
 }
+
 @media screen and (max-width: 768px){
     body{
         --sc_size: 'sm';
     }
- 
+    
     .page_tag{
         margin: -50px 0 10px -24px;
         background-color: #fa8c35;
@@ -40,6 +42,10 @@
         padding-top: 3px;
         text-align: center;
     }    
+    .mobile_detail_btn{
+        margin-top: -35px;
+        float: right;
+    }    
     .pc_show{
         display: none;
     }
@@ -49,6 +55,17 @@
     }
     .main_view{
         padding: 30px 0px 0px 0px;       
+    }
+
+    .card_container{
+        margin-bottom: 10px;
+    }
+    .card_item_title{
+        color: #fa8c35 !important;
+        font-weight: bold;  
+    }
+    .card_item_content{
+        color:rgb(1, 182, 189) !important;
     }
 }
 

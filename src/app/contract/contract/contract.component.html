@@ -48,19 +48,19 @@
 <input type="file" ng2FileSelect [uploader]="uploader" hidden="true" class="reg-upload" (change)="selectFileChange($event)" />
  
     
-<nz-table class="pc_show" #basicTable [nzData]="contracts" [nzShowSizeChanger]="true">
+<nz-table class="pc_show"  #basicTable [nzData]="contracts" [nzShowSizeChanger]="true">
    <thead>
     <tr>
       <th>序号</th>
       <th>合同名称</th>
-      <th>合作方</th>
-      <th>合同类型</th>
+      <th nzWidth="8em">合作方</th>
+      <th nzWidth="8em">合同类型</th>
       <th>合同摘要</th>
-      <th>开始日期</th> 
-      <th>终止日期</th> 
-      <th style="width: 5em;">自动续期</th>          
+      <th nzWidth="8em">开始日期</th> 
+      <th nzWidth="8em">终止日期</th> 
+      <th nzWidth="5em">自动续期</th>          
       <th>操作人</th>
-      <th style="width: 12em;">操作</th>
+      <th nzWidth="12em">操作</th>
     </tr>
   </thead>
   <tbody>
@@ -103,7 +103,7 @@
           <nz-date-picker [(ngModel)]="editCache[data.name].data.start" nzAllowClear='false'></nz-date-picker>
         </ng-container>
       </td>
-      <td>
+      <td >
         <ng-container  *ngIf='!editCache[data.name].edit'>
           {{data.end | date:'yyyy-MM-dd'}}
         </ng-container>
@@ -141,20 +141,48 @@
   </tbody>
 </nz-table>
 
-<div class="mobile_show" *ngFor="let data of contracts; let i=index" 
-    style="margin-bottom: 10px; background: #ECECEC;">
-    <nz-card  style="width:100%;" 
+<div class="mobile_show card_container" *ngFor="let data of contracts; let i=index">
+    <nz-card 
       [nzTitle]="cardTitle(i, data)" 
       [nzExtra]="extraTemplate" 
       [routerLink]="['../contractdetail']" 
       [queryParams]="{name: data.name}">
-      <p><strong>合 作 方：</strong>{{data.partner}}</p>
-      <p><strong>合同类型：</strong>{{data.type}}</p>      
-      <p><strong>合同摘要：</strong>{{data.digest}}</p>
-      <p><strong>开始日期：</strong>{{data.start | date:'yyyy-MM-dd'}}</p>
-      <p><strong>终止日期：</strong>{{data.end | date:'yyyy-MM-dd'}}</p>
-      <p><strong>自动续期：</strong>{{data.autoRenewal==0? "否": "是"}}</p>
-      <p><strong>操 作 人：</strong>{{data.operatorName}}</p>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">合同名称：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.name}}</div>
+      </div>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">合&ensp;作&ensp;方：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.partner}}</div>
+      </div>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">合同类型：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.type}}</div>
+      </div>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">合同摘要：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.digest}}</div>
+      </div>     
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">开始日期：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.start | date:'yyyy-MM-dd'}}</div>
+      </div> 
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">终止日期：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.end | date:'yyyy-MM-dd'}}</div>
+      </div>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">自动续期：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.autoRenewal==0? "否": "是"}}</div>
+      </div>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">操&ensp;作&ensp;人：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.operatorName}}</div>
+      </div>
+      <div nz-row>
+        <div class="card_item_title" nz-col nzSpan="8">操作时间：</div>
+        <div class="card_item_content" nz-col nzSpan="16">{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+      </div>
     </nz-card>  
     <ng-template #extraTemplate>
       <a (click)="$event.stopPropagation(); onDownload(data)">下载</a>

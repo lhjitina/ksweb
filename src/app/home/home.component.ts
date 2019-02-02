@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalService } from '../global.service';
-import { User } from './../user/user-management/user-management.component';
+import { GlobalService, User } from '../global.service';
 
 @Component({
   selector: 'app-home',

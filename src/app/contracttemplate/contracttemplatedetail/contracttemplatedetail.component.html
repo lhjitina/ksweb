@@ -1,6 +1,11 @@
 <div class="page_tag">合同模版</div>
+<div class="mobile_show mobile_detail_btn">   
+  <a (click)="onSave()">保存</a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a routerLink="../contracttemplate">返回</a>
+</div>
 <div nz-row>
-    <div nz-col  nzXs="18" nzSm="20" nzMd="10" nzLg="10" nzXl="10" nzXXl="10">
+    <div nz-col  nzXs="24" nzSm="24" nzMd="10" nzLg="10" nzXl="10" nzXXl="10">
       <b>模版名称：</b>{{contract.name}}
     </div>
     <div nz-col  class="pc_show" nzMd="6" nzLg="6" nzXl="6" nzXXl="6">
@@ -9,7 +14,7 @@
     <div nz-col  class="pc_show" nzMd="4" nzLg="4" nzXl="4" nzXXl="4">
       <b>状态：</b>{{contract.state}}
     </div>
-    <div nz-col  nzXs="6" nzSm="6" nzMd="3" nzLg="4" nzXl="4" nzXXl="4">   
+    <div nz-col  class="pc_show" nzMd="3" nzLg="4" nzXl="4" nzXXl="4">   
       <a (click)="onSave()">保存</a>
       <nz-divider nzType="vertical"></nz-divider>
       <a routerLink="../contracttemplate">返回</a>

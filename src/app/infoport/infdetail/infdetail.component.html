@@ -1,11 +1,15 @@
 <div class="page_tag">信息共享</div>
+<div class="mobile_show mobile_detail_btn">   
+  <a (click)="onSave()">保存</a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a routerLink="../shareinfo">返回</a>
+</div>
 <div nz-row>
-    <div nz-col nzXs="18" nzSm="18" nzMd="11" nzLg="12" nzXl="12" nzXXl="12"><b>文件名称：</b>{{info.name}}</div>
-    <div class="pc_show" nz-col nzMd="8" nzLg="8" nzXl="8" nzXXl="8"><b>标签：</b>{{info.tag}}</div>
-    <div nz-col nzXs="3" nzSm="3" nzMd="2" nzLg="1" nzXl="1" nzXXl="1">   
+    <div nz-col nzXs="24" nzSm="24" nzMd="11" nzLg="12" nzXl="12" nzXXl="12"><b>文件名称：</b>{{info.name}}</div>
+    <div nz-col class="pc_show" nzMd="8" nzLg="8" nzXl="8" nzXXl="8"><b>标签：</b>{{info.tag}}</div>
+    <div nz-col class="pc_show" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
       <a (click)="onSave()">保存</a>
-    </div> 
-    <div nz-col nzXs="3" nzSm="3" nzMd="2" nzLg="2" nzXl="2" nzXXl="2"> 
+      <nz-divider nzType="vertical"></nz-divider>
       <a routerLink="../shareinfo">返回</a>
     </div>
   </div>

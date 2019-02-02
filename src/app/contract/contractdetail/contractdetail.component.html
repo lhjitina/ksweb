@@ -1,12 +1,14 @@
 <div class="page_tag">已签合同</div>
+<div class="mobile_show mobile_detail_btn">   
+  <a (click)="onSave()">保存</a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a routerLink="../contract">返回</a>
+</div>
 <div nz-row>
-    <div nz-col nzXs="18" nzSm="18" nzMd="18" nzLg="18" nzXl="18" nzXXl="18"><b>名称：</b>{{contract.name}}</div>
-
-    <div nz-col  nzXs="3" nzSm="3" nzMd="2" nzLg="1" nzXl="1" nzXXl="1">   
+    <div nz-col nzXs="24" nzSm="24" nzMd="18" nzLg="18" nzXl="18" nzXXl="18"><b>名称：</b>{{contract.name}}</div>
+    <div nz-col  class="pc_show" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
       <a (click)="onSave()">保存</a>
-  
-    </div> 
-    <div nz-col nzXs="3" nzSm="3" nzMd="2" nzLg="2" nzXl="2" nzXXl="2"> 
+      <nz-divider nzType="vertical"></nz-divider>
       <a routerLink="../contract">返回</a>
     </div>
   </div>

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { User } from './user/user-management/user-management.component';
 import { HttpClient } from '@angular/common/http';
 import { RespData } from './common/dto';
 import { Router } from '@angular/router';
@@ -86,4 +85,25 @@ export class GlobalService {
   public setInitUrl(url: string): void{
     this.initUrl = url;
   }
+}
+
+
+export class User{
+  public id: number;
+  public name: string;
+  public departmentId: number;
+  public departmentName: string;
+  public tel: string;
+  public email: string;
+  public state: string;
+  public registTime: Date;
+  public lastLoginTime: Date;
+  public perPol: boolean;
+  public perReg: boolean;
+  public perSum: boolean;
+  public perUsr: boolean;
+  public perCon: boolean;
+  public perDoc: boolean;
+  public perCw: boolean;
+  public perCr: boolean;
 }

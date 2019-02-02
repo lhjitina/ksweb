@@ -6,6 +6,9 @@ import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { DefaultRouteReuseStrategy } from '@angular/router/src/route_reuse_strategy';
 import { PageRequest, RespPage } from './../../common/dto';
+import { Router } from '@angular/router';
+import { GlobalService, User } from 'src/app/global.service';
+import { allowPreviousPlayerStylesMerge } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-user-management',
@@ -22,7 +25,9 @@ export class UserManagementComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private http: HttpClient,
               private messageService: NzMessageService,
-              private modalService: NzModalService) {
+              private modalService: NzModalService,
+              private rt: Router,
+              private gs: GlobalService) {
     this.userSearchFormGroup = this.fb.group({
       userName: [''],
       tel: [''],
@@ -130,24 +135,15 @@ export class UserManagementComponent implements OnInit {
       }
     })     
   }
-}
 
-export class User{
-  public id: number;
-  public name: string;
-  public departmentId: number;
-  public departmentName: string;
-  public tel: string;
-  public email: string;
-  public state: string;
-  public registTime: Date;
-  public lastLoginTime: Date;
-  public perPol: boolean;
-  public perReg: boolean;
-  public perSum: boolean;
-  public perUsr: boolean;
-  public perCon: boolean;
-  public perDoc: boolean;
-  public perCw: boolean;
-  public perCr: boolean;
+  perUsr(): boolean{
+    return this.gs.getUser().perUsr;
+  }
+
+  onClickCard(user: any): void{
+    if (this.gs.getUser().perUsr){
+      let u = user as User;
+      this.rt.navigateByUrl("/portal/home/user", {queryParams:{'id': u.id}});
+    }
+  }
 }

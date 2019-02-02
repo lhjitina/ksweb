@@ -1,8 +1,13 @@
 <div class="page_tag">会议纪要</div>
+<div class="mobile_show mobile_detail_btn">   
+  <a (click)="onSave()">保存</a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a routerLink="../summary">返回</a>
+</div>
 <div nz-row>
-    <div nz-col nzXs="18" nzSm="18" nzMd="15" nzLg="15" nzXl="15" nzXXl="15"><b>纪要名称：</b>{{sum.name}}</div>
-    <div nz-col class="pc_show" nz-col nzMd="6" nzLg="6" nzXl="6" nzXXl="6"><b>会议日期：</b>{{sum.meetingDate | date:'yyyy-MM-dd'}}</div>
-    <div nz-col  nzXs="6" nzSm="6" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
+    <div nz-col nzXs="24" nzSm="24" nzMd="15" nzLg="15" nzXl="15" nzXXl="15"><b>纪要名称：</b>{{sum.name}}</div>
+    <div nz-col class="pc_show"  nzMd="6" nzLg="6" nzXl="6" nzXXl="6"><b>会议日期：</b>{{sum.meetingDate | date:'yyyy-MM-dd'}}</div>
+    <div nz-col class="pc_show"  nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
       <a (click)="onSave()">保存</a>
       <nz-divider nzType="vertical"></nz-divider>
       <a routerLink="../summary">返回</a>

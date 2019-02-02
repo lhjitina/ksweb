@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../user-management/user-management.component';
 import * as MyValidator from '../../validators';
 import { Router } from '@angular/router';
 import { PageRequest, RespPage, RespData} from './../../common/dto';
 import { NzMessageService } from 'ng-zorro-antd';
+import { User } from './../../global.service';
 
 @Component({
   selector: 'app-user-add',

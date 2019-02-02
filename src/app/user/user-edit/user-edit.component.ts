@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Department } from 'src/app/app.component';
-import { User } from '../user-management/user-management.component';
+import { User } from '../../global.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import * as MyValidator from '../../validators';
 import { PageRequest, RespPage, RespData } from './../../common/dto';

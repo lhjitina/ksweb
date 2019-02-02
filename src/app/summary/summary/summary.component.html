@@ -67,15 +67,28 @@
   </tbody>
 </nz-table>
 
-<div class="mobile_show" *ngFor="let data of summaries; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
-  <nz-card  style="width:100%;" 
+<div class="mobile_show" *ngFor="let data of summaries; let i=index" style="margin-bottom: 10px;">
+  <nz-card  class="listcard" 
     [nzTitle]="cardTitle(i, data)" 
     [nzExtra]="extraTemplate" 
     [routerLink]="['../summarydetail']" 
     [queryParams]="{name: data.name, date: data.meetingDate}">
-    <p><strong>会议日期：</strong>{{data.meetingDate | date:'yyyy-MM-dd'}}</p>
-    <p><strong>操 作 人：</strong>{{data.operatorName}}</p>
-    <p><strong>操作时间：</strong>{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+    <div nz-row>
+      <div class="card_item_title" nz-col nzSpan="8">纪要名称：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{data.name}}</div>
+    </div>
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">会议日期：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{data.meetingDate | date:'yyyy-MM-dd'}}</div>
+    </div> 
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">操&ensp;作&ensp;人：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{data.operatorName}}</div>
+    </div> 
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">操作时间：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{data.operateTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+    </div>
   </nz-card>
   <ng-template #extraTemplate>
     <a (click)="$event.stopPropagation(); onDownload(data.name)">下载</a>

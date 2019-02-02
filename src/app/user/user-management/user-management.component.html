@@ -74,16 +74,22 @@
     <tr *ngFor="let user of userTable.data index as i">
       <td>{{i+1}}</td>
       <td>
-        <a [routerLink]="['../useredit']" 
-           [queryParams]="{id: user.id}">
-           {{user.name}}
-        </a>
+        <ng-container *ngIf="perUsr()">
+          <a [routerLink]="../useredit" 
+            [queryParams]="{id: user.id}">
+            {{user.name}}
+         </a>        
+        </ng-container>
+        <ng-container *ngIf="!perUsr()">
+            {{user.name}}
+        </ng-container>
+
       </td>
       <td>{{user.departmentName}}</td>
       <td>{{user.tel}}</td>
       <td>{{user.email}}</td>
       <td>{{user.state}}</td>
-      <td>
+      <td *ngIf="perUsr()">
         <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">修改</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a (click)="onResetPasswd(user)">重置密码</a>
@@ -92,19 +98,30 @@
   </tbody>
 </nz-table>
 
-<div class="mobile_show" *ngFor="let user of users; let i=index" style="margin-bottom: 10px; background: #ECECEC;">
-  <nz-card  style="width:100%;" 
+<div class="mobile_show card_container" *ngFor="let user of users; let i=index">
+  <nz-card 
     [nzTitle]="cardTitle(i, user)" 
-    [nzExtra]="extraTemplate">
-    <p><strong>部门：</strong>{{user.departmentName}}</p>
-    <p><strong>手机：</strong>{{user.tel}}</p>
-    <p><strong>邮箱：</strong>{{user.email}}</p>
-    <p><strong>状态：</strong>{{user.state}}</p>  
+    [nzExtra]="extraTemplate"
+    (click)="onClickCard(user)">
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">部门：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{user.departmentName}}</div>
+    </div>
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">手机：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{user.tel}}</div>
+    </div>
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">邮箱：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{user.email}}</div>
+    </div>
+    <div nz-row >
+      <div class="card_item_title" nz-col nzSpan="8">状态：</div>
+      <div class="card_item_content" nz-col nzSpan="16">{{user.state}}</div>
+    </div>
   </nz-card>   
   <ng-template #extraTemplate>
-    <a [routerLink]="['../useredit']" [queryParams]="{id: user.id}">修改</a>
-    <nz-divider nzType="vertical"></nz-divider>
-    <a (click)="$event.stopPropagation(); onResetPasswd(user)">重置密码</a>
+    <a (click)="$event.stopPropagation(); onResetPasswd(user)" *ngIf="perUsr()">重置密码</a>
   </ng-template>
 </div>
 

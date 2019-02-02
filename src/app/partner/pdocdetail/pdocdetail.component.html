@@ -1,8 +1,13 @@
 <div class="page_tag">伙伴资料</div>
+<div class="mobile_show mobile_detail_btn">   
+  <a (click)="onSave()">保存</a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a routerLink="../partnerdoc">返回</a>
+</div>
 <div nz-row>
-    <div nz-col nzXs="18" nzSm="18" nzMd="12" nzLg="12" nzXl="12" nzXXl="12"><b>文件名称：</b>{{pdoc.name}}</div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="12" nzLg="12" nzXl="12" nzXXl="12"><b>文件名称：</b>{{pdoc.name}}</div>
     <div nz-col class="pc_show" nzMd="9" nzLg="9" nzXl="9" nzXXl="9"><b>合作伙伴：</b>{{pdoc.partner}}</div>
-    <div nz-col nzXs="6" nzSm="6" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
+    <div nz-col class="pc_show" nzMd="3" nzLg="3" nzXl="3" nzXXl="3">   
       <a (click)="onSave()">保存</a>
       <nz-divider nzType="vertical"></nz-divider>
       <a routerLink="../partnerdoc">返回</a>

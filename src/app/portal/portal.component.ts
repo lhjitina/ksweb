@@ -4,9 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import * as MyValidator from './../validators';
 import { Router } from '@angular/router';
-import { GlobalService } from '../global.service';
-import { User } from '../user/user-management/user-management.component';
-
+import { GlobalService, User } from '../global.service';
 
 @Component({
   selector: 'app-portal',

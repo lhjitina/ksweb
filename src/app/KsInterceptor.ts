@@ -21,13 +21,7 @@ export class KsInterceptor implements HttpInterceptor {
             tap(
                 (event: any) =>{
                      if (event instanceof HttpResponse){
-                        let res = event.body as RespData;
-                        console.log("res body:")
-                        console.log(event.body)
-                        if (res.code != 0){
-                            console.log("error code: " + res.code);
-                            this.msg.create('error', res.message);
-                        }
+
                     }
                 },
                 error=>{
